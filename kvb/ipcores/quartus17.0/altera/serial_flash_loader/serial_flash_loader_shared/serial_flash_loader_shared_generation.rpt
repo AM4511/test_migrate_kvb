@@ -1,0 +1,29 @@
+Info: Starting: Create block symbol file (.bsf)
+Info: qsys-generate D:\work\cpuskl\quartus\quartus16.1\kvb\serial_flash_loader_shared.qsys --block-symbol-file --output-directory=D:\work\cpuskl\quartus\quartus16.1\kvb\serial_flash_loader_shared --family="Cyclone IV GX" --part=EP4CGX22CF19C8
+Progress: Loading kvb/serial_flash_loader_shared.qsys
+Progress: Reading input file
+Progress: Adding serial_flash_loader_0 [altera_serial_flash_loader 16.1]
+Progress: Parameterizing module serial_flash_loader_0
+Progress: Building connections
+Progress: Parameterizing connections
+Progress: Validating
+Progress: Done reading input file
+Info: qsys-generate succeeded.
+Info: Finished: Create block symbol file (.bsf)
+Info: 
+Info: Starting: Create HDL design files for synthesis
+Info: qsys-generate D:\work\cpuskl\quartus\quartus16.1\kvb\serial_flash_loader_shared.qsys --synthesis=VERILOG --output-directory=D:\work\cpuskl\quartus\quartus16.1\kvb\serial_flash_loader_shared\synthesis --family="Cyclone IV GX" --part=EP4CGX22CF19C8
+Progress: Loading kvb/serial_flash_loader_shared.qsys
+Progress: Reading input file
+Progress: Adding serial_flash_loader_0 [altera_serial_flash_loader 16.1]
+Progress: Parameterizing module serial_flash_loader_0
+Progress: Building connections
+Progress: Parameterizing connections
+Progress: Validating
+Progress: Done reading input file
+Info: serial_flash_loader_shared: Generating serial_flash_loader_shared "serial_flash_loader_shared" for QUARTUS_SYNTH
+Info: serial_flash_loader_0: generating top-level entity altera_serial_flash_loader
+Info: serial_flash_loader_0: "serial_flash_loader_shared" instantiated altera_serial_flash_loader "serial_flash_loader_0"
+Info: serial_flash_loader_shared: Done "serial_flash_loader_shared" with 2 modules, 2 files
+Info: qsys-generate succeeded.
+Info: Finished: Create HDL design files for synthesis

@@ -1,0 +1,18 @@
+# system info serial_flash_loader on 2017.05.15.15:08:22
+system_info:
+name,value
+DEVICE,EP4CGX22CF19C8
+DEVICE_FAMILY,Cyclone IV GX
+GENERATION_ID,1494875301
+#
+#
+# Files generated for serial_flash_loader on 2017.05.15.15:08:22
+files:
+filepath,kind,attributes,module,is_top
+simulation/serial_flash_loader.v,VERILOG,,serial_flash_loader,true
+simulation/submodules/altera_serial_flash_loader.v,VERILOG,,altera_serial_flash_loader,false
+#
+# Map from instance-path to kind of module
+instances:
+instancePath,module
+serial_flash_loader.serial_flash_loader_0,altera_serial_flash_loader

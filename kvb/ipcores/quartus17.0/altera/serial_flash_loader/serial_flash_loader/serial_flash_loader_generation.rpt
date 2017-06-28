@@ -1,0 +1,65 @@
+Info: Starting: Create simulation model
+Info: qsys-generate D:\work\cpuskl\ipcores\quartus17.0\altera\serial_flash_loader\serial_flash_loader.qsys --simulation=VERILOG --allow-mixed-language-simulation --output-directory=D:\work\cpuskl\ipcores\quartus17.0\altera\serial_flash_loader\serial_flash_loader\simulation --family="Cyclone IV GX" --part=EP4CGX22CF19C8
+Progress: Loading serial_flash_loader/serial_flash_loader.qsys
+Progress: Reading input file
+Progress: Adding serial_flash_loader_0 [altera_serial_flash_loader 17.0]
+Progress: Parameterizing module serial_flash_loader_0
+Progress: Building connections
+Progress: Parameterizing connections
+Progress: Validating
+Progress: Done reading input file
+Info: serial_flash_loader: Generating serial_flash_loader "serial_flash_loader" for SIM_VERILOG
+Info: serial_flash_loader_0: generating top-level entity altera_serial_flash_loader
+Info: serial_flash_loader_0: "serial_flash_loader" instantiated altera_serial_flash_loader "serial_flash_loader_0"
+Info: serial_flash_loader: Done "serial_flash_loader" with 2 modules, 2 files
+Info: qsys-generate succeeded.
+Info: Finished: Create simulation model
+Info: Starting: Create Modelsim Project.
+Info: sim-script-gen --spd=D:\work\cpuskl\ipcores\quartus17.0\altera\serial_flash_loader\serial_flash_loader\serial_flash_loader.spd --output-directory=D:/work/cpuskl/ipcores/quartus17.0/altera/serial_flash_loader/serial_flash_loader/simulation/ --use-relative-paths=true
+Info: Doing: ip-make-simscript --spd=D:\work\cpuskl\ipcores\quartus17.0\altera\serial_flash_loader\serial_flash_loader\serial_flash_loader.spd --output-directory=D:/work/cpuskl/ipcores/quartus17.0/altera/serial_flash_loader/serial_flash_loader/simulation/ --use-relative-paths=true
+Info: Generating the following file(s) for MODELSIM simulator in D:/work/cpuskl/ipcores/quartus17.0/altera/serial_flash_loader/serial_flash_loader/simulation/ directory:
+Info: 	mentor/msim_setup.tcl
+Info: Generating the following file(s) for VCS simulator in D:/work/cpuskl/ipcores/quartus17.0/altera/serial_flash_loader/serial_flash_loader/simulation/ directory:
+Info: 	synopsys/vcs/vcs_setup.sh
+Info: Generating the following file(s) for VCSMX simulator in D:/work/cpuskl/ipcores/quartus17.0/altera/serial_flash_loader/serial_flash_loader/simulation/ directory:
+Info: 	synopsys/vcsmx/synopsys_sim.setup
+Info: 	synopsys/vcsmx/vcsmx_setup.sh
+Info: Generating the following file(s) for NCSIM simulator in D:/work/cpuskl/ipcores/quartus17.0/altera/serial_flash_loader/serial_flash_loader/simulation/ directory:
+Info: 	cadence/cds.lib
+Info: 	cadence/hdl.var
+Info: 	cadence/ncsim_setup.sh
+Info: 	1 .cds.lib files in cadence/cds_libs/ directory
+Info: Generating the following file(s) for RIVIERA simulator in D:/work/cpuskl/ipcores/quartus17.0/altera/serial_flash_loader/serial_flash_loader/simulation/ directory:
+Info: 	aldec/rivierapro_setup.tcl
+Info: For information on how to simulate your IP, see the explanatory comments in the simulator-specific subdirectories under D:/work/cpuskl/ipcores/quartus17.0/altera/serial_flash_loader/serial_flash_loader/simulation/.
+Info: Regenerate these scripts whenever you make any change to any Quartus-generated IP in your project.
+Info: Finished: Create Modelsim Project.
+Info: Starting: Create block symbol file (.bsf)
+Info: qsys-generate D:\work\cpuskl\ipcores\quartus17.0\altera\serial_flash_loader\serial_flash_loader.qsys --block-symbol-file --output-directory=D:\work\cpuskl\ipcores\quartus17.0\altera\serial_flash_loader\serial_flash_loader --family="Cyclone IV GX" --part=EP4CGX22CF19C8
+Progress: Loading serial_flash_loader/serial_flash_loader.qsys
+Progress: Reading input file
+Progress: Adding serial_flash_loader_0 [altera_serial_flash_loader 17.0]
+Progress: Parameterizing module serial_flash_loader_0
+Progress: Building connections
+Progress: Parameterizing connections
+Progress: Validating
+Progress: Done reading input file
+Info: qsys-generate succeeded.
+Info: Finished: Create block symbol file (.bsf)
+Info: 
+Info: Starting: Create HDL design files for synthesis
+Info: qsys-generate D:\work\cpuskl\ipcores\quartus17.0\altera\serial_flash_loader\serial_flash_loader.qsys --synthesis=VERILOG --output-directory=D:\work\cpuskl\ipcores\quartus17.0\altera\serial_flash_loader\serial_flash_loader\synthesis --family="Cyclone IV GX" --part=EP4CGX22CF19C8
+Progress: Loading serial_flash_loader/serial_flash_loader.qsys
+Progress: Reading input file
+Progress: Adding serial_flash_loader_0 [altera_serial_flash_loader 17.0]
+Progress: Parameterizing module serial_flash_loader_0
+Progress: Building connections
+Progress: Parameterizing connections
+Progress: Validating
+Progress: Done reading input file
+Info: serial_flash_loader: Generating serial_flash_loader "serial_flash_loader" for QUARTUS_SYNTH
+Info: serial_flash_loader_0: generating top-level entity altera_serial_flash_loader
+Info: serial_flash_loader_0: "serial_flash_loader" instantiated altera_serial_flash_loader "serial_flash_loader_0"
+Info: serial_flash_loader: Done "serial_flash_loader" with 2 modules, 2 files
+Info: qsys-generate succeeded.
+Info: Finished: Create HDL design files for synthesis

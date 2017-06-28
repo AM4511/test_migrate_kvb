@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<deploy
+ date="2017.05.15.15:08:26"
+ outputDirectory="D:/work/cpuskl/ipcores/quartus17.0/altera/serial_flash_loader/serial_flash_loader/">
+ <perimeter>
+  <parameter
+     name="AUTO_GENERATION_ID"
+     type="Integer"
+     defaultValue="0"
+     onHdl="0"
+     affectsHdl="1" />
+  <parameter
+     name="AUTO_UNIQUE_ID"
+     type="String"
+     defaultValue=""
+     onHdl="0"
+     affectsHdl="1" />
+  <parameter
+     name="AUTO_DEVICE_FAMILY"
+     type="String"
+     defaultValue="Cyclone IV GX"
+     onHdl="0"
+     affectsHdl="1" />
+  <parameter
+     name="AUTO_DEVICE"
+     type="String"
+     defaultValue="EP4CGX22CF19C8"
+     onHdl="0"
+     affectsHdl="1" />
+  <parameter
+     name="AUTO_DEVICE_SPEEDGRADE"
+     type="String"
+     defaultValue="8"
+     onHdl="0"
+     affectsHdl="1" />
+  <interface name="noe_in" kind="conduit" start="0">
+   <property name="associatedClock" value="" />
+   <property name="associatedReset" value="" />
+   <port name="noe_in" direction="input" role="noe" width="1" />
+  </interface>
+ </perimeter>
+ <entity
+   path=""
+   parameterizationKey="serial_flash_loader:1.0:AUTO_DEVICE=EP4CGX22CF19C8,AUTO_DEVICE_FAMILY=Cyclone IV GX,AUTO_DEVICE_SPEEDGRADE=8,AUTO_GENERATION_ID=1494875306,AUTO_UNIQUE_ID=(altera_serial_flash_loader:17.0:ENABLE_QUAD_SPI_SUPPORT=false,ENABLE_SHARED_ACCESS=OFF,ENHANCED_MODE=true,INTENDED_DEVICE_FAMILY=Cyclone IV GX,NCSO_WIDTH=1,gui_shared_access=false)"
+   instancePathKey="serial_flash_loader"
+   kind="serial_flash_loader"
+   version="1.0"
+   name="serial_flash_loader">
+  <parameter name="AUTO_GENERATION_ID" value="1494875306" />
+  <parameter name="AUTO_DEVICE" value="EP4CGX22CF19C8" />
+  <parameter name="AUTO_DEVICE_FAMILY" value="Cyclone IV GX" />
+  <parameter name="AUTO_UNIQUE_ID" value="" />
+  <parameter name="AUTO_DEVICE_SPEEDGRADE" value="8" />
+  <generatedFiles>
+   <file
+       path="D:/work/cpuskl/ipcores/quartus17.0/altera/serial_flash_loader/serial_flash_loader/synthesis/serial_flash_loader.v"
+       type="VERILOG" />
+  </generatedFiles>
+  <childGeneratedFiles>
+   <file
+       path="D:/work/cpuskl/ipcores/quartus17.0/altera/serial_flash_loader/serial_flash_loader/synthesis/submodules/altera_serial_flash_loader.v"
+       type="VERILOG"
+       attributes="" />
+  </childGeneratedFiles>
+  <sourceFiles>
+   <file
+       path="D:/work/cpuskl/ipcores/quartus17.0/altera/serial_flash_loader/serial_flash_loader.qsys" />
+  </sourceFiles>
+  <childSourceFiles>
+   <file
+       path="C:/intelfpga/17.0/ip/altera/altera_serial_flash_loader/altera_serial_flash_loader_hw.tcl" />
+  </childSourceFiles>
+  <messages>
+   <message level="Debug" culprit="serial_flash_loader">queue size: 0 starting:serial_flash_loader "serial_flash_loader"</message>
+   <message level="Progress" culprit="min"></message>
+   <message level="Progress" culprit="max"></message>
+   <message level="Progress" culprit="current"></message>
+   <message level="Debug">Transform: CustomInstructionTransform</message>
+   <message level="Debug">No custom instruction connections, skipping transform </message>
+   <message level="Debug" culprit="merlin_custom_instruction_transform"><![CDATA[After transform: <b>1</b> modules, <b>0</b> connections]]></message>
+   <message level="Debug">Transform: MMTransform</message>
+   <message level="Debug">Transform: InterruptMapperTransform</message>
+   <message level="Debug">Transform: InterruptSyncTransform</message>
+   <message level="Debug">Transform: InterruptFanoutTransform</message>
+   <message level="Debug">Transform: AvalonStreamingTransform</message>
+   <message level="Debug">Transform: ResetAdaptation</message>
+   <message level="Debug" culprit="serial_flash_loader"><![CDATA["<b>serial_flash_loader</b>" reuses <b>altera_serial_flash_loader</b> "<b>submodules/altera_serial_flash_loader</b>"]]></message>
+   <message level="Debug" culprit="serial_flash_loader">queue size: 0 starting:altera_serial_flash_loader "submodules/altera_serial_flash_loader"</message>
+   <message level="Info" culprit="serial_flash_loader_0">generating top-level entity altera_serial_flash_loader</message>
+   <message level="Info" culprit="serial_flash_loader_0"><![CDATA["<b>serial_flash_loader</b>" instantiated <b>altera_serial_flash_loader</b> "<b>serial_flash_loader_0</b>"]]></message>
+  </messages>
+ </entity>
+ <entity
+   path="submodules/"
+   parameterizationKey="altera_serial_flash_loader:17.0:ENABLE_QUAD_SPI_SUPPORT=false,ENABLE_SHARED_ACCESS=OFF,ENHANCED_MODE=true,INTENDED_DEVICE_FAMILY=Cyclone IV GX,NCSO_WIDTH=1,gui_shared_access=false"
+   instancePathKey="serial_flash_loader:.:serial_flash_loader_0"
+   kind="altera_serial_flash_loader"
+   version="17.0"
+   name="altera_serial_flash_loader">
+  <parameter name="ENABLE_SHARED_ACCESS" value="OFF" />
+  <parameter name="ENABLE_QUAD_SPI_SUPPORT" value="false" />
+  <parameter name="ENHANCED_MODE" value="true" />
+  <parameter name="gui_shared_access" value="false" />
+  <parameter name="NCSO_WIDTH" value="1" />
+  <parameter name="INTENDED_DEVICE_FAMILY" value="Cyclone IV GX" />
+  <generatedFiles>
+   <file
+       path="D:/work/cpuskl/ipcores/quartus17.0/altera/serial_flash_loader/serial_flash_loader/synthesis/submodules/altera_serial_flash_loader.v"
+       type="VERILOG"
+       attributes="" />
+  </generatedFiles>
+  <childGeneratedFiles/>
+  <sourceFiles>
+   <file
+       path="C:/intelfpga/17.0/ip/altera/altera_serial_flash_loader/altera_serial_flash_loader_hw.tcl" />
+  </sourceFiles>
+  <childSourceFiles/>
+  <instantiator instantiator="serial_flash_loader" as="serial_flash_loader_0" />
+  <messages>
+   <message level="Debug" culprit="serial_flash_loader">queue size: 0 starting:altera_serial_flash_loader "submodules/altera_serial_flash_loader"</message>
+   <message level="Info" culprit="serial_flash_loader_0">generating top-level entity altera_serial_flash_loader</message>
+   <message level="Info" culprit="serial_flash_loader_0"><![CDATA["<b>serial_flash_loader</b>" instantiated <b>altera_serial_flash_loader</b> "<b>serial_flash_loader_0</b>"]]></message>
+  </messages>
+ </entity>
+</deploy>

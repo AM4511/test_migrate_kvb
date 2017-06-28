@@ -1,0 +1,8 @@
+###############################################################################################
+# ALTERA MEGAFUNCTION Quartus IP-Files
+###############################################################################################
+set_global_assignment -name QIP_FILE [file join $::quartus(qip_path) "fifo8x8/fifo8x8.qip"]
+set_global_assignment -name QIP_FILE [file join $::quartus(qip_path) "reconfig_pll/reconfig_pll.qip"]
+set_global_assignment -name QIP_FILE [file join $::quartus(qip_path) "altgx_reconfig/altgx_reconfig.qip"]
+set_global_assignment -name QIP_FILE [file join $::quartus(qip_path) "serial_flash_loader/serial_flash_loader/synthesis/serial_flash_loader.qip"]
+
