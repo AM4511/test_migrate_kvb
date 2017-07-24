@@ -1,6 +1,6 @@
 set me [info script]
 puts "Running ${me}"
-####################################################################################
+
 ####################################################################################
 # Add QIP files
 ####################################################################################
@@ -40,4 +40,4 @@ set_global_assignment -name VERILOG_FILE ${HDL_PATH}/matrox/cpuskl_kvb_top.v
 ####################################################################################
 # Add SignalTAP files
 ####################################################################################
-set_global_assignment -name USE_SIGNALTAP_FILE kvb_signal_tap.stp
+set_global_assignment -name USE_SIGNALTAP_FILE stp1.stp

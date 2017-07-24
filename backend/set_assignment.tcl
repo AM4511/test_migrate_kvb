@@ -11,6 +11,8 @@ set_global_assignment -name PROJECT_OUTPUT_DIRECTORY $FIRMWARE_PATH
 set_global_assignment -name ERROR_CHECK_FREQUENCY_DIVISOR 256
 set_global_assignment -name MIN_CORE_JUNCTION_TEMP 0
 set_global_assignment -name MAX_CORE_JUNCTION_TEMP 85
+set_global_assignment -name EDA_SIMULATION_TOOL "<None>"
+set_global_assignment -name EDA_OUTPUT_DATA_FORMAT NONE -section_id eda_simulation
 set_global_assignment -name ROUTER_CLOCKING_TOPOLOGY_ANALYSIS ON
 set_global_assignment -name PRE_MAPPING_RESYNTHESIS ON
 set_global_assignment -name ADVANCED_PHYSICAL_OPTIMIZATION ON

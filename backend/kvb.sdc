@@ -36,8 +36,8 @@ create_generated_clock -name {uart_ref_clk_3} -source [get_ports {lpc_clk}] -edg
 # SPI Read clock:  50 MHz/4
 # SPI Write clock: 50 MHz/2
 
-#create_generated_clock -name {qspi_rd_clk} -source {reconfig_pll|altpll_component|auto_generated|pll1|clk[0]} -divide_by 4 -multiply_by 1 -invert { u0|qspi_mram_0|qspi_top_inst|llqspi_inst|o_sck|q }
-create_generated_clock  -name {qspi_rd_clk} -source {reconfig_pll|altpll_component|auto_generated|pll1|clk[0]} -edges {3 7 11} { u0|qspi_mram_0|qspi_top_inst|llqspi_inst|o_sck|q }
+create_generated_clock -name {qspi_rd_clk} -source {reconfig_pll|altpll_component|auto_generated|pll1|clk[0]} -divide_by 4 -multiply_by 1 -invert { u0|qspi_mram_0|qspi_top_inst|llqspi_inst|o_sck|q }
+#create_generated_clock -name {qspi_rd_clk} -source {reconfig_pll|altpll_component|auto_generated|pll1|clk[0]} -edge {find the correct edges} { u0|qspi_mram_0|qspi_top_inst|llqspi_inst|o_sck|q }
 
 
 # Create the clock on the FPGA port interface (Keep phase relationship. Better than a virtual clock. Take into account the full round trip from source to destination)
