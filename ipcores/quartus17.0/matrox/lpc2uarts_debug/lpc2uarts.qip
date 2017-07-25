@@ -1,0 +1,5 @@
+###############################################################################################
+# ALTERA MEGAFUNCTION Quartus IP-Files
+###############################################################################################
+set_global_assignment -name VHDL_FILE [file join $::quartus(qip_path) "lpc2uarts_core.vhd"]
+set_global_assignment -name VHDL_FILE [file join $::quartus(qip_path) "lpc2uarts.vhd"]
