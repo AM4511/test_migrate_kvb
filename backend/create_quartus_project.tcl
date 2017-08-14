@@ -23,11 +23,13 @@ global ROOT_PATH
     set ROOT_PATH "D:/work/cpuskl"
 	puts "ROOT_PATH -> $ROOT_PATH"
 }
-
-set PROJECT_NAME     "kvb"
+set REVMAJOR         "1"
+set REVMINOR         "1"
+set REVISION         "rev_${REVMAJOR}_${REVMINOR}"
+set PROJECT_NAME     "kvb_${REVISION}"
 set QUARTUS_VERSION   "quartus17.0"
-set QSYS_SYSTEM_NAME "${PROJECT_NAME}_system"
-set REVISION_NAME    "${PROJECT_NAME}_rev0"
+set QSYS_SYSTEM_NAME "kvb_system"
+set REVISION_NAME    "${PROJECT_NAME}"
 
 ########################################################################################
 # Directory structure
@@ -97,7 +99,15 @@ if {[is_project_open]} {
 		
 		set TCL_CREATE_QSYS_SCRIPT [file join ${TCL_SCRIPT_PATH} ${QUARTUS_VERSION} ${TCL_CREATE_QSYS_SCRIPT_NAME}]
 		source $TCL_CREATE_QSYS_SCRIPT
-			
+
+
+		# Set TDOM package paths
+		set TDOM_PATH [file join ${TCL_SCRIPT_PATH} "tdom/tdom0.8.3"]
+		set auto_path [linsert $auto_path 0 ${TDOM_PATH}]
+		
+		#set TCL_CREATE_PNPROM [file join ${TCL_SCRIPT_PATH} ${TCL_CREATE_PnPROM_SCRIPT_NAME}]
+		#source $TCL_CREATE_PNPROM
+		
 		# Commit assignments
 		export_assignments
 

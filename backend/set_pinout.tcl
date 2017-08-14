@@ -319,10 +319,4 @@ set_instance_assignment -name WEAK_PULL_UP_RESISTOR ON -to lpc_ad
 ####################################################################################
 set_location_assignment PIN_G10 -to clkin_125m_p
 set_location_assignment PIN_D9 -to voltage_alert
-set_location_assignment PIN_D6 -to vme_buffer_oe_n
-
-# When FPGA is programmed. This pin goes low and VME buffer are activated
-set_instance_assignment -name RESERVE_PIN AS_OUTPUT_DRIVING_GROUND -to vme_buffer_oe_n -comment "When FPGA is programmed. This pin goes low and VME buffer are activated"
-# When FPGA not programmed VME buffer on PCB are input
-set_instance_assignment -name AUTO_OPEN_DRAIN_PINS ON -to vme_buffer_oe_n -comment "When FPGA not programmed VME buffer on PCB are input"
-
+set_location_assignment PIN_D6 -to vme_buffer_oe

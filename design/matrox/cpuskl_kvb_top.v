@@ -84,7 +84,7 @@ module cpuskl_kvb_top (
 			 output        vme_iackout_n, // interrupt acknowledge out
 			 input 	       vme_dtack_n, // data transfer acknowledge
 			 input [7:1]   vme_irq_n, // interrupt requests
-			 output        vme_buffer_oe_n, // VME buffer output enable
+			 output        vme_buffer_oe, // VME buffer output enable
 
 			 output [9:0]  prog_tp,
                          input [3:0]   gpio, //[AM]
@@ -198,7 +198,7 @@ following bits are defined:
    assign 	test_in[39:16] = 0;
 
    
-   assign   vme_buffer_oe_n = 1'b0;
+   assign   vme_buffer_oe = 1'b1;
 
 
    // Serial Flash loader. Used to dowload the firmware in the on-board FLASH.
