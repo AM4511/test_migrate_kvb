@@ -1,0 +1,5 @@
+###############################################################################################
+# ALTERA MEGAFUNCTION Quartus IP-Files
+###############################################################################################
+set_global_assignment -name QIP_FILE [file join $::quartus(qip_path) "altera/ipcores.qip"]
+set_global_assignment -name QIP_FILE [file join $::quartus(qip_path) "matrox/ipcores.qip"]
