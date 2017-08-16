@@ -13,8 +13,10 @@
 # Finally, the data is written to a ROM image.
 # 
 # ----------------------------------------------------------------------------
-
 package require tdom
+
+set myself [info script]
+puts "Running ${myself}"
 
 # VersionMatch
 #     Finds the version number of the file to be parsed, then compares it to 
@@ -695,6 +697,7 @@ proc OutputIntSendIntf {key0 key1 key2} {
 
 
 proc GenHex4 {hexStr startAddr} {
+	#puts "DEBUG: ${hexStr} ${startAddr}"
     global logFile hexFile
     set memFileStr ":04";				# start code & byte cnt
     set chkSum -4
@@ -704,10 +707,14 @@ proc GenHex4 {hexStr startAddr} {
     # 
     set thisByte xx
     for {set i 0} {$i < 8} {set i [expr {$i + 2}]} {
-	set byteStr [string range $hexStr $i [expr $i + 1]]
-	scan $byteStr %2X thisByte
-	append memFileStr [format "%02X" $thisByte]; # data byte
-	set chkSum [expr $chkSum - $thisByte];	 # checksum calculation
+		set byteStr [string range $hexStr $i [expr $i + 1]]
+	    #puts "DEBUG Byte: $byteStr"
+		#Fix from amarchan@matrox.com
+		# See http://core.tcl.tk/tcl/info/e077937cf04d43d2c43f1bca0cf86fa0b68b6bbb
+		##scan $byteStr %2X thisByte <= Bug in tcl (X upper case not supported in this tcl version)
+		scan $byteStr %2x thisByte
+		append memFileStr [format "%02X" $thisByte]; # data byte
+		set chkSum [expr $chkSum - $thisByte];	     # checksum calculation
     }
     #
     set chkSum [expr $chkSum % 256];	# use only lower byte
@@ -737,7 +744,10 @@ proc GenStrHex4 {hexStr startAddr} {
 	    } else {
 		set byteStr [string range $hexStr $k [expr $k + 1]]
 	    }
-	    scan $byteStr %2X thisByte
+		#Fix from amarchan@matrox.com
+		# See http://core.tcl.tk/tcl/info/e077937cf04d43d2c43f1bca0cf86fa0b68b6bbb
+		##scan $byteStr %2X thisByte <= Bug in tcl (X upper case not supported in this tcl version)
+	    scan $byteStr %2x thisByte
 	    append memFileStr [format "%02X" $thisByte]; # data byte
 	    set chkSum [expr $chkSum - $thisByte];	 # checksum calculation
 	}
@@ -760,7 +770,10 @@ proc Done {} {
     # Close HEX file
     puts  $hexFile ":00000001FF"; # End of File record
     close $hexFile
-    exit
+    puts "Parsing done"
+   
+	#fix amarchan@matrox.com. Can't use exit command from Quartus TCL shell
+	#exit
 }
 
 # Separator
@@ -776,7 +789,15 @@ proc Separator {} {
 
 # Set Up File I/O
 # cd "R:/Electrical/ATX5 (SMART)/Altera FPGA Evaluation/Qsys Plug-and-Play"
-set inputFile [open $argv "r"]
+#set inputFile [open $argv "r"]
+set SOPCINFO_FILE [file join ${WORK_PATH} ${QSYS_SYSTEM_NAME}.sopcinfo]
+
+if { [file exists ${SOPCINFO_FILE}] } {
+
+	puts "Parsing ${SOPCINFO_FILE}"
+	set inputFile [open $SOPCINFO_FILE "r"]
+}
+
 set inputString [read $inputFile]
 close $inputFile
 set logFile [open "PnP_ROM_Parse.log" "w"]

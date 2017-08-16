@@ -13,6 +13,15 @@ package require ::quartus::project
 set me [info script]
 puts "Running ${me}"
 
+
+###################################################################################
+# Define the builID using the Unix epoch (time in secondes since midnight 1/1/1970)
+###################################################################################
+set BUILDID [clock seconds]
+set BUILD_TIME  [clock format ${BUILDID} -format "%Y-%m-%d  %H:%M:%S"]
+puts "BUILD_ID =  $BUILDID (${BUILD_TIME})"
+
+
 global ROOT_PATH
  if { [info exists ::env(KVB) ] } {
     # Set the ROOT folder path from a Windows environment variable
@@ -23,13 +32,15 @@ global ROOT_PATH
     set ROOT_PATH "D:/work/cpuskl"
 	puts "ROOT_PATH -> $ROOT_PATH"
 }
+set FPGA_NAME        "kvb"
 set REVMAJOR         "1"
 set REVMINOR         "1"
-set REVISION         "rev_${REVMAJOR}_${REVMINOR}"
-set PROJECT_NAME     "kvb_${REVISION}"
+set REVISION         "v${REVMAJOR}_${REVMINOR}"
+set PROJECT_NAME     "${FPGA_NAME}_${REVISION}"
 set QUARTUS_VERSION   "quartus17.0"
-set QSYS_SYSTEM_NAME "kvb_system"
-set REVISION_NAME    "${PROJECT_NAME}"
+set QSYS_SYSTEM_NAME "${FPGA_NAME}_system"
+set REVISION_NAME    "${PROJECT_NAME}_build${BUILDID}"
+
 
 ########################################################################################
 # Directory structure
@@ -40,7 +51,7 @@ set IPCORE_LIB_PATH   "${ROOT_PATH}/ipcores/${QUARTUS_VERSION}"
 set WORK_PATH         "${ROOT_PATH}/quartus/${QUARTUS_VERSION}/${PROJECT_NAME}"
 set TCL_PATH          "${ROOT_PATH}/util/tcl"
 set FIRMWARE_PATH     "${WORK_PATH}/firmwares"
-set QSYS_SYSTEM_PATH  "${WORK_PATH}/${QSYS_SYSTEM_NAME}"
+set TDOM_PATH         "${BACKEND_PATH}/tdom/win64/tdom0.8.3"
 set QUARTUS_HOME      $quartus(quartus_rootpath)
 
 
@@ -54,6 +65,7 @@ set TCL_CREATE_PnPROM_SCRIPT_NAME   "PnP_ROM_Compiler.tcl"
 set TCL_SET_ASSIGNMENTS_SCRIPT_NAME "set_assignment.tcl"
 
 set make_assignments 1
+
 
 ########################################################################################
 # Create Project Directory structure
@@ -100,16 +112,11 @@ if {[is_project_open]} {
 		set TCL_CREATE_QSYS_SCRIPT [file join ${TCL_SCRIPT_PATH} ${QUARTUS_VERSION} ${TCL_CREATE_QSYS_SCRIPT_NAME}]
 		source $TCL_CREATE_QSYS_SCRIPT
 
-
-		# Set TDOM package paths
-		set TDOM_PATH [file join ${TCL_SCRIPT_PATH} "tdom/tdom0.8.3"]
+		set TCL_CREATE_PnPROM_SCRIPT [file join ${TCL_SCRIPT_PATH} ${TCL_CREATE_PnPROM_SCRIPT_NAME}]
 		set auto_path [linsert $auto_path 0 ${TDOM_PATH}]
-		
-		#set TCL_CREATE_PNPROM [file join ${TCL_SCRIPT_PATH} ${TCL_CREATE_PnPROM_SCRIPT_NAME}]
-		#source $TCL_CREATE_PNPROM
-		
+		source $TCL_CREATE_PnPROM_SCRIPT	
+	
 		# Commit assignments
 		export_assignments
-
 	}
 }
