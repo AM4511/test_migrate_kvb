@@ -92,3 +92,8 @@ set_global_assignment -name GENERATE_RBF_FILE ON
 set_global_assignment -name GENERATE_SVF_FILE ON
 set_global_assignment -name GENERATE_JAM_FILE ON
 set_global_assignment -name GENERATE_JBC_FILE ON
+
+# Script to run during the flow
+set_global_assignment -name PRE_FLOW_SCRIPT_FILE quartus_sh:${PRE_FLOW_SCRIPT_FILE}
+# set_global_assignment -name POST_MODULE_SCRIPT_FILE quartus_sh:next.tcl
+# set_global_assignment -name POST_FLOW_SCRIPT_FILE quartus_sh:post_flow.tcl

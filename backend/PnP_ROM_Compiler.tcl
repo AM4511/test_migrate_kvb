@@ -13,10 +13,12 @@
 # Finally, the data is written to a ROM image.
 # 
 # ----------------------------------------------------------------------------
-package require tdom
-
 set myself [info script]
 puts "Running ${myself}"
+
+# Define required package
+package require tdom
+
 
 # VersionMatch
 #     Finds the version number of the file to be parsed, then compares it to 
@@ -785,17 +787,22 @@ proc Separator {} {
     puts            $logFile "---------------------------------------"
 }
 
-# ----------------------------------------------------------------------------
 
-# Set Up File I/O
-# cd "R:/Electrical/ATX5 (SMART)/Altera FPGA Evaluation/Qsys Plug-and-Play"
-#set inputFile [open $argv "r"]
-set SOPCINFO_FILE [file join ${WORK_PATH} ${QSYS_SYSTEM_NAME}.sopcinfo]
 
-if { [file exists ${SOPCINFO_FILE}] } {
 
-	puts "Parsing ${SOPCINFO_FILE}"
-	set inputFile [open $SOPCINFO_FILE "r"]
+
+
+###################################################################################
+# Main section of this script (Top level)
+###################################################################################
+
+# SOPCINFO_FILE defined by the calling script
+set sopcinfo_file ${SOPCINFO_FILE} 
+
+if { [file exists ${sopcinfo_file}] } {
+
+    puts "Parsing ${sopcinfo_file}"
+    set inputFile [open ${sopcinfo_file} "r"]
 }
 
 set inputString [read $inputFile]
@@ -842,7 +849,7 @@ set masterIF 1001;	# Version = 1, Interface Type = 1
 set slaveIF  1002;	# Version = 1, Interface Type = 2
 set intRcvr  1003;	# Version = 1, Interface Type = 3
 set intSndr  1004;	# Version = 1, Interface Type = 4
-    
+
 Separator
 
 # Create List of Modules Named: "PnP_ROM"
@@ -851,10 +858,10 @@ set PnP_ROM_node_list [$doc selectNodes {module[@kind="PnPROM"]}]
 # Handle List
 puts $logFile "PnP_ROM Module Names"
 foreach pnpModuleName $PnP_ROM_name_list \
-        pnpModuleNode $PnP_ROM_node_list {
-    set pnpModuleName [string range $pnpModuleName 5 end]
-    puts $logFile "\t$pnpModuleName: $pnpModuleNode"
-}
+    pnpModuleNode $PnP_ROM_node_list {
+	set pnpModuleName [string range $pnpModuleName 5 end]
+	puts $logFile "\t$pnpModuleName: $pnpModuleNode"
+    }
 Separator
 # >>> There should be only one PnP Module in the design <<<
 # Add deviceIDCAP to the sopc dictionary (first entry)
@@ -871,10 +878,10 @@ set allModNodeList [$doc selectNodes {module}]
 # Handle List
 puts $logFile "All Module Names"
 foreach nonpnpModuleName $allModNameList \
-        anyModuleNode $allModNodeList {
-    set nonpnpModuleName [string range $nonpnpModuleName 5 end]
-    puts $logFile "\t$nonpnpModuleName: $anyModuleNode"
-}
+    anyModuleNode $allModNodeList {
+	set nonpnpModuleName [string range $nonpnpModuleName 5 end]
+	puts $logFile "\t$nonpnpModuleName: $anyModuleNode"
+    }
 Separator
 # Add avalonIPCap* to the sopc dictionary
 foreach anyModuleNode $allModNodeList {
@@ -900,31 +907,31 @@ Separator
 set num0 0;		# initialize word0 counter
 foreach word0 $sopc {
     if {[expr $num0 % 2] == 0} {
-        puts $logFile "$word0"
-        #puts $logFile "[binary encode hex $word0]"
+	puts $logFile "$word0"
+	#puts $logFile "[binary encode hex $word0]"
     } else {
-        set num1 0
-        foreach word1 $word0 {
-            if {[expr $num1 % 2] == 0} {
-                puts $logFile "\t$word1"
-                #puts $logFile "\t[binary encode hex $word1]"
-            } else {
-                set num2 0
-                foreach word2 $word1 {
-                    if {[expr $num2 % 2] == 0} {
-                        puts $logFile "\t\t$word2"
-                        #puts $logFile "\t\t[binary encode hex $word2]"
-                    } else {
-                        set num3 0
-                        foreach word3 $word2 {
-                            if {[expr $num3 % 2] == 0} {
-                                puts $logFile "\t\t\t$word3"
-                                #puts $logFile "\t\t\t[binary encode\
-                                                   hex $word3]"
+	set num1 0
+	foreach word1 $word0 {
+	    if {[expr $num1 % 2] == 0} {
+		puts $logFile "\t$word1"
+		#puts $logFile "\t[binary encode hex $word1]"
+	    } else {
+		set num2 0
+		foreach word2 $word1 {
+		    if {[expr $num2 % 2] == 0} {
+			puts $logFile "\t\t$word2"
+			#puts $logFile "\t\t[binary encode hex $word2]"
+		    } else {
+			set num3 0
+			foreach word3 $word2 {
+			    if {[expr $num3 % 2] == 0} {
+				puts $logFile "\t\t\t$word3"
+				#puts $logFile "\t\t\t[binary encode\
+				    hex $word3]"
                             } else {
                                 puts $logFile "\t\t\t\t$word3"
                                 #puts $logFile "\t\t\t\t[binary encode\
-                                                   hex $word3]"
+							     hex $word3]"
                             }
                             incr num3
                         }
@@ -960,11 +967,11 @@ foreach word0 $sopc {
 	# if the key is "deviceIDCap"
 	if {[string match "deviceIDCap" $key0]} {
 	    OutputDeviceID $key0
-	# elseif the key is "avalonIPCap*"
+	    # elseif the key is "avalonIPCap*"
 	} elseif {[string match "avalonIPCap*" $key0]} {
 	    OutputIPCap $key0 
 	}
-    # else a value or nested key
+	# else a value or nested key
     } else {
 	set num1 0
 	foreach word1 $word0 {
@@ -974,7 +981,7 @@ foreach word0 $sopc {
 		# if the key is "avalonMasterIntf*"
 		if {[string match "avalonMasterIntf*" $word1]} {
 		    OutputMasterIntf $key0 $key1
-		# elseif the key is "avalonIntRcvrIntf*"
+		    # elseif the key is "avalonIntRcvrIntf*"
 		} elseif {[string match "avalonIntRcvrIntf*" $word1]} {
 		    OutputIntRcvrIntf $key0 $key1
 		}
@@ -987,7 +994,7 @@ foreach word0 $sopc {
 			# if the key is "avalonSlaveInt*"
 			if {[string match "avalonSlaveIntf*" $word2]} {
 			    OutputSlaveIntf $key0 $key1 $key2
-			# if the key is "avalonIntSendIntf*"
+			    # if the key is "avalonIntSendIntf*"
 			} elseif {[string match "avalonIntSendIntf*" $word2]} {
 			    OutputIntSendIntf $key0 $key1 $key2
 			}
