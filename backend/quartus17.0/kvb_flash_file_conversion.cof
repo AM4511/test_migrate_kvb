@@ -2,7 +2,7 @@
 <cof>
 	<eprom_name>EPCQ128</eprom_name>
 	<flash_loader_device>EP4CGX22</flash_loader_device>
-	<output_filename>firmwares/kvb_v2_0_build1504296998.jic</output_filename>
+	<output_filename>firmwares/kvb_v2_0_build1504298990.jic</output_filename>
 	<n_pages>1</n_pages>
 	<width>1</width>
 	<mode>7</mode>
@@ -10,7 +10,7 @@
 		<user_name>Page_0</user_name>
 		<page_flags>1</page_flags>
 		<bit0>
-			<sof_filename>D:/git/bitbucket/cpuskl/kvb/quartus/quartus17.0/kvb_v2_0/firmwares/kvb_v2_0_build1504296998.sof</sof_filename> 
+			<sof_filename>D:/git/bitbucket/cpuskl/kvb/quartus/quartus17.0/kvb_v2_0/firmwares/kvb_v2_0_build1504298990.sof</sof_filename> 
 		</bit0>
 	</sof_data>
 	<version>10</version>
