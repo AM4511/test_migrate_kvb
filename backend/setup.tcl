@@ -24,8 +24,8 @@ puts "Setting the KVB project environment variable"
 # Environment variable
 ########################################################################################
 set FPGA_NAME        "kvb"
-set REVMAJOR         "1"
-set REVMINOR         "1"
+set REVMAJOR         "2"
+set REVMINOR         "0"
 set REVISION         "v${REVMAJOR}_${REVMINOR}"
 set QUARTUS_VERSION   "quartus17.0"
 set QSYS_SYSTEM_NAME "${FPGA_NAME}_system"

@@ -168,27 +168,14 @@ add_instance pio_0 altera_avalon_pio 17.0
 set_instance_parameter_value pio_0 {bitClearingEdgeCapReg} {0}
 set_instance_parameter_value pio_0 {bitModifyingOutReg} {1}
 set_instance_parameter_value pio_0 {captureEdge} {0}
-set_instance_parameter_value pio_0 {direction} {Input}
+set_instance_parameter_value pio_0 {direction} {Bidir}
 set_instance_parameter_value pio_0 {edgeType} {RISING}
 set_instance_parameter_value pio_0 {generateIRQ} {0}
 set_instance_parameter_value pio_0 {irqType} {LEVEL}
 set_instance_parameter_value pio_0 {resetValue} {0.0}
 set_instance_parameter_value pio_0 {simDoTestBenchWiring} {0}
 set_instance_parameter_value pio_0 {simDrivenValue} {0.0}
-set_instance_parameter_value pio_0 {width} {32}
-
-add_instance pio_1 altera_avalon_pio 17.0
-set_instance_parameter_value pio_1 {bitClearingEdgeCapReg} {0}
-set_instance_parameter_value pio_1 {bitModifyingOutReg} {0}
-set_instance_parameter_value pio_1 {captureEdge} {0}
-set_instance_parameter_value pio_1 {direction} {Output}
-set_instance_parameter_value pio_1 {edgeType} {RISING}
-set_instance_parameter_value pio_1 {generateIRQ} {0}
-set_instance_parameter_value pio_1 {irqType} {LEVEL}
-set_instance_parameter_value pio_1 {resetValue} {0.0}
-set_instance_parameter_value pio_1 {simDoTestBenchWiring} {0}
-set_instance_parameter_value pio_1 {simDrivenValue} {0.0}
-set_instance_parameter_value pio_1 {width} {32}
+set_instance_parameter_value pio_0 {width} {8}
 
 add_instance qspi_mram_0 qspi_mram 1.0
 
@@ -226,10 +213,8 @@ add_interface pcie_hard_ip_0_test_out conduit end
 set_interface_property pcie_hard_ip_0_test_out EXPORT_OF pcie_hard_ip_0.test_out
 add_interface pcie_hard_ip_0_tx_out conduit end
 set_interface_property pcie_hard_ip_0_tx_out EXPORT_OF pcie_hard_ip_0.tx_out
-add_interface pio_0_in conduit end
-set_interface_property pio_0_in EXPORT_OF pio_0.external_connection
-add_interface pio_1_out conduit end
-set_interface_property pio_1_out EXPORT_OF pio_1.external_connection
+add_interface pio_0 conduit end
+set_interface_property pio_0 EXPORT_OF pio_0.external_connection
 add_interface qspi_mram_0 conduit end
 set_interface_property qspi_mram_0 EXPORT_OF qspi_mram_0.conduit_end
 add_interface reset reset sink
@@ -243,6 +228,8 @@ add_connection clk_50.clk mm_clock_crossing_bridge_0.m0_clk
 add_connection clk_50.clk pcie_hard_ip_0.cal_blk_clk
 
 add_connection clk_50.clk pcie_hard_ip_0.reconfig_gxbclk
+
+add_connection clk_50.clk qspi_mram_0.clock
 
 add_connection clk_50.clk_reset dead_rom.reset1
 
@@ -278,11 +265,6 @@ set_connection_parameter_value pcie_hard_ip_0.bar0/pio_0.s1 arbitrationPriority 
 set_connection_parameter_value pcie_hard_ip_0.bar0/pio_0.s1 baseAddress {0x00020000}
 set_connection_parameter_value pcie_hard_ip_0.bar0/pio_0.s1 defaultConnection {0}
 
-add_connection pcie_hard_ip_0.bar0 pio_1.s1
-set_connection_parameter_value pcie_hard_ip_0.bar0/pio_1.s1 arbitrationPriority {1}
-set_connection_parameter_value pcie_hard_ip_0.bar0/pio_1.s1 baseAddress {0x00020020}
-set_connection_parameter_value pcie_hard_ip_0.bar0/pio_1.s1 defaultConnection {0}
-
 add_connection pcie_hard_ip_0.bar0 vme_intf_0.avalon_slave_0
 set_connection_parameter_value pcie_hard_ip_0.bar0/vme_intf_0.avalon_slave_0 arbitrationPriority {1}
 set_connection_parameter_value pcie_hard_ip_0.bar0/vme_intf_0.avalon_slave_0 baseAddress {0x04000000}
@@ -298,10 +280,6 @@ add_connection pcie_hard_ip_0.pcie_core_clk mm_clock_crossing_bridge_0.s0_clk
 
 add_connection pcie_hard_ip_0.pcie_core_clk pio_0.clk
 
-add_connection pcie_hard_ip_0.pcie_core_clk pio_1.clk
-
-add_connection pcie_hard_ip_0.pcie_core_clk qspi_mram_0.clock
-
 add_connection pcie_hard_ip_0.pcie_core_clk vme_intf_0.clock
 
 add_connection pcie_hard_ip_0.pcie_core_reset PnPROM_0.reset
@@ -313,8 +291,6 @@ add_connection pcie_hard_ip_0.pcie_core_reset mm_clock_crossing_bridge_0.m0_rese
 add_connection pcie_hard_ip_0.pcie_core_reset mm_clock_crossing_bridge_0.s0_reset
 
 add_connection pcie_hard_ip_0.pcie_core_reset pio_0.reset
-
-add_connection pcie_hard_ip_0.pcie_core_reset pio_1.reset
 
 add_connection pcie_hard_ip_0.pcie_core_reset vme_intf_0.reset
 

@@ -63,6 +63,7 @@
 module cpuskl_kvb_top (
 			 input 	       clkin_125m_p, 
 			 input 	       voltage_alert, 
+			 input 	       power_failure_n, 
 
 			 // PCIe
 			 input 	       sys_rst_n, // platform_rst# (reset from PCIe bus and pwr good)
@@ -71,7 +72,7 @@ module cpuskl_kvb_top (
 			 output        tx_out0, // PCIe output
 
 			 // VME Interface Signals
-			 inout [31:0]  vme_db, // 32-bit data bus
+			 inout  [31:0] vme_db, // 32-bit data bus
 			 output [31:1] vme_a, // 32-bit address bus
 			 output [5:0]  vme_am, // address modifier
 			 output        vme_lword_n, // long word
@@ -86,9 +87,11 @@ module cpuskl_kvb_top (
 			 input [7:1]   vme_irq_n, // interrupt requests
 			 output        vme_buffer_oe, // VME buffer output enable
 
-			 output [9:0]  prog_tp,
-                         input [3:0]   gpio, //[AM]
-                         output [3:0]  cam_trigger,//[AM]
+			 //output [9:0]  prog_tp,
+                         inout  [7:0]  gpio,                // 
+			 inout  [6:0]  cpcis_pcie_clken_n,  // PCIe board present inputs - 16KHz sync clk outputs
+			 output [6:0]  pch_clk_req_n,       // PCIe clock enable sent to the PCH 
+                         output [3:0]  cam_trigger,         // Nexis Triggers
                          output [2:0]  prog_led,
 
 			 // UART0 Interface
@@ -127,13 +130,15 @@ module cpuskl_kvb_top (
    wire 			       clk50;
    wire 			       clk125;
    wire 			       sync_clk;
+   wire	[6:0]                          sync_clks;
+   reg [6:0] 			       cpcis_prsnt;
+   
    wire 			       pll_lock;
    wire [31:0] 			       pio_out;
    wire 			       pipe_mode;
 
    wire 			       ser4_rts;
    reg 				       link_active;
-   wire [5:0] 			       sync_clks;
    reg 				       sys_rst_n1;
    reg 				       sys_rst_n2;
    reg [4:0] 			       dl_ltssm_int1;
@@ -223,7 +228,8 @@ following bits are defined:
 	 dl_ltssm_int2 <= 0;
       end
       else begin
-	 sys_rst_n1 <= sys_rst_n;
+	 //sys_rst_n1 <= sys_rst_n;
+	 sys_rst_n1 <= 1'b1;
 	 sys_rst_n2 <= sys_rst_n1;
 	 dl_ltssm_int1 <= dl_ltssm_int;
 	 dl_ltssm_int2 <= dl_ltssm_int1;
@@ -263,7 +269,6 @@ following bits are defined:
       end
    end
 
-   //assign sync_clks[5:0] = {6{sync_clk}};
 
    altgx_reconfig	altgx_reconfig_inst (
 					     .reconfig_clk ( clk50 ),
@@ -326,8 +331,7 @@ following bits are defined:
 	     /////////////////////////////////////////////////////////////
 	     // I/Os
 	     /////////////////////////////////////////////////////////////
-	     .pio_0_in_export                                   ({28'b0000000000000000000000000000, gpio[3:0]}),
-	     .pio_1_out_export                                  ({22'b0000000000000000000000, prog_tp[9:0]}),
+	     .pio_0_export                                      (gpio),
 
    
 	     /////////////////////////////////////////////////////////////
@@ -350,7 +354,6 @@ following bits are defined:
 	     .vme_intf_0_vme_iackout_n                          (vme_iackout_n),
 	     .vme_intf_0_vme_iack_n                             (vme_iack_n),
 	     .vme_intf_0_vme_dtack_n                            (vme_dtack_n),	     
-	     .vme_intf_0_vme_sysrst_n                           (),
 	     .vme_intf_0_vmd_ds1_n                              (vme_ds1_n),
 	     .vme_intf_0_vme_ds0_n                              (vme_ds0_n),
 	     .vme_intf_0_vme_write_n                            (vme_write_n ),
@@ -382,6 +385,38 @@ following bits are defined:
    assign ser_rx[1] =  ser2_rx;
    assign ser_rx[2] =  ser3_rx;
    assign ser_rx[3] =  ser4_rx;
- 
 
+   
+   ////////////////////////////////////////////////////////////////////
+   // cpcis_pcie_clken_n[6:0]
+   //
+   // INPUT: latched on the PCI reset
+   // OUTPUT: drive sync_clk when not in PCI reset
+   //
+   ////////////////////////////////////////////////////////////////////
+   always @ (sys_rst_n) begin 
+      if (sys_rst_n == 0) begin
+	 cpcis_prsnt[6:0] <= ~cpcis_pcie_clken_n[6:0];  // boards present
+      end
+   end
+   
+   assign sync_clks[6:0] = {7{sync_clk}};
+   assign cpcis_pcie_clken_n[6:0] = ( sys_rst_n_delayed  == 1'b1) ? cpcis_prsnt[6:0] & sync_clks[6:0] : 6'hz ;
+
+   
+   ////////////////////////////////////////////////////////////////////
+   // pch_clk_req_n[6:0]
+   //
+   // OUTPUT (Opendrain): Request PCIe Clock when associated PCIE  
+   //                     board detected 
+   // 
+   ////////////////////////////////////////////////////////////////////
+   assign pch_clk_req_n[0] = (cpcis_prsnt[0]) ? 1'b0 : 1'bz;
+   assign pch_clk_req_n[1] = (cpcis_prsnt[1]) ? 1'b0 : 1'bz;
+   assign pch_clk_req_n[2] = (cpcis_prsnt[2]) ? 1'b0 : 1'bz;
+   assign pch_clk_req_n[3] = (cpcis_prsnt[3]) ? 1'b0 : 1'bz;
+   assign pch_clk_req_n[4] = (cpcis_prsnt[4]) ? 1'b0 : 1'bz;
+   assign pch_clk_req_n[5] = (cpcis_prsnt[5]) ? 1'b0 : 1'bz;
+   assign pch_clk_req_n[6] = (cpcis_prsnt[6]) ? 1'b0 : 1'bz;
+   
 endmodule

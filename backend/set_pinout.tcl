@@ -219,24 +219,68 @@ set_location_assignment PIN_J18 -to vme_irq_n[4]
 set_location_assignment PIN_K17 -to vme_irq_n[7]
 set_location_assignment PIN_M16 -to vme_irq_n[1]
 
-####################################################################################
-# Pin Location Assignment: GPIO interface
-####################################################################################
-set_location_assignment PIN_N5 -to prog_tp[0]
-set_location_assignment PIN_N6 -to prog_tp[1]
-set_location_assignment PIN_M7 -to prog_tp[2]
-set_location_assignment PIN_N7 -to prog_tp[3]
-set_location_assignment PIN_P6 -to prog_tp[4]
-set_location_assignment PIN_R7 -to prog_tp[5]
-set_location_assignment PIN_T6 -to prog_tp[6]
-set_location_assignment PIN_T7 -to prog_tp[7]
-set_location_assignment PIN_V8 -to prog_tp[8]
-set_location_assignment PIN_R8 -to prog_tp[9]
 
+####################################################################################
+# VME FPGA pin	Current usage	New usage                Comment
+####################################################################################
+# PIN_C14	User input 2	User input 2 -> I/O	
+# PIN_F15	User input 1	User input 1 -> I/O	
+# PIN_D14	User input 3	User input 3 -> I/O	
+# PIN_E15	User input 0	User input 0 -> I/O	
+# PIN_N7	User output 3	cpcis_pcie_clken_n4	
+# PIN_M7	User output 2	cpcis_pcie_clken_n3	
+# PIN_P6	User output 4	pcie_cke_n5	
+# PIN_T6	User output 6	pcie_cke_n2	
+# PIN_T7	User output 7	pcie_cke_n1	
+# PIN_R7	User output 5	cpcis_pcie_clken_n5	
+# PIN_N5	User output 0	pcie_cke_n3	
+# PIN_N6	User output 1	pcie_cke_n4	
+# PIN_V8	User output 8	cpcis_pcie_clken_n0	
+# PIN_R8	User output 9	cpcis_pcie_clken_n6	
+# PIN_R6	Unused	        pcie_cke_n6	
+# PIN_V5	Unused	        pcie_cke_n0	
+# PIN_R11	Unused	        cpcis_pcie_clken_n2	
+# PIN_T11	Unused	        cpcis_pcie_clken_n1	
+# PIN_E6	Unused	        Unused -> I/O ?	
+# PIN_C6	Unused	        Unused -> I/O ?	
+# PIN_A8	Unused	        Unused -> I/O ?	
+# PIN_A16	Unused	        Unused -> I/O ?	
+# PIN_A12	Unused	        Unused	                 Input direction only
+# PIN_B12	Unused      	Unused                   Input direction only
+# PIN_G9	Unused	        power_failure_n          Input direction only
+
+#############################################################################
+# PCIe Clock enable
+#############################################################################
+set_location_assignment PIN_V8  -to cpcis_pcie_clken_n[0]
+set_location_assignment PIN_T11 -to cpcis_pcie_clken_n[1]
+set_location_assignment PIN_R11 -to cpcis_pcie_clken_n[2]
+set_location_assignment PIN_M7  -to cpcis_pcie_clken_n[3]
+set_location_assignment PIN_N7  -to cpcis_pcie_clken_n[4]
+set_location_assignment PIN_R7  -to cpcis_pcie_clken_n[5]
+set_location_assignment PIN_R8  -to cpcis_pcie_clken_n[6]
+
+# Pcie clock enable
+set_location_assignment PIN_V5  -to pch_clk_req_n[0]
+set_location_assignment PIN_T7  -to pch_clk_req_n[1]
+set_location_assignment PIN_T6  -to pch_clk_req_n[2]
+set_location_assignment PIN_N5  -to pch_clk_req_n[3]
+set_location_assignment PIN_N6  -to pch_clk_req_n[4]
+set_location_assignment PIN_P6  -to pch_clk_req_n[5]
+set_location_assignment PIN_R6  -to pch_clk_req_n[6]
+
+
+#############################################################################
+# GPIO
+#############################################################################
 set_location_assignment PIN_E15 -to gpio[0]
-set_location_assignment PIN_C14 -to gpio[2]
 set_location_assignment PIN_F15 -to gpio[1]
+set_location_assignment PIN_C14 -to gpio[2]
 set_location_assignment PIN_D14 -to gpio[3]
+set_location_assignment PIN_A8  -to gpio[4]
+set_location_assignment PIN_A16 -to gpio[5]
+set_location_assignment PIN_C6  -to gpio[6]
+set_location_assignment PIN_E6  -to gpio[7]
 
 ####################################################################################
 # Pin Location Assignment: User programmable LED interface
@@ -318,5 +362,6 @@ set_instance_assignment -name WEAK_PULL_UP_RESISTOR ON -to lpc_ad
 # Pin Location Assignment: Misc Pins interface
 ####################################################################################
 set_location_assignment PIN_G10 -to clkin_125m_p
-set_location_assignment PIN_D9 -to voltage_alert
+set_location_assignment PIN_D9  -to voltage_alert
 set_location_assignment PIN_D6 -to vme_buffer_oe
+set_location_assignment PIN_G9  -to power_failure_n
