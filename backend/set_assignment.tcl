@@ -35,7 +35,7 @@ set_global_assignment -name ECO_REGENERATE_REPORT ON
 set_global_assignment -name PHYSICAL_SYNTHESIS_COMBO_LOGIC ON
 set_global_assignment -name PHYSICAL_SYNTHESIS_REGISTER_RETIMING ON
 set_global_assignment -name PHYSICAL_SYNTHESIS_REGISTER_DUPLICATION ON
-set_global_assignment -name SEED 5
+set_global_assignment -name SEED 2
 set_global_assignment -name ENABLE_SIGNALTAP OFF
 set_global_assignment -name TIMEQUEST_MULTICORNER_ANALYSIS ON
 set_global_assignment -name SMART_RECOMPILE OFF
@@ -96,4 +96,4 @@ set_global_assignment -name GENERATE_JBC_FILE ON
 # Script to run during the flow
 set_global_assignment -name PRE_FLOW_SCRIPT_FILE quartus_sh:${PRE_FLOW_SCRIPT_FILE}
 # set_global_assignment -name POST_MODULE_SCRIPT_FILE quartus_sh:next.tcl
-# set_global_assignment -name POST_FLOW_SCRIPT_FILE quartus_sh:post_flow.tcl
+set_global_assignment -name POST_FLOW_SCRIPT_FILE quartus_sh:${POST_FLOW_SCRIPT_FILE}

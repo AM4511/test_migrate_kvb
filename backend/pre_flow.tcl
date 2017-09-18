@@ -22,9 +22,8 @@ source [file join ${MYSELF_PATH} "setup.tcl"]
 ###################################################################################
 # Load the PnP_ROM package compiler
 ###################################################################################
-set SCRIPT_FILE [file join ${MYSELF_PATH} "PnP_ROM_Compiler.tcl"] 
+set SCRIPT_FILE [file join ${MYSELF_PATH} "../ipcores/${QUARTUS_VERSION}/kns/PnP_ROM/tcl/PnP_ROM_Compiler.tcl"]
 set SOPCINFO_FILE [file join ${WORK_PATH} ${QSYS_SYSTEM_NAME}.sopcinfo]
 
 source ${SCRIPT_FILE} 
-
 

@@ -24,24 +24,30 @@ puts "Setting the KVB project environment variable"
 # Environment variable
 ########################################################################################
 set FPGA_NAME        "kvb"
-set REVMAJOR         "2"
-set REVMINOR         "0"
+set REVMAJOR         "2"                            ; # must be < 655
+set REVMINOR         "1"                            ; # must be < 100
 set REVISION         "v${REVMAJOR}_${REVMINOR}"
-set QUARTUS_VERSION   "quartus17.0"
+set QUARTUS_VERSION  "quartus17.0"
 set QSYS_SYSTEM_NAME "${FPGA_NAME}_system"
 set PROJECT_NAME     "${FPGA_NAME}_${REVISION}"
+set BOARD_NAME       "CPUSKL"                       ; # no spaces
+set PART_NUMBER      "08891-4010-000-00"            ; # no spaces
+set GW_VERSION       [expr {${REVMAJOR} * 100 + ${REVMINOR}}]
+set QSYS_NAME        "kvb_system"
 
 
 ########################################################################################
 # Directory structure
 ########################################################################################
 set QUARTUS_HOME      "$quartus(quartus_rootpath)"
+set ARCHIVE_PATH      "${ROOT_PATH}/archive"
 set HDL_PATH          "${ROOT_PATH}/design"
 set BACKEND_PATH      "${ROOT_PATH}/backend"
 set IPCORE_LIB_PATH   "${ROOT_PATH}/ipcores/${QUARTUS_VERSION}"
 set TCL_PATH          "${ROOT_PATH}/util/tcl"
 set WORK_PATH         "${ROOT_PATH}/quartus/${QUARTUS_VERSION}/${PROJECT_NAME}"
 set FIRMWARE_PATH     "${WORK_PATH}/firmwares"
+set QSYS_PATH         "${WORK_PATH}/${QSYS_NAME}"
 set TDOM_PATH         "$BACKEND_PATH/tdom/win64/tdom0.8.3"
 
 
@@ -53,5 +59,19 @@ if {[lsearch $auto_path ${TDOM_PATH}] < 0} {
     puts "Adding ${TDOM_PATH} to \$auto_path variable"
 } else {
     puts "${TDOM_PATH} already defined in \$auto_path variable"
+}
+
+
+###################################################################################
+# Get Git commit (assume Git is in system path)
+###################################################################################
+set git_get_commit_cmd "git -C ${ROOT_PATH} rev-list --max-count=1 HEAD"
+puts "SYSTEM CALL: exec $git_get_commit_cmd"
+if {[catch {exec {*}${git_get_commit_cmd}} GIT_COMMIT_LONG] == 0} {
+   set GIT_COMMIT [string range $GIT_COMMIT_LONG 0 6]
+   puts "GIT_COMMIT =  ${GIT_COMMIT}"
+} else {
+   puts "GIT_COMMIT =  <error: ${GIT_COMMIT_LONG}>"
+   set GIT_COMMIT "0"
 }
 

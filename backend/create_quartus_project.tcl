@@ -33,6 +33,7 @@ puts "BUILD_ID =  $BUILDID (${BUILD_TIME})"
 
 set REVISION_NAME    "${PROJECT_NAME}_build${BUILDID}"
 set PRE_FLOW_SCRIPT_FILE "${BACKEND_PATH}/pre_flow.tcl"
+set POST_FLOW_SCRIPT_FILE "${BACKEND_PATH}/post_flow.tcl"
 
 
 ########################################################################################

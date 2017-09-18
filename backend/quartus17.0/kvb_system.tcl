@@ -1,7 +1,7 @@
 # qsys scripting (.tcl) file for kvb_system
 package require -exact qsys 16.0
 
-create_system {kvb_system}
+create_system ${QSYS_NAME}
 
 set_project_property DEVICE_FAMILY {Cyclone IV GX}
 set_project_property DEVICE {EP4CGX22CF19C8}
@@ -9,11 +9,20 @@ set_project_property HIDE_FROM_IP_CATALOG {false}
 
 # Instances and instance parameters
 # (disabled instances are intentionally culled)
-add_instance PnPROM_0 PnPROM 1.1
+add_instance PnPROM_0 PnPROM 1.2
 set_instance_parameter_value PnPROM_0 {INIT_FILE} {./PnP_ROM.hex}
-set_instance_parameter_value PnPROM_0 {dev_name} {BoardName}
-set_instance_parameter_value PnPROM_0 {gw_ver} {202}
-set_instance_parameter_value PnPROM_0 {part_num} {08895-4xxx-000-00}
+set_instance_parameter_value PnPROM_0 {dev_name} ${BOARD_NAME}
+set_instance_parameter_value PnPROM_0 {gw_ver} ${GW_VERSION}
+set_instance_parameter_value PnPROM_0 {part_num} ${PART_NUMBER}
+set_instance_parameter_value PnPROM_0 {git_commit} ${GIT_COMMIT}
+
+add_instance a_16550_uart_0 16550_uart 1.0
+
+add_instance a_16550_uart_1 16550_uart 1.0
+
+add_instance a_16550_uart_2 16550_uart 1.0
+
+add_instance a_16550_uart_3 16550_uart 1.0
 
 add_instance clk_50 clock_source 17.0
 set_instance_parameter_value clk_50 {clockFrequency} {50000000.0}
@@ -45,19 +54,7 @@ set_instance_parameter_value dead_rom {useNonDefaultInitFile} {1}
 set_instance_parameter_value dead_rom {useShallowMemBlocks} {0}
 set_instance_parameter_value dead_rom {writable} {0}
 
-add_instance i2c_master_0 i2c_master 1.0
-
-add_instance mm_clock_crossing_bridge_0 altera_avalon_mm_clock_crossing_bridge 17.0
-set_instance_parameter_value mm_clock_crossing_bridge_0 {ADDRESS_UNITS} {SYMBOLS}
-set_instance_parameter_value mm_clock_crossing_bridge_0 {ADDRESS_WIDTH} {18}
-set_instance_parameter_value mm_clock_crossing_bridge_0 {COMMAND_FIFO_DEPTH} {4}
-set_instance_parameter_value mm_clock_crossing_bridge_0 {DATA_WIDTH} {8}
-set_instance_parameter_value mm_clock_crossing_bridge_0 {MASTER_SYNC_DEPTH} {2}
-set_instance_parameter_value mm_clock_crossing_bridge_0 {MAX_BURST_SIZE} {1}
-set_instance_parameter_value mm_clock_crossing_bridge_0 {RESPONSE_FIFO_DEPTH} {4}
-set_instance_parameter_value mm_clock_crossing_bridge_0 {SLAVE_SYNC_DEPTH} {2}
-set_instance_parameter_value mm_clock_crossing_bridge_0 {SYMBOL_WIDTH} {8}
-set_instance_parameter_value mm_clock_crossing_bridge_0 {USE_AUTO_ADDRESS_WIDTH} {0}
+add_instance i2c_master_0 i2c_master 2.0
 
 add_instance pcie_hard_ip_0 altera_pcie_hard_ip 17.0
 set_instance_parameter_value pcie_hard_ip_0 {AST_LITE} {0}
@@ -77,7 +74,7 @@ set_instance_parameter_value pcie_hard_ip_0 {CB_TXS_ADDRESS_WIDTH} {7}
 set_instance_parameter_value pcie_hard_ip_0 {CG_AVALON_S_ADDR_WIDTH} {20}
 set_instance_parameter_value pcie_hard_ip_0 {CG_COMMON_CLOCK_MODE} {1}
 set_instance_parameter_value pcie_hard_ip_0 {CG_ENABLE_A2P_INTERRUPT} {0}
-set_instance_parameter_value pcie_hard_ip_0 {CG_IMPL_CRA_AV_SLAVE_PORT} {0}
+set_instance_parameter_value pcie_hard_ip_0 {CG_IMPL_CRA_AV_SLAVE_PORT} {1}
 set_instance_parameter_value pcie_hard_ip_0 {CG_IRQ_BIT_ENA} {65535}
 set_instance_parameter_value pcie_hard_ip_0 {CG_NO_CPL_REORDERING} {0}
 set_instance_parameter_value pcie_hard_ip_0 {CG_RXM_IRQ_NUM} {16}
@@ -183,6 +180,14 @@ add_instance vme_intf_0 vme_intf 1.0
 set_instance_parameter_value vme_intf_0 {BIG_ENDIAN} {1}
 
 # exported interfaces
+add_interface a_16550_uart_0 conduit end
+set_interface_property a_16550_uart_0 EXPORT_OF a_16550_uart_0.conduit_end
+add_interface a_16550_uart_1 conduit end
+set_interface_property a_16550_uart_1 EXPORT_OF a_16550_uart_1.conduit_end
+add_interface a_16550_uart_2 conduit end
+set_interface_property a_16550_uart_2 EXPORT_OF a_16550_uart_2.conduit_end
+add_interface a_16550_uart_3 conduit end
+set_interface_property a_16550_uart_3 EXPORT_OF a_16550_uart_3.conduit_end
 add_interface clk_50 clock sink
 set_interface_property clk_50 EXPORT_OF clk_50.clk_in
 add_interface i2c_master_0 conduit end
@@ -201,6 +206,8 @@ add_interface pcie_hard_ip_0_reconfig_busy conduit end
 set_interface_property pcie_hard_ip_0_reconfig_busy EXPORT_OF pcie_hard_ip_0.reconfig_busy
 add_interface pcie_hard_ip_0_reconfig_fromgxb_0 conduit end
 set_interface_property pcie_hard_ip_0_reconfig_fromgxb_0 EXPORT_OF pcie_hard_ip_0.reconfig_fromgxb_0
+add_interface pcie_hard_ip_0_reconfig_gxbclk clock sink
+set_interface_property pcie_hard_ip_0_reconfig_gxbclk EXPORT_OF pcie_hard_ip_0.reconfig_gxbclk
 add_interface pcie_hard_ip_0_reconfig_togxb conduit end
 set_interface_property pcie_hard_ip_0_reconfig_togxb EXPORT_OF pcie_hard_ip_0.reconfig_togxb
 add_interface pcie_hard_ip_0_refclk conduit end
@@ -223,11 +230,7 @@ add_interface vme_intf_0 conduit end
 set_interface_property vme_intf_0 EXPORT_OF vme_intf_0.vme_intf
 
 # connections and connection parameters
-add_connection clk_50.clk mm_clock_crossing_bridge_0.m0_clk
-
 add_connection clk_50.clk pcie_hard_ip_0.cal_blk_clk
-
-add_connection clk_50.clk pcie_hard_ip_0.reconfig_gxbclk
 
 add_connection clk_50.clk qspi_mram_0.clock
 
@@ -235,15 +238,30 @@ add_connection clk_50.clk_reset dead_rom.reset1
 
 add_connection clk_50.clk_reset qspi_mram_0.reset
 
-add_connection mm_clock_crossing_bridge_0.m0 qspi_mram_0.avalon_slave_0
-set_connection_parameter_value mm_clock_crossing_bridge_0.m0/qspi_mram_0.avalon_slave_0 arbitrationPriority {1}
-set_connection_parameter_value mm_clock_crossing_bridge_0.m0/qspi_mram_0.avalon_slave_0 baseAddress {0x0000}
-set_connection_parameter_value mm_clock_crossing_bridge_0.m0/qspi_mram_0.avalon_slave_0 defaultConnection {0}
-
 add_connection pcie_hard_ip_0.bar0 PnPROM_0.avalon_slave_0
 set_connection_parameter_value pcie_hard_ip_0.bar0/PnPROM_0.avalon_slave_0 arbitrationPriority {1}
 set_connection_parameter_value pcie_hard_ip_0.bar0/PnPROM_0.avalon_slave_0 baseAddress {0x0000}
 set_connection_parameter_value pcie_hard_ip_0.bar0/PnPROM_0.avalon_slave_0 defaultConnection {0}
+
+add_connection pcie_hard_ip_0.bar0 a_16550_uart_0.avalon_slave_0
+set_connection_parameter_value pcie_hard_ip_0.bar0/a_16550_uart_0.avalon_slave_0 arbitrationPriority {1}
+set_connection_parameter_value pcie_hard_ip_0.bar0/a_16550_uart_0.avalon_slave_0 baseAddress {0x00020040}
+set_connection_parameter_value pcie_hard_ip_0.bar0/a_16550_uart_0.avalon_slave_0 defaultConnection {0}
+
+add_connection pcie_hard_ip_0.bar0 a_16550_uart_1.avalon_slave_0
+set_connection_parameter_value pcie_hard_ip_0.bar0/a_16550_uart_1.avalon_slave_0 arbitrationPriority {1}
+set_connection_parameter_value pcie_hard_ip_0.bar0/a_16550_uart_1.avalon_slave_0 baseAddress {0x00020060}
+set_connection_parameter_value pcie_hard_ip_0.bar0/a_16550_uart_1.avalon_slave_0 defaultConnection {0}
+
+add_connection pcie_hard_ip_0.bar0 a_16550_uart_2.avalon_slave_0
+set_connection_parameter_value pcie_hard_ip_0.bar0/a_16550_uart_2.avalon_slave_0 arbitrationPriority {1}
+set_connection_parameter_value pcie_hard_ip_0.bar0/a_16550_uart_2.avalon_slave_0 baseAddress {0x00020080}
+set_connection_parameter_value pcie_hard_ip_0.bar0/a_16550_uart_2.avalon_slave_0 defaultConnection {0}
+
+add_connection pcie_hard_ip_0.bar0 a_16550_uart_3.avalon_slave_0
+set_connection_parameter_value pcie_hard_ip_0.bar0/a_16550_uart_3.avalon_slave_0 arbitrationPriority {1}
+set_connection_parameter_value pcie_hard_ip_0.bar0/a_16550_uart_3.avalon_slave_0 baseAddress {0x000200a0}
+set_connection_parameter_value pcie_hard_ip_0.bar0/a_16550_uart_3.avalon_slave_0 defaultConnection {0}
 
 add_connection pcie_hard_ip_0.bar0 dead_rom.s1
 set_connection_parameter_value pcie_hard_ip_0.bar0/dead_rom.s1 arbitrationPriority {1}
@@ -255,15 +273,20 @@ set_connection_parameter_value pcie_hard_ip_0.bar0/i2c_master_0.avalon_slave_0 a
 set_connection_parameter_value pcie_hard_ip_0.bar0/i2c_master_0.avalon_slave_0 baseAddress {0x000200c0}
 set_connection_parameter_value pcie_hard_ip_0.bar0/i2c_master_0.avalon_slave_0 defaultConnection {0}
 
-add_connection pcie_hard_ip_0.bar0 mm_clock_crossing_bridge_0.s0
-set_connection_parameter_value pcie_hard_ip_0.bar0/mm_clock_crossing_bridge_0.s0 arbitrationPriority {1}
-set_connection_parameter_value pcie_hard_ip_0.bar0/mm_clock_crossing_bridge_0.s0 baseAddress {0x00040000}
-set_connection_parameter_value pcie_hard_ip_0.bar0/mm_clock_crossing_bridge_0.s0 defaultConnection {0}
+add_connection pcie_hard_ip_0.bar0 pcie_hard_ip_0.cra
+set_connection_parameter_value pcie_hard_ip_0.bar0/pcie_hard_ip_0.cra arbitrationPriority {1}
+set_connection_parameter_value pcie_hard_ip_0.bar0/pcie_hard_ip_0.cra baseAddress {0x00010000}
+set_connection_parameter_value pcie_hard_ip_0.bar0/pcie_hard_ip_0.cra defaultConnection {0}
 
 add_connection pcie_hard_ip_0.bar0 pio_0.s1
 set_connection_parameter_value pcie_hard_ip_0.bar0/pio_0.s1 arbitrationPriority {1}
 set_connection_parameter_value pcie_hard_ip_0.bar0/pio_0.s1 baseAddress {0x00020000}
 set_connection_parameter_value pcie_hard_ip_0.bar0/pio_0.s1 defaultConnection {0}
+
+add_connection pcie_hard_ip_0.bar0 qspi_mram_0.avalon_slave_0
+set_connection_parameter_value pcie_hard_ip_0.bar0/qspi_mram_0.avalon_slave_0 arbitrationPriority {1}
+set_connection_parameter_value pcie_hard_ip_0.bar0/qspi_mram_0.avalon_slave_0 baseAddress {0x00040000}
+set_connection_parameter_value pcie_hard_ip_0.bar0/qspi_mram_0.avalon_slave_0 defaultConnection {0}
 
 add_connection pcie_hard_ip_0.bar0 vme_intf_0.avalon_slave_0
 set_connection_parameter_value pcie_hard_ip_0.bar0/vme_intf_0.avalon_slave_0 arbitrationPriority {1}
@@ -272,11 +295,17 @@ set_connection_parameter_value pcie_hard_ip_0.bar0/vme_intf_0.avalon_slave_0 def
 
 add_connection pcie_hard_ip_0.pcie_core_clk PnPROM_0.clock
 
+add_connection pcie_hard_ip_0.pcie_core_clk a_16550_uart_0.clock
+
+add_connection pcie_hard_ip_0.pcie_core_clk a_16550_uart_1.clock
+
+add_connection pcie_hard_ip_0.pcie_core_clk a_16550_uart_2.clock
+
+add_connection pcie_hard_ip_0.pcie_core_clk a_16550_uart_3.clock
+
 add_connection pcie_hard_ip_0.pcie_core_clk dead_rom.clk1
 
 add_connection pcie_hard_ip_0.pcie_core_clk i2c_master_0.clock
-
-add_connection pcie_hard_ip_0.pcie_core_clk mm_clock_crossing_bridge_0.s0_clk
 
 add_connection pcie_hard_ip_0.pcie_core_clk pio_0.clk
 
@@ -284,15 +313,31 @@ add_connection pcie_hard_ip_0.pcie_core_clk vme_intf_0.clock
 
 add_connection pcie_hard_ip_0.pcie_core_reset PnPROM_0.reset
 
+add_connection pcie_hard_ip_0.pcie_core_reset a_16550_uart_0.reset
+
+add_connection pcie_hard_ip_0.pcie_core_reset a_16550_uart_1.reset
+
+add_connection pcie_hard_ip_0.pcie_core_reset a_16550_uart_2.reset
+
+add_connection pcie_hard_ip_0.pcie_core_reset a_16550_uart_3.reset
+
 add_connection pcie_hard_ip_0.pcie_core_reset i2c_master_0.reset
-
-add_connection pcie_hard_ip_0.pcie_core_reset mm_clock_crossing_bridge_0.m0_reset
-
-add_connection pcie_hard_ip_0.pcie_core_reset mm_clock_crossing_bridge_0.s0_reset
 
 add_connection pcie_hard_ip_0.pcie_core_reset pio_0.reset
 
 add_connection pcie_hard_ip_0.pcie_core_reset vme_intf_0.reset
+
+add_connection pcie_hard_ip_0.rxm_irq a_16550_uart_0.interrupt_sender_1
+set_connection_parameter_value pcie_hard_ip_0.rxm_irq/a_16550_uart_0.interrupt_sender_1 irqNumber {2}
+
+add_connection pcie_hard_ip_0.rxm_irq a_16550_uart_1.interrupt_sender_1
+set_connection_parameter_value pcie_hard_ip_0.rxm_irq/a_16550_uart_1.interrupt_sender_1 irqNumber {3}
+
+add_connection pcie_hard_ip_0.rxm_irq a_16550_uart_2.interrupt_sender_1
+set_connection_parameter_value pcie_hard_ip_0.rxm_irq/a_16550_uart_2.interrupt_sender_1 irqNumber {4}
+
+add_connection pcie_hard_ip_0.rxm_irq a_16550_uart_3.interrupt_sender_1
+set_connection_parameter_value pcie_hard_ip_0.rxm_irq/a_16550_uart_3.interrupt_sender_1 irqNumber {5}
 
 add_connection pcie_hard_ip_0.rxm_irq i2c_master_0.interrupt_sender
 set_connection_parameter_value pcie_hard_ip_0.rxm_irq/i2c_master_0.interrupt_sender irqNumber {1}
@@ -301,7 +346,7 @@ add_connection pcie_hard_ip_0.rxm_irq vme_intf_0.interrupt_sender
 set_connection_parameter_value pcie_hard_ip_0.rxm_irq/vme_intf_0.interrupt_sender irqNumber {0}
 
 # interconnect requirements
-set_interconnect_requirement {$system} {qsys_mm.clockCrossingAdapter} {FIFO}
+set_interconnect_requirement {$system} {qsys_mm.clockCrossingAdapter} {HANDSHAKE}
 set_interconnect_requirement {$system} {qsys_mm.enableEccProtection} {FALSE}
 set_interconnect_requirement {$system} {qsys_mm.insertDefaultSlave} {FALSE}
 set_interconnect_requirement {$system} {qsys_mm.maxAdditionalLatency} {4}
@@ -315,4 +360,4 @@ set_interconnect_requirement {mm_interconnect_2|cmd_demux.src0/cmd_mux.sink0} {q
 set_interconnect_requirement {mm_interconnect_2|cmd_mux} {qsys_mm.postTransform.pipelineCount} {0}
 set_interconnect_requirement {mm_interconnect_2|rsp_demux.src0/rsp_mux.sink0} {qsys_mm.postTransform.pipelineCount} {0}
 
-save_system {kvb_system.qsys}
+save_system ${QSYS_NAME}.qsys

@@ -1,8 +1,9 @@
 # Avalon_PnP_ROM_Compiler.tcl
-# 08/14/2015
-# Ryan Ellis
-# 04/22/2016
-# Ken Paist
+#
+# 08/14/2015    Ryan Ellis                  Initial.
+# 04/22/2016    Ken Paist                   Code clean-up.
+# 08/16/2017    Alain Marchand (Matrox)     Fixed for Quartus.
+# 09/13/2017    David Rauth                 Added gitCommit.
 # 
 # Used to generate the PnP ROM image after a .sopcinfo file is output from
 # Qsys. Uses the tDOM parser package to read the XML file into memory. 
@@ -13,8 +14,12 @@
 # Finally, the data is written to a ROM image.
 # 
 # ----------------------------------------------------------------------------
+set myself [info script]
+puts "Running ${myself}"
 
+# Define required package
 package require tdom
+
 
 # VersionMatch
 #     Finds the version number of the file to be parsed, then compares it to 
@@ -70,15 +75,20 @@ proc ExtractDeviceIdentification {pnpModuleNode} {
     set devNameNode [$pnpModuleNode selectNodes {parameter[@name="dev_name"]}]
     set devName [$devNameNode selectNodes value]
     set devName [$devName asText]
-    puts $logFile "\t\tdevname: $devName"
+    puts $logFile "\t\tdevname:    $devName"
     set partNumNode [$pnpModuleNode selectNodes {parameter[@name="part_num"]}]
     set partNum [$partNumNode selectNodes value]
     set partNum [$partNum asText]
-    puts $logFile "\t\tpartNum: $partNum"
+    puts $logFile "\t\tpartNum:    $partNum"
     set gwVerNode [$pnpModuleNode selectNodes {parameter[@name="gw_ver"]}]
     set gwVer [$gwVerNode selectNodes value]
     set gwVer [$gwVer asText]
-    puts $logFile "\t\tgwVer:   $gwVer"
+    puts $logFile "\t\tgwVer:      $gwVer"
+    set gitCommitNode [$pnpModuleNode selectNodes {parameter[@name="git_commit"]}]
+    set gitCommit [$gitCommitNode selectNodes value]
+    set gitCommit [$gitCommit asText]
+    set gitCommitHex [format %x $gitCommit]
+    puts $logFile "\t\tgitCommit:  0x$gitCommitHex"
     set devNameOffset 12
     set partNumOffset [expr $devNameOffset + [string length $devName] + 1]
 #    puts $logFile "\tParameter List: $parameterList"
@@ -92,7 +102,8 @@ proc ExtractDeviceIdentification {pnpModuleNode} {
 			  partNumOffset $partNumOffset \
 	                  devName       $devName \
                           partNum       $partNum \
-                          gwVer         $gwVer]
+                          gwVer         $gwVer \
+                          gitCommit     $gitCommit]
     puts $logFile ">> sopc: \"$sopc\""
 }
 
@@ -415,6 +426,7 @@ proc OutputDeviceID {key0} {
     set devName       [dict get $sopc $key0 devName]
     set partNum       [dict get $sopc $key0 partNum]
     set gwVer         [dict get $sopc $key0 gwVer]
+    set gitCommit     [dict get $sopc $key0 gitCommit]
     set startOffset   [dict get $sopc $key0 startOffset]
     set nextKnsCapOff [dict get $sopc $key0 nextKnsCapOff]
     set devNameOffset [dict get $sopc $key0 devNameOffset]
@@ -431,6 +443,10 @@ proc OutputDeviceID {key0} {
     set hexStr [format "*Dev ID: 0000%04X  @08h" $gwVer]
     puts $logFile $hexStr
     set hexStr [format "0000%04X" $gwVer]
+    GenHex4 $hexStr [set addr [expr $addr + 1]]
+    set hexStr [format "*Dev ID: %08X  @0Ch" $gitCommit]
+    puts $logFile $hexStr
+    set hexStr [format "%08X" $gitCommit]
     GenHex4 $hexStr [set addr [expr $addr + 1]]
     # Convert strings characters to decimal
     binary scan [encoding convertto ascii $devName] c* decStr
@@ -695,6 +711,7 @@ proc OutputIntSendIntf {key0 key1 key2} {
 
 
 proc GenHex4 {hexStr startAddr} {
+	#puts "DEBUG: ${hexStr} ${startAddr}"
     global logFile hexFile
     set memFileStr ":04";				# start code & byte cnt
     set chkSum -4
@@ -704,10 +721,14 @@ proc GenHex4 {hexStr startAddr} {
     # 
     set thisByte xx
     for {set i 0} {$i < 8} {set i [expr {$i + 2}]} {
-	set byteStr [string range $hexStr $i [expr $i + 1]]
-	scan $byteStr %2X thisByte
-	append memFileStr [format "%02X" $thisByte]; # data byte
-	set chkSum [expr $chkSum - $thisByte];	 # checksum calculation
+		set byteStr [string range $hexStr $i [expr $i + 1]]
+	    #puts "DEBUG Byte: $byteStr"
+		#Fix from amarchan@matrox.com
+		# See http://core.tcl.tk/tcl/info/e077937cf04d43d2c43f1bca0cf86fa0b68b6bbb
+		##scan $byteStr %2X thisByte <= Bug in tcl (X upper case not supported in this tcl version)
+		scan $byteStr %2x thisByte
+		append memFileStr [format "%02X" $thisByte]; # data byte
+		set chkSum [expr $chkSum - $thisByte];	     # checksum calculation
     }
     #
     set chkSum [expr $chkSum % 256];	# use only lower byte
@@ -737,7 +758,10 @@ proc GenStrHex4 {hexStr startAddr} {
 	    } else {
 		set byteStr [string range $hexStr $k [expr $k + 1]]
 	    }
-	    scan $byteStr %2X thisByte
+		#Fix from amarchan@matrox.com
+		# See http://core.tcl.tk/tcl/info/e077937cf04d43d2c43f1bca0cf86fa0b68b6bbb
+		##scan $byteStr %2X thisByte <= Bug in tcl (X upper case not supported in this tcl version)
+	    scan $byteStr %2x thisByte
 	    append memFileStr [format "%02X" $thisByte]; # data byte
 	    set chkSum [expr $chkSum - $thisByte];	 # checksum calculation
 	}
@@ -760,7 +784,10 @@ proc Done {} {
     # Close HEX file
     puts  $hexFile ":00000001FF"; # End of File record
     close $hexFile
-    exit
+    puts "Parsing done"
+   
+	#fix amarchan@matrox.com. Can't use exit command from Quartus TCL shell
+	#exit
 }
 
 # Separator
@@ -772,15 +799,28 @@ proc Separator {} {
     puts            $logFile "---------------------------------------"
 }
 
-# ----------------------------------------------------------------------------
 
-# Set Up File I/O
-# cd "R:/Electrical/ATX5 (SMART)/Altera FPGA Evaluation/Qsys Plug-and-Play"
-set inputFile [open $argv "r"]
+
+
+
+
+###################################################################################
+# Main section of this script (Top level)
+###################################################################################
+
+# SOPCINFO_FILE defined by the calling script
+set sopcinfo_file ${SOPCINFO_FILE} 
+
+if { [file exists ${sopcinfo_file}] } {
+
+    puts "Parsing ${sopcinfo_file}"
+    set inputFile [open ${sopcinfo_file} "r"]
+}
+
 set inputString [read $inputFile]
 close $inputFile
 set logFile [open "PnP_ROM_Parse.log" "w"]
-set hexFile [open "./PnP_ROM/PnP_ROM.hex" "w"]
+set hexFile [open "./PnP_ROM.hex" "w"]
 
 # Set Up Parser
 set dom [dom parse $inputString]
@@ -815,13 +855,13 @@ set slave_intSndrOff  [dict create]
 #
 set offset 0;	# zero running structure byte address offset
 set addr 0;		# zero running word address
-set devIdCap 1001;	# Version = 1, K&S Capability ID = 1
+set devIdCap 2001;	# Version = 2, K&S Capability ID = 1
 set ipCap    1002;	# Version = 1, K&S Capability ID = 2
 set masterIF 1001;	# Version = 1, Interface Type = 1
 set slaveIF  1002;	# Version = 1, Interface Type = 2
 set intRcvr  1003;	# Version = 1, Interface Type = 3
 set intSndr  1004;	# Version = 1, Interface Type = 4
-    
+
 Separator
 
 # Create List of Modules Named: "PnP_ROM"
@@ -830,10 +870,10 @@ set PnP_ROM_node_list [$doc selectNodes {module[@kind="PnPROM"]}]
 # Handle List
 puts $logFile "PnP_ROM Module Names"
 foreach pnpModuleName $PnP_ROM_name_list \
-        pnpModuleNode $PnP_ROM_node_list {
-    set pnpModuleName [string range $pnpModuleName 5 end]
-    puts $logFile "\t$pnpModuleName: $pnpModuleNode"
-}
+    pnpModuleNode $PnP_ROM_node_list {
+	set pnpModuleName [string range $pnpModuleName 5 end]
+	puts $logFile "\t$pnpModuleName: $pnpModuleNode"
+    }
 Separator
 # >>> There should be only one PnP Module in the design <<<
 # Add deviceIDCAP to the sopc dictionary (first entry)
@@ -850,10 +890,10 @@ set allModNodeList [$doc selectNodes {module}]
 # Handle List
 puts $logFile "All Module Names"
 foreach nonpnpModuleName $allModNameList \
-        anyModuleNode $allModNodeList {
-    set nonpnpModuleName [string range $nonpnpModuleName 5 end]
-    puts $logFile "\t$nonpnpModuleName: $anyModuleNode"
-}
+    anyModuleNode $allModNodeList {
+	set nonpnpModuleName [string range $nonpnpModuleName 5 end]
+	puts $logFile "\t$nonpnpModuleName: $anyModuleNode"
+    }
 Separator
 # Add avalonIPCap* to the sopc dictionary
 foreach anyModuleNode $allModNodeList {
@@ -879,31 +919,31 @@ Separator
 set num0 0;		# initialize word0 counter
 foreach word0 $sopc {
     if {[expr $num0 % 2] == 0} {
-        puts $logFile "$word0"
-        #puts $logFile "[binary encode hex $word0]"
+	puts $logFile "$word0"
+	#puts $logFile "[binary encode hex $word0]"
     } else {
-        set num1 0
-        foreach word1 $word0 {
-            if {[expr $num1 % 2] == 0} {
-                puts $logFile "\t$word1"
-                #puts $logFile "\t[binary encode hex $word1]"
-            } else {
-                set num2 0
-                foreach word2 $word1 {
-                    if {[expr $num2 % 2] == 0} {
-                        puts $logFile "\t\t$word2"
-                        #puts $logFile "\t\t[binary encode hex $word2]"
-                    } else {
-                        set num3 0
-                        foreach word3 $word2 {
-                            if {[expr $num3 % 2] == 0} {
-                                puts $logFile "\t\t\t$word3"
-                                #puts $logFile "\t\t\t[binary encode\
-                                                   hex $word3]"
+	set num1 0
+	foreach word1 $word0 {
+	    if {[expr $num1 % 2] == 0} {
+		puts $logFile "\t$word1"
+		#puts $logFile "\t[binary encode hex $word1]"
+	    } else {
+		set num2 0
+		foreach word2 $word1 {
+		    if {[expr $num2 % 2] == 0} {
+			puts $logFile "\t\t$word2"
+			#puts $logFile "\t\t[binary encode hex $word2]"
+		    } else {
+			set num3 0
+			foreach word3 $word2 {
+			    if {[expr $num3 % 2] == 0} {
+				puts $logFile "\t\t\t$word3"
+				#puts $logFile "\t\t\t[binary encode\
+				    hex $word3]"
                             } else {
                                 puts $logFile "\t\t\t\t$word3"
                                 #puts $logFile "\t\t\t\t[binary encode\
-                                                   hex $word3]"
+							     hex $word3]"
                             }
                             incr num3
                         }
@@ -939,11 +979,11 @@ foreach word0 $sopc {
 	# if the key is "deviceIDCap"
 	if {[string match "deviceIDCap" $key0]} {
 	    OutputDeviceID $key0
-	# elseif the key is "avalonIPCap*"
+	    # elseif the key is "avalonIPCap*"
 	} elseif {[string match "avalonIPCap*" $key0]} {
 	    OutputIPCap $key0 
 	}
-    # else a value or nested key
+	# else a value or nested key
     } else {
 	set num1 0
 	foreach word1 $word0 {
@@ -953,7 +993,7 @@ foreach word0 $sopc {
 		# if the key is "avalonMasterIntf*"
 		if {[string match "avalonMasterIntf*" $word1]} {
 		    OutputMasterIntf $key0 $key1
-		# elseif the key is "avalonIntRcvrIntf*"
+		    # elseif the key is "avalonIntRcvrIntf*"
 		} elseif {[string match "avalonIntRcvrIntf*" $word1]} {
 		    OutputIntRcvrIntf $key0 $key1
 		}
@@ -966,7 +1006,7 @@ foreach word0 $sopc {
 			# if the key is "avalonSlaveInt*"
 			if {[string match "avalonSlaveIntf*" $word2]} {
 			    OutputSlaveIntf $key0 $key1 $key2
-			# if the key is "avalonIntSendIntf*"
+			    # if the key is "avalonIntSendIntf*"
 			} elseif {[string match "avalonIntSendIntf*" $word2]} {
 			    OutputIntSendIntf $key0 $key1 $key2
 			}
