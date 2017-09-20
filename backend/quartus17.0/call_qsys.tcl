@@ -9,15 +9,28 @@ set GENERATE_SCRIPT_EXE  [file join $QUARTUS_HOME "sopc_builder/bin/qsys-generat
 
 
 ####################################################################################
+# Qsys script commands
+####################################################################################
+set cmd_list [join "
+    set QSYS_NAME ${QSYS_NAME};
+    set BOARD_NAME ${BOARD_NAME};
+    set PART_NUMBER ${PART_NUMBER};
+    set GW_VERSION ${GW_VERSION};
+    set GIT_COMMIT 0x${GIT_COMMIT};
+    set BUILDID ${BUILDID}
+"]
+
+
+####################################################################################
 # Create the QSYS system from a system call
 ####################################################################################
 set QSYS_SYSTEM_PATH  "${WORK_PATH}/${QSYS_SYSTEM_NAME}"
 set TCL_QSYS_SYSTEM_SCRIPT_NAME  "${QSYS_SYSTEM_NAME}.tcl"
 
 set TCL_QSYS_SCRIPT_PATH [file join $BACKEND_PATH $QUARTUS_VERSION ${TCL_QSYS_SYSTEM_SCRIPT_NAME}]
-set cmd_list "--cmd=\"set QSYS_NAME ${QSYS_NAME}; set BOARD_NAME ${BOARD_NAME}; set PART_NUMBER ${PART_NUMBER}; set GW_VERSION ${GW_VERSION}; set GIT_COMMIT 0x${GIT_COMMIT}\""
+set cmd_arg "--cmd=\"$cmd_list\""
 set arg_list "--script=$TCL_QSYS_SCRIPT_PATH --search-path=$IPCORE_LIB_PATH/**/*,\$"
-set create_qsys_system_command [join [list $QSYS_SCRIPT_EXE $cmd_list $arg_list]]
+set create_qsys_system_command [join [list $QSYS_SCRIPT_EXE $cmd_arg $arg_list]]
 
 # Start the build process
 puts "SYSTEM CALL: exec $create_qsys_system_command"

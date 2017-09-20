@@ -3,7 +3,7 @@
 # 08/14/2015    Ryan Ellis                  Initial.
 # 04/22/2016    Ken Paist                   Code clean-up.
 # 08/16/2017    Alain Marchand (Matrox)     Fixed for Quartus.
-# 09/13/2017    David Rauth                 Added gitCommit.
+# 09/20/2017    David Rauth                 Added gitCommit and buildId.
 # 
 # Used to generate the PnP ROM image after a .sopcinfo file is output from
 # Qsys. Uses the tDOM parser package to read the XML file into memory. 
@@ -89,6 +89,10 @@ proc ExtractDeviceIdentification {pnpModuleNode} {
     set gitCommit [$gitCommit asText]
     set gitCommitHex [format %x $gitCommit]
     puts $logFile "\t\tgitCommit:  0x$gitCommitHex"
+    set buildIdNode [$pnpModuleNode selectNodes {parameter[@name="build_id"]}]
+    set buildId [$buildIdNode selectNodes value]
+    set buildId [$buildId asText]
+    puts $logFile "\t\tbuildId:    $buildId"
     set devNameOffset 12
     set partNumOffset [expr $devNameOffset + [string length $devName] + 1]
 #    puts $logFile "\tParameter List: $parameterList"
@@ -103,7 +107,8 @@ proc ExtractDeviceIdentification {pnpModuleNode} {
 	                  devName       $devName \
                           partNum       $partNum \
                           gwVer         $gwVer \
-                          gitCommit     $gitCommit]
+                          gitCommit     $gitCommit\
+                          buildId       $buildId]
     puts $logFile ">> sopc: \"$sopc\""
 }
 
@@ -427,6 +432,7 @@ proc OutputDeviceID {key0} {
     set partNum       [dict get $sopc $key0 partNum]
     set gwVer         [dict get $sopc $key0 gwVer]
     set gitCommit     [dict get $sopc $key0 gitCommit]
+    set buildId       [dict get $sopc $key0 buildId]
     set startOffset   [dict get $sopc $key0 startOffset]
     set nextKnsCapOff [dict get $sopc $key0 nextKnsCapOff]
     set devNameOffset [dict get $sopc $key0 devNameOffset]
@@ -447,6 +453,10 @@ proc OutputDeviceID {key0} {
     set hexStr [format "*Dev ID: %08X  @0Ch" $gitCommit]
     puts $logFile $hexStr
     set hexStr [format "%08X" $gitCommit]
+    GenHex4 $hexStr [set addr [expr $addr + 1]]
+    set hexStr [format "*Dev ID: %08X  @0Ch" $buildId]
+    puts $logFile $hexStr
+    set hexStr [format "%08X" $buildId]
     GenHex4 $hexStr [set addr [expr $addr + 1]]
     # Convert strings characters to decimal
     binary scan [encoding convertto ascii $devName] c* decStr

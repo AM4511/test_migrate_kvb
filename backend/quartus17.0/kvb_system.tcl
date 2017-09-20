@@ -15,6 +15,7 @@ set_instance_parameter_value PnPROM_0 {dev_name} ${BOARD_NAME}
 set_instance_parameter_value PnPROM_0 {gw_ver} ${GW_VERSION}
 set_instance_parameter_value PnPROM_0 {part_num} ${PART_NUMBER}
 set_instance_parameter_value PnPROM_0 {git_commit} ${GIT_COMMIT}
+set_instance_parameter_value PnPROM_0 {build_id} ${BUILDID}
 
 add_instance a_16550_uart_0 16550_uart 1.0
 

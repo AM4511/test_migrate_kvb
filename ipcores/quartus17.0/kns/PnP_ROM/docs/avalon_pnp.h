@@ -1,5 +1,8 @@
 /* Avalon Plug 'N Play ROM definitions */
 
+/* Note that for backwards compatibility new structure versions should include
+ * the members of the previous version */
+
 #ifndef _avalon_pnp_h_
 #define _avalon_pnp_h_
 
@@ -49,6 +52,7 @@ typedef struct
 	char		*partNum;	/* device part number string */
 	uint16_t	*gwVer;		/* gateware version */
 	uint32_t    *gitCommit; /* git commit number */
+	int32_t     *buildId;   /* build id (UNIX time) */
 	} avalonDevIdCap2_t;
 	
 /* Avalon IP ID capability (capID = 2) */

@@ -80,6 +80,15 @@ set_parameter_property git_commit DISPLAY_HINT "hexadecimal"
 set_parameter_property git_commit ALLOWED_RANGES 0:268435455
 set_parameter_property git_commit DESCRIPTION ""
 set_parameter_property git_commit AFFECTS_GENERATION false
+add_parameter build_id INTEGER 0 ""
+set_parameter_property build_id DEFAULT_VALUE 0
+set_parameter_property build_id DISPLAY_NAME "Build ID"
+set_parameter_property build_id WIDTH ""
+set_parameter_property build_id TYPE INTEGER
+set_parameter_property build_id UNITS None
+set_parameter_property build_id ALLOWED_RANGES 0:2147483647
+set_parameter_property build_id DESCRIPTION ""
+set_parameter_property build_id AFFECTS_GENERATION false
 add_parameter INIT_FILE STRING ./design/PnP_ROM.hex
 set_parameter_property INIT_FILE DEFAULT_VALUE ./design/PnP_ROM.hex
 set_parameter_property INIT_FILE DISPLAY_NAME "Init file"

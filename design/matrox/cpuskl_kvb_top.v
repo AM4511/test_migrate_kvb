@@ -267,6 +267,14 @@ module cpuskl_kvb_top (
     end
 
 
+    altgx_reconfig altgx_reconfig_inst (
+        .reconfig_clk (clk50),
+		.reconfig_fromgxb (reconfig_fromgxb),
+		.busy (busy),  // This will only be used in reset logic for offset cancellation process. Never used for actual channel reconfiguration
+		.reconfig_togxb (reconfig_togxb)
+		);
+
+ 
     //==========================
     // Set input values
     //==========================
@@ -312,10 +320,9 @@ module cpuskl_kvb_top (
         .pcie_hard_ip_0_pipe_ext_txcompl0_ext              (),
         .pcie_hard_ip_0_pipe_ext_txelecidle0_ext           (),
 
-        .pcie_hard_ip_0_reconfig_busy_busy_altgxb_reconfig (1'b0),
-        .pcie_hard_ip_0_reconfig_fromgxb_0_data            (),
-        .pcie_hard_ip_0_reconfig_gxbclk_clk                (1'b0),
-        .pcie_hard_ip_0_reconfig_togxb_data                (4'b0010),
+        .pcie_hard_ip_0_reconfig_busy_busy_altgxb_reconfig (busy),
+        .pcie_hard_ip_0_reconfig_fromgxb_0_data            (reconfig_fromgxb),
+        .pcie_hard_ip_0_reconfig_togxb_data                (reoonfig_togxb),
         .pcie_hard_ip_0_refclk_export                      (refclk),
         .pcie_hard_ip_0_rx_in_rx_datain_0                  (rx_in0),
         .pcie_hard_ip_0_test_in_test_in                    (test_in),
