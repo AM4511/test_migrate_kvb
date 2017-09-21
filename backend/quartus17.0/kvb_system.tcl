@@ -56,6 +56,7 @@ set_instance_parameter_value dead_rom {useShallowMemBlocks} {0}
 set_instance_parameter_value dead_rom {writable} {0}
 
 add_instance i2c_master_0 i2c_master 2.0
+set_instance_parameter_value i2c_master_0 {CLK_RATE} {125}
 
 add_instance pcie_hard_ip_0 altera_pcie_hard_ip 17.0
 set_instance_parameter_value pcie_hard_ip_0 {AST_LITE} {0}
@@ -207,8 +208,6 @@ add_interface pcie_hard_ip_0_reconfig_busy conduit end
 set_interface_property pcie_hard_ip_0_reconfig_busy EXPORT_OF pcie_hard_ip_0.reconfig_busy
 add_interface pcie_hard_ip_0_reconfig_fromgxb_0 conduit end
 set_interface_property pcie_hard_ip_0_reconfig_fromgxb_0 EXPORT_OF pcie_hard_ip_0.reconfig_fromgxb_0
-add_interface pcie_hard_ip_0_reconfig_gxbclk clock sink
-set_interface_property pcie_hard_ip_0_reconfig_gxbclk EXPORT_OF pcie_hard_ip_0.reconfig_gxbclk
 add_interface pcie_hard_ip_0_reconfig_togxb conduit end
 set_interface_property pcie_hard_ip_0_reconfig_togxb EXPORT_OF pcie_hard_ip_0.reconfig_togxb
 add_interface pcie_hard_ip_0_refclk conduit end
@@ -232,6 +231,8 @@ set_interface_property vme_intf_0 EXPORT_OF vme_intf_0.vme_intf
 
 # connections and connection parameters
 add_connection clk_50.clk pcie_hard_ip_0.cal_blk_clk
+
+add_connection clk_50.clk pcie_hard_ip_0.reconfig_gxbclk
 
 add_connection clk_50.clk qspi_mram_0.clock
 

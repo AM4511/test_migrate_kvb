@@ -45,11 +45,10 @@ set QUARTUS_SH_EXE [file join ${QUARTUS_HOME} "bin64/quartus_sh"]
 ###################################################################################
 # Generate JTAG indirect configuration file
 ###################################################################################
-set REVISION_NAME [lindex $argv 2]      ; # get revision name (third argument)
+set REVISION_NAME [get_current_revision [file join ${WORK_PATH} ${PROJECT_NAME}]]
 set convert_sof_jic_cmd "${QUARTUS_CPF_EXE} -c -d EPCQ128 -s EP4CGX22 -o bitstream_compression=on ${FIRMWARE_PATH}/${REVISION_NAME}.sof ${FIRMWARE_PATH}/${REVISION_NAME}.jic"
 puts "SYSTEM CALL: exec $convert_sof_jic_cmd"
-post_message "SYSTEM CALL: exec $convert_sof_jic_cmd"
-exec {*}$convert_sof_jic_cmd
+exec >&@stdout {*}$convert_sof_jic_cmd
 
 
 ###################################################################################
@@ -105,6 +104,5 @@ set ARCHIVE_NAME "${REVISION_NAME}_git${GIT_COMMIT}"
 set archive_cmd "${QUARTUS_SH_EXE} --archive -revision ${REVISION_NAME} -output ${ARCHIVE_PATH}/${ARCHIVE_NAME} -use_file_set custom -input \"$ARCHIVE_FILE_MANIFEST\" -overwrite ${WORK_PATH}/${PROJECT_NAME}"
 cd ${ROOT_PATH}
 puts "SYSTEM CALL: exec $archive_cmd"
-post_message "SYSTEM CALL: exec $archive_cmd"
-exec {*}$archive_cmd
+exec >&@stdout {*}$archive_cmd
 

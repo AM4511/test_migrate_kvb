@@ -320,9 +320,11 @@ module cpuskl_kvb_top (
         .pcie_hard_ip_0_pipe_ext_txcompl0_ext              (),
         .pcie_hard_ip_0_pipe_ext_txelecidle0_ext           (),
 
+        .pcie_hard_ip_0_powerdown_pll_powerdown            (1'b0),
+        .pcie_hard_ip_0_powerdown_gxb_powerdown            (1'b0),
         .pcie_hard_ip_0_reconfig_busy_busy_altgxb_reconfig (busy),
         .pcie_hard_ip_0_reconfig_fromgxb_0_data            (reconfig_fromgxb),
-        .pcie_hard_ip_0_reconfig_togxb_data                (reoonfig_togxb),
+        .pcie_hard_ip_0_reconfig_togxb_data                (reconfig_togxb),
         .pcie_hard_ip_0_refclk_export                      (refclk),
         .pcie_hard_ip_0_rx_in_rx_datain_0                  (rx_in0),
         .pcie_hard_ip_0_test_in_test_in                    (test_in),

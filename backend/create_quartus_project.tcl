@@ -78,3 +78,4 @@ source "${BACKEND_PATH}/${QUARTUS_VERSION}/call_qsys.tcl"
 export_assignments
 
 puts "Project : ${PROJECT_NAME} created successfully"
+

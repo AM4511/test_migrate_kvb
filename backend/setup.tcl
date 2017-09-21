@@ -10,7 +10,7 @@ puts "Running ${myself}"
 global ROOT_PATH
  if { [info exists ::env(KVB) ] } {
     # Set the ROOT folder path from a Windows environment variable
-    set ROOT_PATH $::env(KVB)
+    set ROOT_PATH [file normalize $::env(KVB)]
     puts "ROOT_PATH ::env(KVB) -> $ROOT_PATH"
  } else {
     # Set the ROOT folder path from an Hardcoded path

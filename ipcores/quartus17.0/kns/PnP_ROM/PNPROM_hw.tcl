@@ -67,7 +67,7 @@ set_parameter_property gw_ver DISPLAY_NAME "Gateware version"
 set_parameter_property gw_ver WIDTH ""
 set_parameter_property gw_ver TYPE INTEGER
 set_parameter_property gw_ver UNITS None
-set_parameter_property gw_ver ALLOWED_RANGES 0:2147483647
+set_parameter_property gw_ver ALLOWED_RANGES 0:65499
 set_parameter_property gw_ver DESCRIPTION ""
 set_parameter_property gw_ver AFFECTS_GENERATION false
 add_parameter git_commit INTEGER 0 ""
