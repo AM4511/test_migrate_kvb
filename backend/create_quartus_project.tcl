@@ -25,7 +25,7 @@ source [file join ${MYSELF_PATH} "setup.tcl"]
 
 
 ###################################################################################
-# Define the builID using the Unix epoch (time in secondes since midnight 1/1/1970)
+# Define the builID using the Unix epoch (time in seconds since midnight 1/1/1970)
 ###################################################################################
 set BUILDID [clock seconds]
 set BUILD_TIME  [clock format ${BUILDID} -format "%Y-%m-%d  %H:%M:%S"]
@@ -33,6 +33,7 @@ puts "BUILD_ID =  $BUILDID (${BUILD_TIME})"
 
 set REVISION_NAME    "${PROJECT_NAME}_build${BUILDID}"
 set PRE_FLOW_SCRIPT_FILE "${BACKEND_PATH}/pre_flow.tcl"
+set POST_FLOW_SCRIPT_FILE "${BACKEND_PATH}/post_flow.tcl"
 
 
 ########################################################################################
@@ -77,3 +78,4 @@ source "${BACKEND_PATH}/${QUARTUS_VERSION}/call_qsys.tcl"
 export_assignments
 
 puts "Project : ${PROJECT_NAME} created successfully"
+

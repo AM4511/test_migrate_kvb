@@ -60,6 +60,7 @@ derive_clock_uncertainty
 # False path
 #**************************************************************
 set_false_path -from [get_ports {sys_rst_n}]
+set_false_path -from [get_registers {altgx_reconfig_inst|*|busy}]
 
 
 ########################################################################################

@@ -20,7 +20,7 @@ package require -exact qsys 14.0
 # 
 set_module_property DESCRIPTION "PCIe Plug-N-Play board info ROM"
 set_module_property NAME PnPROM
-set_module_property VERSION 1.1
+set_module_property VERSION 1.2
 set_module_property INTERNAL false
 set_module_property OPAQUE_ADDRESS_MAP true
 set_module_property AUTHOR "Ken Paist"
@@ -47,32 +47,51 @@ add_fileset_file PnPROM.v VERILOG PATH ./design/PnPROM.v TOP_LEVEL_FILE
 # 
 add_parameter dev_name STRING BoardName ""
 set_parameter_property dev_name DEFAULT_VALUE BoardName
-set_parameter_property dev_name DISPLAY_NAME dev_name
+set_parameter_property dev_name DISPLAY_NAME "Board name"
 set_parameter_property dev_name WIDTH ""
 set_parameter_property dev_name TYPE STRING
 set_parameter_property dev_name UNITS None
 set_parameter_property dev_name DESCRIPTION ""
 set_parameter_property dev_name AFFECTS_GENERATION false
-add_parameter part_num STRING 08895-4xxx-000-00 ""
-set_parameter_property part_num DEFAULT_VALUE 08895-4xxx-000-00
-set_parameter_property part_num DISPLAY_NAME part_num
+add_parameter part_num STRING 0xxxx-4xxx-000-xx ""
+set_parameter_property part_num DEFAULT_VALUE 0xxxx-4xxx-000-xx
+set_parameter_property part_num DISPLAY_NAME "Part number"
 set_parameter_property part_num WIDTH ""
 set_parameter_property part_num TYPE STRING
 set_parameter_property part_num UNITS None
 set_parameter_property part_num DESCRIPTION ""
 set_parameter_property part_num AFFECTS_GENERATION false
-add_parameter gw_ver INTEGER 202 ""
-set_parameter_property gw_ver DEFAULT_VALUE 202
-set_parameter_property gw_ver DISPLAY_NAME gw_ver
+add_parameter gw_ver INTEGER 0 ""
+set_parameter_property gw_ver DEFAULT_VALUE 0
+set_parameter_property gw_ver DISPLAY_NAME "Gateware version"
 set_parameter_property gw_ver WIDTH ""
 set_parameter_property gw_ver TYPE INTEGER
 set_parameter_property gw_ver UNITS None
-set_parameter_property gw_ver ALLOWED_RANGES -2147483648:2147483647
+set_parameter_property gw_ver ALLOWED_RANGES 0:65499
 set_parameter_property gw_ver DESCRIPTION ""
 set_parameter_property gw_ver AFFECTS_GENERATION false
+add_parameter git_commit INTEGER 0 ""
+set_parameter_property git_commit DEFAULT_VALUE 0
+set_parameter_property git_commit DISPLAY_NAME "Git commit"
+set_parameter_property git_commit WIDTH ""
+set_parameter_property git_commit TYPE INTEGER
+set_parameter_property git_commit UNITS None
+set_parameter_property git_commit DISPLAY_HINT "hexadecimal"
+set_parameter_property git_commit ALLOWED_RANGES 0:268435455
+set_parameter_property git_commit DESCRIPTION ""
+set_parameter_property git_commit AFFECTS_GENERATION false
+add_parameter build_id INTEGER 0 ""
+set_parameter_property build_id DEFAULT_VALUE 0
+set_parameter_property build_id DISPLAY_NAME "Build ID"
+set_parameter_property build_id WIDTH ""
+set_parameter_property build_id TYPE INTEGER
+set_parameter_property build_id UNITS None
+set_parameter_property build_id ALLOWED_RANGES 0:2147483647
+set_parameter_property build_id DESCRIPTION ""
+set_parameter_property build_id AFFECTS_GENERATION false
 add_parameter INIT_FILE STRING ./design/PnP_ROM.hex
 set_parameter_property INIT_FILE DEFAULT_VALUE ./design/PnP_ROM.hex
-set_parameter_property INIT_FILE DISPLAY_NAME INIT_FILE
+set_parameter_property INIT_FILE DISPLAY_NAME "Init file"
 set_parameter_property INIT_FILE TYPE STRING
 set_parameter_property INIT_FILE UNITS None
 set_parameter_property INIT_FILE HDL_PARAMETER true
