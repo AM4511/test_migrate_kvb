@@ -37,11 +37,12 @@ puts "SYSTEM CALL: exec $create_qsys_system_command"
 try {
     exec >&@stdout {*}${create_qsys_system_command}
     } trap NONE {} {
-        puts "Qsys system created"
+        # process exited with no non-zero exit code
     } trap CHILDSTATUS {} {
         # process exited with non-zero exit code
         error "Qsys system creation failed"
     }
+puts "Qsys system created"
 
 
 ####################################################################################
@@ -55,11 +56,12 @@ puts "SYSTEM CALL: exec $generate_qsys_system_command"
 try {
     exec >&@stdout {*}${generate_qsys_system_command}
     } trap NONE {} {
-        puts "Qsys system generated"
+        # process exited with no non-zero exit code
     } trap CHILDSTATUS {} {
         # process exited with non-zero exit code
         error "Qsys system generation failed"
     }
+puts "Qsys system generated"
 
 set_global_assignment -name QIP_FILE ${QSYS_SYSTEM_PATH}/synthesis/${QSYS_SYSTEM_NAME}.qip
 

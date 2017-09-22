@@ -52,7 +52,7 @@ typedef struct
 	char		*partNum;	/* device part number string */
 	uint16_t	*gwVer;		/* gateware version */
 	uint32_t    *gitCommit; /* git commit number */
-	int32_t     *buildId;   /* build id (UNIX time) */
+	uint32_t    *buildId;   /* build id (unsigned UNIX time) */
 	} avalonDevIdCap2_t;
 	
 /* Avalon IP ID capability (capID = 2) */
