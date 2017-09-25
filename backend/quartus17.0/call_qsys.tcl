@@ -34,13 +34,17 @@ set create_qsys_system_command [join [list $QSYS_SCRIPT_EXE $cmd_arg $arg_list]]
 
 # Start the build process
 puts "SYSTEM CALL: exec $create_qsys_system_command"
+# Need to trap errors since qsys-script returns a non-zero exit code
 try {
     exec >&@stdout {*}${create_qsys_system_command}
     } trap NONE {} {
-        # process exited with no non-zero exit code
+        # process exited writing to stderr (no non-zero exit status)
     } trap CHILDSTATUS {} {
         # process exited with non-zero exit code
         error "Qsys system creation failed"
+    } trap TCL {} {
+        # Tcl error (if running from inside Quartus stdout isn't available; try again without it)
+        exec {*}${create_qsys_system_command}
     }
 puts "Qsys system created"
 
@@ -53,13 +57,17 @@ set generate_qsys_system_command "$GENERATE_SCRIPT_EXE $QSYS_FILE --synthesis=VE
 
 # Start the generate process
 puts "SYSTEM CALL: exec $generate_qsys_system_command"
+# Need to trap errors since qsys-generate returns a non-zero exit code
 try {
     exec >&@stdout {*}${generate_qsys_system_command}
     } trap NONE {} {
-        # process exited with no non-zero exit code
+        # process exited writing to stderr (no non-zero exit status)
     } trap CHILDSTATUS {} {
         # process exited with non-zero exit code
         error "Qsys system generation failed"
+    } trap TCL {} {
+        # Tcl error (if running from Quartus stdout isn't available; try again without it)
+        exec {*}${generate_qsys_system_command}
     }
 puts "Qsys system generated"
 
