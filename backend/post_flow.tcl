@@ -75,7 +75,7 @@ if {[file exists ${ARCHIVE_PATH}] == 0} {
 	file mkdir ${ARCHIVE_PATH}
 }
 
-set ARCHIVE_FILE_MANIFEST "${ARCHIVE_PATH}/${REVISION_NAME}_archive_list.txt"
+set ARCHIVE_FILE_MANIFEST "${WORK_PATH}/${REVISION_NAME}_archive_list.txt"
 set archive_dirs_no_recursive "
     ${WORK_PATH}
 "
@@ -102,19 +102,20 @@ close $archive_manifest_fd
 # Generate Quartus archive
 ###################################################################################
 set ARCHIVE_NAME "${REVISION_NAME}_git${GIT_COMMIT}"
-set archive_cmd "${QUARTUS_SH_EXE} --archive -revision ${REVISION_NAME} -output ${ARCHIVE_PATH}/${ARCHIVE_NAME} -use_file_set custom -input \"$ARCHIVE_FILE_MANIFEST\" -overwrite ${WORK_PATH}/${PROJECT_NAME}"
-cd ${FIRMWARE_PATH}
+set archive_cmd "${QUARTUS_SH_EXE} --archive -revision ${REVISION_NAME} -output ${WORK_PATH}/${ARCHIVE_NAME} -use_file_set custom -input \"$ARCHIVE_FILE_MANIFEST\" -overwrite ${WORK_PATH}/${PROJECT_NAME}"
 puts "SYSTEM CALL: exec $archive_cmd"
 exec >&@stdout {*}$archive_cmd
+file rename -force "${WORK_PATH}/${ARCHIVE_NAME}.qar" "${ARCHIVE_PATH}/${ARCHIVE_NAME}.qar"
 puts "Quartus archive created"
 
 
 ###################################################################################
 # Zip outputs
 ###################################################################################
-set zip_cmd "${ZIP_EXE} -j -5 ${REVISION_NAME}_git${GIT_COMMIT} ${WORK_PATH}/*.rpt ${WORK_PATH}/*.log ${FIRMWARE_PATH}/*.* ${QSYS_PATH}/*.htm* ${QSYS_PATH}/*.rpt"
-cd ${WORK_PATH}
+set ZIP_NAME "${REVISION_NAME}_git${GIT_COMMIT}"
+set zip_cmd "${ZIP_EXE} -FS -j -5 ${WORK_PATH}/${ZIP_NAME} ${WORK_PATH}/*.rpt ${WORK_PATH}/*.log ${FIRMWARE_PATH}/*.* ${QSYS_PATH}/*.htm* ${QSYS_PATH}/*.rpt"
 puts "SYSTEM CALL: exec $zip_cmd"
 exec >&@stdout {*}$zip_cmd
+file rename -force "${WORK_PATH}/${ZIP_NAME}.zip" "${ARCHIVE_PATH}/${ZIP_NAME}.zip"
 puts "Outputs zip file created"
 
