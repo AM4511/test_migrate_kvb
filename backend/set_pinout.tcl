@@ -285,9 +285,9 @@ set_location_assignment PIN_E6  -to gpio[7]
 ####################################################################################
 # Pin Location Assignment: User programmable LED interface
 ####################################################################################
-set_location_assignment PIN_C8 -to prog_led[0]
-set_location_assignment PIN_D8 -to prog_led[1]
-set_location_assignment PIN_E12 -to prog_led[2]
+set_location_assignment PIN_C8 -to prog_led_n[0]
+set_location_assignment PIN_D8 -to prog_led_n[1]
+set_location_assignment PIN_E12 -to prog_led_n[2]
 
 ####################################################################################
 # Pin Location Assignment: Camera triggers
