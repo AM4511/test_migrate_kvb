@@ -46,14 +46,22 @@ Requirements
     Example: setx KVB "C:/intelFPGA/projects/kvb"
 
 
-Creating and Compiling Project
-------------------------------
+Creating and Compiling Project from Quartus
+-------------------------------------------
 1.  Start Quartus.
 2.  In the Tcl console source the following script:
 
     source "$::env(KVB)/backend/create_quartus_project.tcl"
 
 3.  Run the start compilation (Ctrl+L).
+
+
+Creating, Compiling, and Checking Project from Command-Line
+-----------------------------------------------------------
+1.  Open Command Prompt.
+2.  Execute the following command:
+
+    %KVB%\backend\create_quartus_project && %KVB%\backend\build_quartus_project && %KVB%\backend\check_messages
 
 
 Notes

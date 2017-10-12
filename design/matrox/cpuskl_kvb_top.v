@@ -67,7 +67,7 @@ module cpuskl_kvb_top (
     inout  [6:0]  cpcis_pcie_clken_n,  // PCIe board present inputs - 16KHz sync clk outputs
     output [6:0]  pch_clk_req_n,       // PCIe clock enable sent to the PCH
     output [3:0]  cam_trigger,         // Nexis Triggers
-    output [2:0]  prog_led,
+    output [2:0]  prog_led_n,
 
     // UART interfaces
     input         ser1_rx,
@@ -108,14 +108,12 @@ module cpuskl_kvb_top (
     wire          pipe_mode;
 
     wire          ser4_rts;
-    reg           link_active;
     reg           sys_rst_n1;
     reg           sys_rst_n2;
-    reg    [4:0]  dl_ltssm_int1;
-    reg    [4:0]  dl_ltssm_int2;
     wire          platform_wake;
     reg    [4:0]  cnt;
     reg           sys_rst_n_delayed;
+    reg    [1:0]  led_out;
 
     wire   [16:0] reconfig_fromgxb;
     wire   [3:0]  reconfig_togxb;
@@ -126,12 +124,11 @@ module cpuskl_kvb_top (
     wire   [4:0]  dl_ltssm_int;
     wire   [3:0]  ser_rx;
     wire   [3:0]  ser_tx;
-
     
     assign vme_write = ~vme_write_n;
-    assign green_led = link_active;
-    assign red_led = ~link_active;
     assign vme_buffer_oe = 1'b1;
+    assign prog_led_n[2:1] = ~led_out;
+    
 
     // Assignment of the test_in[39:0] signal -Hard IP
     // The test_in bus provides runtime control for specific IP core
@@ -191,14 +188,10 @@ module cpuskl_kvb_top (
         if (sys_rst_n == 0) begin
             sys_rst_n1 <= 0;
             sys_rst_n2 <= 0;
-            dl_ltssm_int1 <= 0;
-            dl_ltssm_int2 <= 0;
         end
         else begin
             sys_rst_n1 <= 1'b1;
             sys_rst_n2 <= sys_rst_n1;
-            dl_ltssm_int1 <= dl_ltssm_int;
-            dl_ltssm_int2 <= dl_ltssm_int1;
         end
     end
 
@@ -249,23 +242,8 @@ module cpuskl_kvb_top (
     //    11101: Recovery.Equalization, Phase 2
     //    11110: recovery.Equalization, Phase 3
 
-    always @(posedge clk125 or negedge sys_rst_n2) begin
-        if (sys_rst_n2 == 0) begin
-            link_active <= 0;
-        end
-        else begin
-            if(dl_ltssm_int2 == 5'b01111) begin  // LO
-                link_active  <= 1'b1;
-            end
-        else if(dl_ltssm_int2 == 5'b10101) begin  // LOs
-            link_active  <= 1'b1;
-            end
-            else begin
-                link_active  <= 0;
-            end
-        end
-    end
-
+    assign prog_led_n[0] = (dl_ltssm_int == 5'b01111 || dl_ltssm_int == 5'b10101) ? 1'b0 : 1'b1;
+    
 
     altgx_reconfig altgx_reconfig_inst (
         .reconfig_clk (clk50),
@@ -330,12 +308,15 @@ module cpuskl_kvb_top (
         .pcie_hard_ip_0_test_in_test_in                    (test_in),
         .pcie_hard_ip_0_test_out_test_out                  (),
         .pcie_hard_ip_0_tx_out_tx_dataout_0                (tx_out0),
+        .pcie_hard_ip_0_dl_ltssm_int_interconect           (dl_ltssm_int), 
 
 
         /////////////////////////////////////////////////////////////
         // I/Os
         /////////////////////////////////////////////////////////////
         .pio_0_export                                      (gpio),
+        .pio_1_export                                      (led_out),
+        .one_shot_0_export                                 (cam_trigger),
 
 
         /////////////////////////////////////////////////////////////
@@ -345,6 +326,7 @@ module cpuskl_kvb_top (
         .qspi_mram_0_qspi_cs_n                             (mram_cs_n),
         .qspi_mram_0_qspi_dat                              (mram_io),
 
+        
         /////////////////////////////////////////////////////////////
         // System reset
         /////////////////////////////////////////////////////////////
