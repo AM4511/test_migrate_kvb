@@ -59,6 +59,8 @@ set fit_fail_messages {
 set sta_fail_messages {
     "*critical warning*"
     "*incorrect assignment*"
+    "*was determined to be a clock*"
+    "*has some problems*"
     "*not fully constrained*"
 }
 

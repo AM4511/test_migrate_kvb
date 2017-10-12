@@ -46,7 +46,7 @@ create_generated_clock -name {uart_ref_clk_3} -source [get_ports {lpc_clk}] -edg
 
 set CLK50MHz   {reconfig_pll|altpll_component|auto_generated|pll1|clk[0]}
 create_generated_clock -name {qspi_clk_read}  -source $CLK50MHz -divide_by 4 -multiply_by 1 -invert [get_pins { u0|qspi_mram_0|qspi_top_inst|llqspi_inst|o_sck|q }]
-create_generated_clock -name {qspi_clk_write} -source $CLK50MHz -divide_by 2 -multiply_by 1 -invert [get_pins { u0|qspi_mram_0|qspi_top_inst|llqspi_inst|o_sck|q }]
+create_generated_clock -name {qspi_clk_write} -source $CLK50MHz -divide_by 2 -multiply_by 1 -invert -add [get_pins { u0|qspi_mram_0|qspi_top_inst|llqspi_inst|o_sck|q }]
 
 
 #**************************************************************
@@ -76,6 +76,9 @@ create_clock -name {mram_read_sck_virtual} -period  $MRAM_READ_SCK_PERIOD
 # SPI Write clock: 50 MHz/2
 set MRAM_WRITE_SCK_PERIOD 40.00
 create_clock -name {mram_write_sck_virtual} -period  $MRAM_WRITE_SCK_PERIOD
+
+# Need to remove unrelated clock domain from analysis
+set_false_path -from {mram_read_sck_virtual} -to {qspi_clk_write}
 
 
 ########################################################################################
