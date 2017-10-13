@@ -15,7 +15,8 @@ create_clock -period "100 MHz" -name {refclk_pci_express} {*refclk_export}
 # SERDES Digital Reset inputs are asynchronous
 set_false_path -to {*tx_digitalreset_reg0c[0]}
 set_false_path -to {*rx_digitalreset_reg0c[0]}
-set_clock_groups -exclusive -group [get_clocks { *central_clk_div0* }] -group [get_clocks { *_hssi_pcie_hip* }]
+#central_clk_div0 group has no clocks
+#set_clock_groups -exclusive -group [get_clocks { *central_clk_div0* }] -group [get_clocks { *_hssi_pcie_hip* }]
 set_multicycle_path -end -setup -from [get_keepers *tl_cfg_ctl_wr*] 2;      
 set_multicycle_path -end -hold  -from [get_keepers  *tl_cfg_ctl_wr*] 1; 
 set_multicycle_path -end -setup -from [get_keepers *tl_cfg_ctl\[*\]] 3; 
