@@ -13,13 +13,15 @@
 //
 // Dependencies: 
 //
-// Revision: 1.0 	04/21/2016	Carickhoff
-// Modified module uart_rfifo.v
-// Made change to how error_count is calculated
+// Version  Date        Author          Change
+// -------------------------------------------------------------------------------
+// 1.0      01/20/2016  R. Carickhoff   Created.
+// 1.0      04/21/2016  R. Carickhoff   Modified module uart_rfifo.v.
+// 1.1      10/25/2017  R. Carickhoff   Modified module to handle consecutive writes
+//                                      with s_write remaining active.
 //
-// Revision 0.01 - File Created
-// Additional Comments: 
-// 
+// Additional Comments:
+//
 //
 //////////////////////////////////////////////////////////////////////////////////
 
@@ -59,7 +61,7 @@ always @(posedge clk) begin
 end
 
 assign s_waitrequest_n = ~((s_read || s_write) && ~ack); 
-assign enable = (s_read || s_write) && ~ack && ~ack1;  
+assign enable = (s_read || s_write) && ~ack1;  
 
 uart_top	the_uart_top(
 	 .wb_clk_i (clk),

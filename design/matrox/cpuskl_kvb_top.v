@@ -29,8 +29,11 @@
 //    1.4 - Changed the VME timing for AS#, DS0# and DS1# to meet VME spec
 //
 //    2.0 - Matrox take over. Change device for CPUSKL.
-//    2.1 - Replaced 3 LPC UARTs with PCIe UARTs. Replaced I2C master.
-//          Added CRA slave interface to PCIe-AvalonMM bridge.
+//    2.1 - Replaced 3 LPC UARTs with PCIe UARTs. Replaced I2C master. Added CRA
+//          slave interface to PCIe-AvalonMM bridge. Added Git commit to scripts
+//          and PnP ROM. Added one-shot timer for camera triggers. Added PIO for
+//          user LEDs. Added QAR and ZIP archive generation to scripts.
+//    2.2 - Updated VME, QSPI, and PCIe UART IP. Finalized timing constraints.
 ///////////////////////////////////////////////////////////////////////////////
 
 

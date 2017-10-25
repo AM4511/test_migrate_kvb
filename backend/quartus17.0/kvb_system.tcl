@@ -17,13 +17,13 @@ set_instance_parameter_value PnPROM_0 {part_num} ${PART_NUMBER}
 set_instance_parameter_value PnPROM_0 {git_commit} ${GIT_COMMIT}
 set_instance_parameter_value PnPROM_0 {build_id} ${BUILDID}
 
-add_instance a_16550_uart_0 16550_uart 1.0
+add_instance a_16550_uart_0 16550_uart 1.1
 
-add_instance a_16550_uart_1 16550_uart 1.0
+add_instance a_16550_uart_1 16550_uart 1.1
 
-add_instance a_16550_uart_2 16550_uart 1.0
+add_instance a_16550_uart_2 16550_uart 1.1
 
-add_instance a_16550_uart_3 16550_uart 1.0
+add_instance a_16550_uart_3 16550_uart 1.1
 
 add_instance clk_50 clock_source 17.0
 set_instance_parameter_value clk_50 {clockFrequency} {50000000.0}
@@ -196,9 +196,9 @@ set_instance_parameter_value pio_1 {simDoTestBenchWiring} {0}
 set_instance_parameter_value pio_1 {simDrivenValue} {0.0}
 set_instance_parameter_value pio_1 {width} {2}
 
-add_instance qspi_mram_0 qspi_mram 1.0
+add_instance qspi_mram_0 qspi_mram 1.1
 
-add_instance vme_intf_0 vme_intf 1.0
+add_instance vme_intf_0 vme_intf 1.1
 set_instance_parameter_value vme_intf_0 {BIG_ENDIAN} {1}
 
 # exported interfaces
