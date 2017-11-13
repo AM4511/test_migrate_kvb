@@ -51,6 +51,8 @@ module qspi_top (
 	inout		[3:0] qspi_dat
 );
 
+parameter QSPI_DISABLE = 0;
+
 // SPI Commands Supported
 localparam 	CMD_RDSR  =	8'h05;		// Returns the contents of the 8-bit Status Register
 localparam 	CMD_WREN	 =	8'h06;		// Sets the Write Enable Latch (WEL) bit in the status register to 1
@@ -59,7 +61,9 @@ localparam 	CMD_WRSR	 =	8'h01;		// Writes new values to the entire Status Regist
 localparam 	CMD_SLEEP =	8'hb9;		// Initiates Sleep Mode
 localparam 	CMD_WAKE	 =	8'hab;		// Terminates Sleep Mode
 localparam	CMD_FRQAD =	8'heb;		// Fast Read Quad Address and Data
+localparam	CMD_READ  =	8'h03;		// Read Single Address and Data (SCK 40 MHz max)
 localparam	CMD_FWQAD =	8'h12;		//	Fast Write Quad Address and Data
+localparam	CMD_WRITE =	8'h02;		// Write Single Address and Data
 localparam 	CMD_DQPI	 =	8'hff;		// Disable QSPI Mode
 
 // QSPI Command Sequence States
@@ -86,6 +90,7 @@ reg	hold;					// tells module that another command sequence will be issued
 wire	valid;				// tells when read data is valid in o_word
 wire	busy;					// active during spi cycle
 reg	clk_enb;				// used to reduce o_sck rate
+reg   [2:0] clk_cnt;    // number of counts to reduce o_sck rate
 reg	rd_sts_flg;			// set during RDSR cycle
 reg	[31:0] i_word;		// SPI data to be written
 wire	[31:0] o_word;		// data received from SPI
@@ -122,17 +127,25 @@ llqspi llqspi_inst (
 	.i_dat(din[3:0])					// for spi_mode {HOLDn, WPn, miso, mosi}
 );											// for qspi_mode read_data[3:0]
 
-assign qspi_dat[3:0] = ~mode[1] ? {2'b11, 1'bz, dout[0]} : mode[0] ? dout[3:0] : 4'bzzzz;
+assign qspi_dat[3:0] = ~mode[1] ? {2'b11, 1'bz, dout[0]} : (dir & busy) ? dout[3:0] : 4'bzzzz;
 assign din[3:0] = qspi_dat[3:0];
 
 // clk_enb reduces rate of qspi_sck for SPI reads
 always @ (posedge clk or posedge reset) begin
 	if (reset) begin
-		clk_enb <= 1'b0;
+		clk_enb <= 0;
+		clk_cnt <= 0;
 	end
 	else begin
-		clk_enb <= ~clk_enb;
+	  if ((clk_cnt == 5) || (dir && !busy)) begin
+       clk_enb <= 1'b1;
+		 clk_cnt <= 0;
 	end
+	else begin
+       clk_enb <= 0;
+       clk_cnt <= clk_cnt + 1'b1;
+     end
+        end
 end
 
 // State Machine for issuing SPI commands
@@ -202,41 +215,56 @@ always @ (posedge clk or posedge reset) begin
 						endcase
 					end
 					else begin	// host wants to write to SPI memory
-						cmd_seq1 <= {CMD_FWQAD, 24'h0, 5'b00011}; 	// len[1:0]=00, spd=0, dir=1, hold=1
-						cmd_seq2 <= {address, writedata, 5'b11110};  // len[1:0]=11, spd=1, dir=1, hold=0
-						state <= QSPI_SEQ_BEGIN;
+                        if (QSPI_DISABLE == 0) begin  // QSPI mode
+                            cmd_seq1 <= {CMD_FWQAD, 24'h0, 5'b00011}; 	// len[1:0]=00, spd=0, dir=1, hold=1
+    						cmd_seq2 <= {address, writedata, 5'b11110};  // len[1:0]=11, spd=1, dir=1, hold=0
+    						state <= QSPI_SEQ_BEGIN;
+                        end
+                        else begin  // SPI mode
+                            cmd_seq1 <= {CMD_WRITE, 24'h0, 5'b00011}; 	// len[1:0]=00, spd=0, dir=1, hold=1
+    						cmd_seq2 <= {address, writedata, 5'b11010};  // len[1:0]=11, spd=0, dir=1, hold=0
+    						state <= QSPI_SEQ_BEGIN;
+						end
 					end
 				end
 				else if (read) begin
-					if (sts_cmd) begin	// host wants to read SPI status reg 
+					if (sts_cmd) begin	// host wants to read SPI status reg
 						cmd_seq1 <= {CMD_RDSR, 24'h0, 5'b00011};  // len[1:0]=00, spd=0, dir=1, hold=1
 						cmd_seq2 <= {32'h0, 5'b00000};  				// len[1:0]=00, spd=0, dir=0, hold=0
 						rd_sts_flg <= 1'b1;
 						state <= QSPI_SEQ_BEGIN;
 					end
 					else if (spi_cmd) begin  // reading a SPI command is not a supported
-						readdata <= 8'h0;  
+						readdata <= 8'h0;
 						ack <= 1'b1;
-						state <= QSPI_CMD_END;					
+						state <= QSPI_CMD_END;
 					end
 					else begin  // host wants to read from SPI memory
-						cmd_seq1 <= {CMD_FRQAD, 24'h0, 5'b00011}; 		// len[1:0]=00, spd=0, dir=1, hold=1
-						cmd_seq2 <= {address, RST_XIP_MODE, 5'b11111}; 	// len[1:0]=11, spd=1, dir=1, hold=1
-						cmd_seq3 <= {32'h0, 5'b00100};  						// len[1:0]=00, spd=1, dir=0, hold=0
-						state <= QSPI_SEQ_BEGIN;
+                        if (QSPI_DISABLE == 0) begin    // QSPI mode
+                            cmd_seq1 <= {CMD_FRQAD, 24'h0, 5'b00011}; 		// len[1:0]=00, spd=0, dir=1, hold=1
+    						cmd_seq2 <= {address, RST_XIP_MODE, 5'b11111}; 	// len[1:0]=11, spd=1, dir=1, hold=1
+    						cmd_seq3 <= {32'h0, 5'b00100};  						// len[1:0]=00, spd=1, dir=0, hold=0
+    						state <= QSPI_SEQ_BEGIN;
+						end
+						else begin    // SPI mode
+                            cmd_seq1 <= {CMD_READ, 24'h0, 5'b00011}; 		// len[1:0]=00, spd=0, dir=1, hold=1
+    						cmd_seq2 <= {address, 8'h0, 5'b10011}; 	        // len[1:0]=10, spd=0, dir=1, hold=1
+    						cmd_seq3 <= {32'h0, 5'b00000};  						// len[1:0]=00, spd=0, dir=0, hold=0
+    						state <= QSPI_SEQ_BEGIN;
+						end
 					end
 				end
 				else begin  // read or write was not set
-					state <= QSPI_CMD_IDLE;  
+					state <= QSPI_CMD_IDLE;
 				end
 			end
-			
+
 			QSPI_SEQ_BEGIN: begin  // start first command sequence
 				{i_word, len, spd, dir, hold} <= cmd_seq1;
 				wr <= 1'b1;
 				state <= QSPI_SEQ1_BEGIN;
 			end
-			
+
 			QSPI_SEQ1_BEGIN: begin  // wait for busy to set before continuing
 				if (busy) begin
 					wr <= 1'b0;

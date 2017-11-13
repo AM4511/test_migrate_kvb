@@ -18,6 +18,9 @@
 // 1.0      01/21/2016  R. Carickhoff   Created.
 // 1.1      10/25/2017  R. Carickhoff   Updated ack circuit to emulate single read
 //                                      and write Avalon access.
+// 1.2      11/13/2017  D. Rauth        Added QSPI_DISABLE (use single SPI) option
+//                                      and changed read clock to clk/12 to
+//                                      compensate for TXB0108 settling time issue.
 //
 // Additional Comments:
 //
@@ -28,7 +31,7 @@
 // s_address{17:0] = 0x20001 - 0x20001  Write: SPI Command[7:0]
 // Refer to MR10Q010 datasheet for definition of SPI comands and status register
 
-module avalon_qspi_top ( 
+module avalon_qspi_top (
 //	global clk/reset
 	input  clk, // 125mhz
 	input  reset,
@@ -47,6 +50,8 @@ module avalon_qspi_top (
 	inout	 [3:0] qspi_dat
 );
 
+parameter QSPI_DISABLE = 0;
+
 wire	ack;
 reg	ack1=0;
 wire	spi_cmd;
@@ -64,8 +69,10 @@ assign sts_cmd = (s_address == 18'h20000);
 assign spi_cmd = (s_address == 18'h20001);
 
 // SPI Interface Control Module
-qspi_top qspi_top_inst (
-	.clk(clk),
+qspi_top #(
+    .QSPI_DISABLE(QSPI_DISABLE)
+    ) qspi_top_inst (
+    .clk(clk),
 	.reset(reset),
    .write(s_write && ~(ack && ack1)),
    .read(s_read && ~(ack && ack1)), 

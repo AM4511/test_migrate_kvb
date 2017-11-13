@@ -36,7 +36,7 @@ set_global_assignment -name ECO_REGENERATE_REPORT ON
 set_global_assignment -name PHYSICAL_SYNTHESIS_COMBO_LOGIC ON
 set_global_assignment -name PHYSICAL_SYNTHESIS_REGISTER_RETIMING ON
 set_global_assignment -name PHYSICAL_SYNTHESIS_REGISTER_DUPLICATION ON
-set_global_assignment -name SEED 5
+set_global_assignment -name SEED 4
 set_global_assignment -name ENABLE_SIGNALTAP OFF
 set_global_assignment -name TIMEQUEST_MULTICORNER_ANALYSIS ON
 set_global_assignment -name SMART_RECOMPILE OFF
