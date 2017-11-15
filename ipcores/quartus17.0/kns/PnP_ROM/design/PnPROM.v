@@ -16,7 +16,7 @@
 
 // turn off superfluous verilog processor warnings 
 // altera message_level Level1 
-// altera message_off 10034 10035 10036 10037 10230 10240 10030 
+// altera message_off 10034 10035 10036 10037 10230 10240 10030 127005
 
 module PnPROM (
                            // inputs:

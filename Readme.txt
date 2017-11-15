@@ -26,6 +26,11 @@ Revisions
       change on this revision. See the file: ./backend/set_pinout.tcl.
 2.1 - Replaced 3 LPC UARTs with PCIe UARTs. Replaced I2C master. Added CRA slave
       interface to PCIe-AvalonMM bridge. Added Git commit to scripts and PnP ROM.
+      Added one-shot timer for camera triggers. Added PIO for user LEDs. Added QAR
+      and ZIP archive generation to scripts.
+2.2 - Updated VME, QSPI, and PCIe UART IP. Finalized timing constraints.
+2.4 - Reduced MRAM controller read clock to clk/12 as work-around for issue with
+      TXB0108 auto-direction level translator.
 
 
 Requirements
@@ -46,14 +51,22 @@ Requirements
     Example: setx KVB "C:/intelFPGA/projects/kvb"
 
 
-Creating and Compiling Project
-------------------------------
+Creating and Compiling Project from Quartus
+-------------------------------------------
 1.  Start Quartus.
 2.  In the Tcl console source the following script:
 
     source "$::env(KVB)/backend/create_quartus_project.tcl"
 
 3.  Run the start compilation (Ctrl+L).
+
+
+Creating, Compiling, and Checking Project from Command-Line
+-----------------------------------------------------------
+1.  Open Command Prompt.
+2.  Execute the following command:
+
+    %KVB%\backend\create_quartus_project && %KVB%\backend\build_quartus_project && %KVB%\backend\check_messages
 
 
 Notes

@@ -17,13 +17,13 @@ set_instance_parameter_value PnPROM_0 {part_num} ${PART_NUMBER}
 set_instance_parameter_value PnPROM_0 {git_commit} ${GIT_COMMIT}
 set_instance_parameter_value PnPROM_0 {build_id} ${BUILDID}
 
-add_instance a_16550_uart_0 16550_uart 1.0
+add_instance a_16550_uart_0 16550_uart 1.1
 
-add_instance a_16550_uart_1 16550_uart 1.0
+add_instance a_16550_uart_1 16550_uart 1.1
 
-add_instance a_16550_uart_2 16550_uart 1.0
+add_instance a_16550_uart_2 16550_uart 1.1
 
-add_instance a_16550_uart_3 16550_uart 1.0
+add_instance a_16550_uart_3 16550_uart 1.1
 
 add_instance clk_50 clock_source 17.0
 set_instance_parameter_value clk_50 {clockFrequency} {50000000.0}
@@ -58,7 +58,14 @@ set_instance_parameter_value dead_rom {writable} {0}
 add_instance i2c_master_0 i2c_master 2.0
 set_instance_parameter_value i2c_master_0 {CLK_RATE} {125}
 
-add_instance pcie_hard_ip_0 altera_pcie_hard_ip 17.0
+add_instance one_shot_0 one_shot 1.0
+set_instance_parameter_value one_shot_0 {ENABLE_DEFAULT} {15}
+set_instance_parameter_value one_shot_0 {INVERT_DEFAULT} {0}
+set_instance_parameter_value one_shot_0 {MAX_PULSE} {8}
+set_instance_parameter_value one_shot_0 {TIME_DEFAULT} {125}
+set_instance_parameter_value one_shot_0 {WIDTH} {4}
+
+add_instance pcie_hard_ip_0 altera_pcie_hard_ip_ltssm 17.0
 set_instance_parameter_value pcie_hard_ip_0 {AST_LITE} {0}
 set_instance_parameter_value pcie_hard_ip_0 {BAR Type} {32\ bit\ Non-Prefetchable Not\ used Not\ used Not\ used Not\ used Not\ used}
 set_instance_parameter_value pcie_hard_ip_0 {CB_A2P_ADDR_MAP_IS_FIXED} {1}
@@ -176,9 +183,23 @@ set_instance_parameter_value pio_0 {simDoTestBenchWiring} {0}
 set_instance_parameter_value pio_0 {simDrivenValue} {0.0}
 set_instance_parameter_value pio_0 {width} {8}
 
-add_instance qspi_mram_0 qspi_mram 1.0
+add_instance pio_1 altera_avalon_pio 17.0
+set_instance_parameter_value pio_1 {bitClearingEdgeCapReg} {0}
+set_instance_parameter_value pio_1 {bitModifyingOutReg} {0}
+set_instance_parameter_value pio_1 {captureEdge} {0}
+set_instance_parameter_value pio_1 {direction} {Output}
+set_instance_parameter_value pio_1 {edgeType} {RISING}
+set_instance_parameter_value pio_1 {generateIRQ} {0}
+set_instance_parameter_value pio_1 {irqType} {LEVEL}
+set_instance_parameter_value pio_1 {resetValue} {0.0}
+set_instance_parameter_value pio_1 {simDoTestBenchWiring} {0}
+set_instance_parameter_value pio_1 {simDrivenValue} {0.0}
+set_instance_parameter_value pio_1 {width} {2}
 
-add_instance vme_intf_0 vme_intf 1.0
+add_instance qspi_mram_0 qspi_mram 1.2
+set_instance_parameter_value qspi_mram_0 {QSPI_DISABLE} {false}
+
+add_instance vme_intf_0 vme_intf 1.1
 set_instance_parameter_value vme_intf_0 {BIG_ENDIAN} {1}
 
 # exported interfaces
@@ -194,8 +215,12 @@ add_interface clk_50 clock sink
 set_interface_property clk_50 EXPORT_OF clk_50.clk_in
 add_interface i2c_master_0 conduit end
 set_interface_property i2c_master_0 EXPORT_OF i2c_master_0.conduit_end
+add_interface one_shot_0 conduit end
+set_interface_property one_shot_0 EXPORT_OF one_shot_0.conduit_end
 add_interface pcie_hard_ip_0_clocks_sim conduit end
 set_interface_property pcie_hard_ip_0_clocks_sim EXPORT_OF pcie_hard_ip_0.clocks_sim
+add_interface pcie_hard_ip_0_dl_ltssm_int conduit end
+set_interface_property pcie_hard_ip_0_dl_ltssm_int EXPORT_OF pcie_hard_ip_0.dl_ltssm_int
 add_interface pcie_hard_ip_0_fixedclk clock sink
 set_interface_property pcie_hard_ip_0_fixedclk EXPORT_OF pcie_hard_ip_0.fixedclk
 add_interface pcie_hard_ip_0_pcie_rstn conduit end
@@ -222,6 +247,8 @@ add_interface pcie_hard_ip_0_tx_out conduit end
 set_interface_property pcie_hard_ip_0_tx_out EXPORT_OF pcie_hard_ip_0.tx_out
 add_interface pio_0 conduit end
 set_interface_property pio_0 EXPORT_OF pio_0.external_connection
+add_interface pio_1 conduit end
+set_interface_property pio_1 EXPORT_OF pio_1.external_connection
 add_interface qspi_mram_0 conduit end
 set_interface_property qspi_mram_0 EXPORT_OF qspi_mram_0.conduit_end
 add_interface reset reset sink
@@ -275,6 +302,11 @@ set_connection_parameter_value pcie_hard_ip_0.bar0/i2c_master_0.avalon_slave_0 a
 set_connection_parameter_value pcie_hard_ip_0.bar0/i2c_master_0.avalon_slave_0 baseAddress {0x000200c0}
 set_connection_parameter_value pcie_hard_ip_0.bar0/i2c_master_0.avalon_slave_0 defaultConnection {0}
 
+add_connection pcie_hard_ip_0.bar0 one_shot_0.avalon_slave_0
+set_connection_parameter_value pcie_hard_ip_0.bar0/one_shot_0.avalon_slave_0 arbitrationPriority {1}
+set_connection_parameter_value pcie_hard_ip_0.bar0/one_shot_0.avalon_slave_0 baseAddress {0x00020100}
+set_connection_parameter_value pcie_hard_ip_0.bar0/one_shot_0.avalon_slave_0 defaultConnection {0}
+
 add_connection pcie_hard_ip_0.bar0 pcie_hard_ip_0.cra
 set_connection_parameter_value pcie_hard_ip_0.bar0/pcie_hard_ip_0.cra arbitrationPriority {1}
 set_connection_parameter_value pcie_hard_ip_0.bar0/pcie_hard_ip_0.cra baseAddress {0x00010000}
@@ -284,6 +316,11 @@ add_connection pcie_hard_ip_0.bar0 pio_0.s1
 set_connection_parameter_value pcie_hard_ip_0.bar0/pio_0.s1 arbitrationPriority {1}
 set_connection_parameter_value pcie_hard_ip_0.bar0/pio_0.s1 baseAddress {0x00020000}
 set_connection_parameter_value pcie_hard_ip_0.bar0/pio_0.s1 defaultConnection {0}
+
+add_connection pcie_hard_ip_0.bar0 pio_1.s1
+set_connection_parameter_value pcie_hard_ip_0.bar0/pio_1.s1 arbitrationPriority {1}
+set_connection_parameter_value pcie_hard_ip_0.bar0/pio_1.s1 baseAddress {0x00020020}
+set_connection_parameter_value pcie_hard_ip_0.bar0/pio_1.s1 defaultConnection {0}
 
 add_connection pcie_hard_ip_0.bar0 qspi_mram_0.avalon_slave_0
 set_connection_parameter_value pcie_hard_ip_0.bar0/qspi_mram_0.avalon_slave_0 arbitrationPriority {1}
@@ -309,7 +346,11 @@ add_connection pcie_hard_ip_0.pcie_core_clk dead_rom.clk1
 
 add_connection pcie_hard_ip_0.pcie_core_clk i2c_master_0.clock
 
+add_connection pcie_hard_ip_0.pcie_core_clk one_shot_0.clock
+
 add_connection pcie_hard_ip_0.pcie_core_clk pio_0.clk
+
+add_connection pcie_hard_ip_0.pcie_core_clk pio_1.clk
 
 add_connection pcie_hard_ip_0.pcie_core_clk vme_intf_0.clock
 
@@ -325,7 +366,11 @@ add_connection pcie_hard_ip_0.pcie_core_reset a_16550_uart_3.reset
 
 add_connection pcie_hard_ip_0.pcie_core_reset i2c_master_0.reset
 
+add_connection pcie_hard_ip_0.pcie_core_reset one_shot_0.reset
+
 add_connection pcie_hard_ip_0.pcie_core_reset pio_0.reset
+
+add_connection pcie_hard_ip_0.pcie_core_reset pio_1.reset
 
 add_connection pcie_hard_ip_0.pcie_core_reset vme_intf_0.reset
 
@@ -352,14 +397,7 @@ set_interconnect_requirement {$system} {qsys_mm.clockCrossingAdapter} {HANDSHAKE
 set_interconnect_requirement {$system} {qsys_mm.enableEccProtection} {FALSE}
 set_interconnect_requirement {$system} {qsys_mm.insertDefaultSlave} {FALSE}
 set_interconnect_requirement {$system} {qsys_mm.maxAdditionalLatency} {4}
-set_interconnect_requirement {mm_interconnect_0|cmd_mux_001} {qsys_mm.postTransform.pipelineCount} {0}
-set_interconnect_requirement {mm_interconnect_0|pcie_cv_hip_avmm_0_Rxm_BAR0_agent.cp/router.sink} {qsys_mm.postTransform.pipelineCount} {1}
-set_interconnect_requirement {mm_interconnect_0|pcie_cv_hip_avmm_0_Rxm_BAR0_limiter.rsp_src/pcie_cv_hip_avmm_0_Rxm_BAR0_agent.rp} {qsys_mm.postTransform.pipelineCount} {1}
 set_interconnect_requirement {mm_interconnect_0|pcie_hard_ip_0_bar0_agent.cp/router.sink} {qsys_mm.postTransform.pipelineCount} {1}
-set_interconnect_requirement {mm_interconnect_0|router.src/pcie_cv_hip_avmm_0_Rxm_BAR0_limiter.cmd_sink} {qsys_mm.postTransform.pipelineCount} {1}
-set_interconnect_requirement {mm_interconnect_1|rsp_demux.src0/rsp_mux.sink0} {qsys_mm.postTransform.pipelineCount} {0}
-set_interconnect_requirement {mm_interconnect_2|cmd_demux.src0/cmd_mux.sink0} {qsys_mm.postTransform.pipelineCount} {0}
-set_interconnect_requirement {mm_interconnect_2|cmd_mux} {qsys_mm.postTransform.pipelineCount} {0}
-set_interconnect_requirement {mm_interconnect_2|rsp_demux.src0/rsp_mux.sink0} {qsys_mm.postTransform.pipelineCount} {0}
+set_interconnect_requirement {mm_interconnect_0|router.src/pcie_hard_ip_0_bar0_limiter.cmd_sink} {qsys_mm.postTransform.pipelineCount} {1}
 
 save_system ${QSYS_NAME}.qsys

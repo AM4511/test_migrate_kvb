@@ -13,9 +13,12 @@
 //
 // Dependencies: 
 //
-// Revision: 
-// Revision 0.01 - File Created
-// Additional Comments: 
+// Version  Date        Author          Change
+// ----------------------------------------------------------------------------------
+// 1.0      01/21/2016  R. Carickhoff   Created.
+// 1.1      10/25/2016  R. Carickhoff   Synchronized IRQ inputs.
+//
+// Additional Comments:
 //
 //////////////////////////////////////////////////////////////////////////////////
 
@@ -108,6 +111,7 @@ wire		[31:0] vme_dbin;
 wire		[7:0] brd_vector;
 wire		[7:1] brd_irq_n;
 wire		[7:1] irq_n;
+reg         [7:1] vme_irq_nq;
 wire		[15:0] readdata_0;
 wire		[31:0] readdata_1;
 wire		[15:0] writedata_0;
@@ -171,17 +175,21 @@ interrupt_control interrupt_control_inst (
 );
 
 always @ (posedge clk or posedge reset) begin
-	if (reset) 
-		vme_dtack_q <= 1'b0;
-	else 
-		vme_dtack_q <= ~vme_dtack_n;  // sync to clk
+    if (reset) begin
+        vme_dtack_q <= 1'b0;
+        vme_irq_nq[7:1] <= 7'b1111111;
+    end
+    else begin  // sync to clk
+        vme_dtack_q <= ~vme_dtack_n;
+        vme_irq_nq[7:1] <= vme_irq_n[7:1];
+    end
 end
 
-assign dtack = vme_dtack_q || brd_dtack || dtack_to_err; 
+assign dtack = vme_dtack_q || brd_dtack || dtack_to_err;
 
 assign iack = AIRQ_memory && s_read;  // IACK access
 
-assign irq_n[7:1] = vme_irq_n[7:1] & brd_irq_n[7:1];  // combine vme and board interrupts
+assign irq_n[7:1] = vme_irq_nq[7:1] & brd_irq_n[7:1];  // combine vme and board interrupts
 
 assign s_waitrequest_0 = (s_read_0 || s_write_0) && ~access_done;
 assign s_waitrequest_1 = (s_read_1 || s_write_1) && ~access_done;
