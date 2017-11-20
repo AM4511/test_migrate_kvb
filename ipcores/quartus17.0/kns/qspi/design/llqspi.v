@@ -280,7 +280,6 @@ always @(posedge i_clk) begin
 			state <= `QSPI_IDLE;
 			o_valid <= 1'b0;
 			o_busy <= 1'b1;
-			o_mod <= `QSPI_MOD_SPI;
 		end 
 		else begin // Invalid states, should never get here
 			state   <= `QSPI_STOP;
