@@ -9,45 +9,21 @@
 # ##################################################################################
 
 #**************************************************************
-# Time Information
+# Time unit definition
 #**************************************************************
-
 set_time_format -unit ns -decimal_places 3 
 
 
-#**************************************************************
-# Create Reference clocks
-#**************************************************************
+########################################################################################
+########################################################################################
+###                    Create Reference clocks                                       ###
+########################################################################################
+########################################################################################
 create_clock -name {clkin_125m_p} -period 8.000 -waveform {0.000 4.000} [get_ports {clkin_125m_p}]
-create_clock -name {lpc_clk} -period 41.667 -waveform {0.000 20.833} [get_ports {lpc_clk}]
 create_clock -name {refclk_pcie} -period 10.000 -waveform {0.000 5.000} { refclk }
 
 
-#**************************************************************
-# Create UART Generated Clock
-#**************************************************************
-# The 4 UART reference clocks
-create_generated_clock -name {uart_ref_clk_0} -source [get_ports {lpc_clk}] -edges {1 13 27}  [get_registers {u1|\G_UART:0:bridge|uart_clk}] 
-create_generated_clock -name {uart_ref_clk_1} -source [get_ports {lpc_clk}] -edges {1 13 27}  [get_registers {u1|\G_UART:1:bridge|uart_clk}] 
-create_generated_clock -name {uart_ref_clk_2} -source [get_ports {lpc_clk}] -edges {1 13 27}  [get_registers {u1|\G_UART:2:bridge|uart_clk}] 
-create_generated_clock -name {uart_ref_clk_3} -source [get_ports {lpc_clk}] -edges {1 13 27}  [get_registers {u1|\G_UART:3:bridge|uart_clk}] 
-
-
-#**************************************************************
-# Create SPI Generated Clock
-#**************************************************************
-# SPI Read clock:  50 MHz/4
-# SPI Write clock: 50 MHz/2
-#
-# Note: o_sclk is an inverted clock. Data on falling edge this
-#       is why we have to use the option -invert in the
-#       create_generated_clock command
-
-
-set CLK50MHz   {reconfig_pll|altpll_component|auto_generated|pll1|clk[0]}
-create_generated_clock -name {qspi_clk_read}  -source $CLK50MHz -divide_by 4 -multiply_by 1 -invert [get_pins { u0|qspi_mram_0|qspi_top_inst|llqspi_inst|o_sck|q }]
-create_generated_clock -name {qspi_clk_write} -source $CLK50MHz -divide_by 2 -multiply_by 1 -invert -add [get_pins { u0|qspi_mram_0|qspi_top_inst|llqspi_inst|o_sck|q }]
-
+########################################################################################
 
 #**************************************************************
 # Derive PLL Clock
@@ -65,103 +41,113 @@ set_false_path -from [get_registers {altgx_reconfig_inst|*|busy}]
 
 ########################################################################################
 ########################################################################################
-####                       MRAM IO Timing constraints                                ###
+####                      I2C                                                        ###
 ########################################################################################
 ########################################################################################
-# SPI Read clock:  50 MHz/4
-set MRAM_READ_SCK_PERIOD 80.00
-create_clock -name {mram_read_sck_virtual} -period  $MRAM_READ_SCK_PERIOD
+## IO timings are controled in verilog based on the src clock period precision.
+## For such a slow interface this is sufficient. We lock the input/output FF location 
+## of these  IO in the IO Ring using the following assignments
+##
+## set_instance_assignment -name FAST_INPUT_REGISTER ON -to local_i2c_s*
+## set_instance_assignment -name FAST_OUTPUT_REGISTER ON -to local_i2c_s*
+##
+## in the .qsf file
+set_min_delay -to [get_ports {local_i2c_sda}] 0.000
+set_max_delay -to [get_ports {local_i2c_sda}] 7.500
+set_min_delay -to [get_ports {local_i2c_scl}] 0.000
+set_max_delay -to [get_ports {local_i2c_scl}] 7.500
 
-
-# SPI Write clock: 50 MHz/2
-set MRAM_WRITE_SCK_PERIOD 40.00
-create_clock -name {mram_write_sck_virtual} -period  $MRAM_WRITE_SCK_PERIOD
-
-# Need to remove unrelated clock domain from analysis
-set_false_path -from {mram_read_sck_virtual} -to {qspi_clk_write}
-
-
-########################################################################################
-#
-# FPGA Clock output delay (T_kvb) 4.40 ns (FlipFlop to mram_sck)
-#
-# Everspin MR10Q010
-# T_cko = tv = Output Valid = 7ns max + (80ns/2) = 47 ns (Data generated on the FALLING EDGE (80ns/2))
-#
-# Texas Instruments TXB0108
-# T_pd(A->B) 1.3 ns min; 6.8 ns max
-# T_pd(B->A) 0.8 ns min; 7.6 ns max
-# T_sk(O)    0.6 ns max; (Channel to channel skew)
-#
-# PCB traces delays
-#
-#
-#
-#
-# Max Input delay = T_kvb   + T_pd(B->A)max  + MR10Q010[Falling edge + T_cko]      + T_pd(A->B)max 
-#                 = 4.40 ns + 7.6ns          + ($MRAM_READ_SCK_PERIOD/2   + 7ns  ) +  6.8 ns
-#                 = 45.8 ns
-#
-# Min Input delay = T_kvb   + T_pd(B->A)min  + MR10Q010[Falling edge + T_cko]      + T_pd(A->B)min
-#                 = 4.40 ns + 0.8ns          + ($MRAM_READ_SCK_PERIOD/2   + 0ns  ) + 1.3ns
-#                 = 26.5 ns
-#                
-########################################################################################
-set MAX_INPUT_DELAY_MRAM_IO 45.8
-set MIN_INPUT_DELAY_MRAM_IO 26.5
-
-set_input_delay -max -clock { mram_read_sck_virtual } ${MAX_INPUT_DELAY_MRAM_IO} [get_ports {mram_io[*]}]
-set_input_delay -min -clock { mram_read_sck_virtual } ${MIN_INPUT_DELAY_MRAM_IO} [get_ports {mram_io[*]}]
+set_min_delay -from [get_ports {local_i2c_sda}] 0.000
+set_max_delay -from [get_ports {local_i2c_sda}] 3.500
+set_min_delay -from [get_ports {local_i2c_scl}] 0.000
+set_max_delay -from [get_ports {local_i2c_scl}] 3.500
 
 
 ########################################################################################
-#
-# Everspin MR10Q010
-# tsu = 2ns min 
-# thold = 5ns min 
-#
-# Texas Instruments TXB0108
-# tpd(A->B) 1.3 ns min; 6.8 ns max
-# tpd(B->A) 0.8 ns min; 7.6 ns max
-# tsk(O)    0.6 ns max; (Channel to channel skew)
-#
-# PCB traces delays
-# 
-# 
-# Max output delay = T(data path max) - T(clock path min) 
-#                  = (tpd(B->A)max + tsu) - (tpd(B->A)max -  tsk(O))
-#                  = (7.6 + 2) - (7.6 - 0.6)
-#                  = 2.6 ns
-#
-# Min output delay = T(data path min) - T(clock path max)
-#                  = T_data_path_min + thold - (T_data_path_min + tsk(O))
-#                  = (0.8 + 5) - (0.8 + 0.6) 
-#                  =  4.4 ns
 ########################################################################################
-set MAX_OUTUT_DELAY 2.6
-set MIN_OUTUT_DELAY 4.4
-
-set_output_delay -max -clock { mram_write_sck_virtual } ${MAX_OUTUT_DELAY} [get_ports {mram_io[*]}]
-set_output_delay -min -clock { mram_write_sck_virtual } ${MIN_OUTUT_DELAY} [get_ports {mram_io[*]}]
-
+####                      COM PORTS                                                  ###
 ########################################################################################
 ########################################################################################
-####                       VME IO Timing Constraints                                 ###
+## IO timings are controled in verilog based on the src clock period precision.
+## For such a slow interface this is sufficient. Unfortunately because of the RTL design
+## it is not possible to use FAST INPUT/OUTPUT register assignments in the .qsf
+
+## RX side
+set_min_delay -from [get_ports {ser1_rx}] 0.000
+set_max_delay -from [get_ports {ser1_rx}] 6.000
+
+set_min_delay -from [get_ports {ser2_rx}] 0.000
+set_max_delay -from [get_ports {ser2_rx}] 6.000
+
+set_min_delay -from [get_ports {ser3_rx}] 0.000
+set_max_delay -from [get_ports {ser3_rx}] 6.000
+
+set_min_delay -from [get_ports {ser4_rx}] 0.000
+set_max_delay -from [get_ports {ser4_rx}] 6.000
+
+## TX side
+set_min_delay -to [get_ports {ser1_tx}] 0.000
+set_max_delay -to [get_ports {ser1_tx}] 12.000
+
+set_min_delay -to [get_ports {ser2_tx}] 0.000
+set_max_delay -to [get_ports {ser2_tx}] 12.000
+
+set_min_delay -to [get_ports {ser3_tx}] 0.000
+set_max_delay -to [get_ports {ser3_tx}] 12.000
+
+set_min_delay -to [get_ports {ser4_tx}] 0.000
+set_max_delay -to [get_ports {ser4_tx}] 12.000
+
+set_min_delay -to [get_ports {ser4_rts_n}] 0.000
+set_max_delay -to [get_ports {ser4_rts_n}] 12.000
+
+
 ########################################################################################
 ########################################################################################
-# All state machine timing is done with 8ns core clk.
-# The state machine generates the AS# 48ns after the VME data and address. The VME spec is 35ns. 
-# The state machine generates the DS# 8ns after AS#.  The VME spec is 0ns.
-# The timimg constraint below guarantees that the skew between any VME output signal will be 6nsec or less.
-# This value can be as high as 8ns and still meet the max skew requirements.
+####                      GPIOs                                                      ###
+########################################################################################
+########################################################################################
+set_false_path -from [get_ports {gpio*}]
+set_false_path -to [get_ports {gpio*}]
 
-set_max_skew -from_clock {u0|pcie_hard_ip_0|*|coreclkout} -to [get_ports vme*] 6.0  
 
-# The state machine waits for dtack to end a read or write cycle.  When dtack is detected after syncing it to clk, 
-# the avalon read or write cycle will end on the next clk cycle.  This allows enough time for read data to settle.
-# When the avalon read or write cycle ends the DS0#, DS1# and AS# are then deactivated.
-# The timimg constraint below guarantees that the skew between any VME input signal will be 3nsec or less.
-# This value can be as high as 8ns and still meet the max skew requirements.
+########################################################################################
+########################################################################################
+####                  cpcis_pcie_clken_n[6:0]                                        ###
+########################################################################################
+########################################################################################
+# On Input: PCIe clken detect. These are static signal
+set_false_path -from [get_ports {cpcis_pcie_clken_n*}]
+set_false_path -from [get_ports {cpcis_pcie_clken_n*}]
 
-set_max_skew -from [get_ports vme*] -to_clock {u0|pcie_hard_ip_0|*|coreclkout} 3.0  
+# On Output: sync_clk
+set_min_delay -to [get_ports {cpcis_pcie_clken_n*}] 0.000
+set_max_delay -to [get_ports {cpcis_pcie_clken_n*}] 5.500
+
+set_false_path -to  [get_ports {cpcis_pcie_clken_n*}] 
+
+########################################################################################
+########################################################################################
+####                  pch_clk_req_n[*]                                               ###
+########################################################################################
+########################################################################################
+# On Output: sync_clk
+set_false_path -to [get_ports {pch_clk_req_n[*]}]
+
+
+########################################################################################
+########################################################################################
+####                       cam_trigger[*]                                            ###
+########################################################################################
+########################################################################################
+# Camera trigger are false path. Resync on input in Nexis FPGA
+set_false_path -to [get_ports {cam_trigger*}]
+
+
+########################################################################################
+########################################################################################
+####                       prog_led[*]                                               ###
+########################################################################################
+########################################################################################
+set_false_path -to [get_ports {prog_led_n[*]}]
 
