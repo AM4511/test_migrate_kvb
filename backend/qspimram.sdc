@@ -1,6 +1,6 @@
 # ##################################################################################
 # File         : qspimram.sdc
-# Description  : Timing constraintes of the KVB FPGA
+# Description  : Timing constraintes for the  QSPI MRAM IP from the KVB FPGA
 # ##################################################################################
 
 #**************************************************************
@@ -19,10 +19,10 @@ set MRAM_SRC_SCK_PERIOD 20.00
 set CLK50MHz   {reconfig_pll|altpll_component|auto_generated|pll1|clk[0]}
 
 
-# Define the read clock
+# Define the QSPI read clock (Generated clock in the file llqspi.v)
 create_generated_clock -name {mram_sck_read}  -source $CLK50MHz -divide_by 4 -invert  -phase 180 -add  [get_pins { u0|qspi_mram_0|qspi_top_inst|llqspi_inst|o_sck|q }]
 
-# Define the write clock
+# Define the write clock (Generated clock in the file llqspi.v)
 create_generated_clock -name {mram_sck_write} -source $CLK50MHz -divide_by 2 -invert  -phase 180 -add [get_pins { u0|qspi_mram_0|qspi_top_inst|llqspi_inst|o_sck|q }]
 
 set_clock_groups -asynchronous -group [get_clocks {mram_sck_read}] -group [get_clocks {mram_sck_write}]
@@ -36,7 +36,7 @@ set MRAM_WRITE_SCK_PERIOD [expr $MRAM_SRC_SCK_PERIOD * 2]
 
 
 #**************************************************************
-# mram_cs_n IO
+# PORT: mram_cs_n (IO constraints)
 #**************************************************************
 ## mram_cs_n data path
 set pcb_delay_mram_cs_n 0.0
@@ -63,7 +63,7 @@ set_output_delay -clock  mram_sck_read -add_delay -max $output_delay_max -refere
 
 
 #**************************************************************
-# mram_io
+# PORT: mram_io (IO constraints)
 #**************************************************************
 set pcb_delay_mram_io_max 0.0
 set pcb_delay_mram_io_min 0.0

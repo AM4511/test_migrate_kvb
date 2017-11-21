@@ -12,7 +12,16 @@ derive_clock_uncertainty
 create_generated_clock -name {uart_ref_clk_0} -source [get_ports {lpc_clk}] -edges {1 13 27}  [get_registers {u1|\G_UART:0:bridge|uart_clk}] 
 create_generated_clock -name {uart_ref_clk_1} -source [get_ports {lpc_clk}] -edges {1 13 27}  [get_registers {u1|\G_UART:1:bridge|uart_clk}] 
 create_generated_clock -name {uart_ref_clk_2} -source [get_ports {lpc_clk}] -edges {1 13 27}  [get_registers {u1|\G_UART:2:bridge|uart_clk}] 
-create_generated_clock -name {uart_ref_clk_3} -source [get_ports {lpc_clk}] -edges {1 13 27}  [get_registers {u1|\G_UART:3:bridge|uart_clk}] 
+create_generated_clock -name {uart_ref_clk_3} -source [get_ports {lpc_clk}] -edges {1 13 27}  [get_registers {u1|\G_UART:3:bridge|uart_clk}]
+
+
+########################################################################################
+########################################################################################
+####                      UART false paths                                           ###
+########################################################################################
+set_false_path -from [get_keepers *u1\|\\G_UART:*:uart\|MCR\[4\]*]
+set_false_path -from [get_keepers *u1\|\\G_UART:*:uart\|LCR\[6\]*]
+set_false_path -from [get_keepers *u1\|\\G_UART:*:uart\|TXD_FF*]
 
 
 ########################################################################################
@@ -74,5 +83,3 @@ set output_delay_min [expr $pcb_delay_serirq - $pch_Thold_serirq - $pcb_delay_lp
 
 set_output_delay -clock lpc_clk  -max $output_delay_max [get_ports {serirq}]
 set_output_delay -clock lpc_clk  -min $output_delay_min [get_ports {serirq}]
-
-

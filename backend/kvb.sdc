@@ -1,16 +1,10 @@
-# ##################################################################################
+##################################################################################
 # File         : kvb.sdc
-# Description  : Timing constraintes of the KVB FPGA
+# Description  : Timing constraintes for the KVB FPGA
 #
-# Example in the Quartus TCL console:
-#
-# tcl> source "D:/work/cpuskl/backend/create_quartus_project.tcl"
-#
-# ##################################################################################
+##################################################################################
 
-#**************************************************************
 # Time unit definition
-#**************************************************************
 set_time_format -unit ns -decimal_places 3 
 
 
@@ -41,10 +35,10 @@ set_false_path -from [get_registers {altgx_reconfig_inst|*|busy}]
 
 ########################################################################################
 ########################################################################################
-####                      I2C                                                        ###
+####                                  I2C                                            ###
 ########################################################################################
 ########################################################################################
-## IO timings are controled in verilog based on the src clock period precision.
+## IO timings are managed in verilog based on the src clock period precision.
 ## For such a slow interface this is sufficient. We lock the input/output FF location 
 ## of these  IO in the IO Ring using the following assignments
 ##
@@ -68,7 +62,7 @@ set_max_delay -from [get_ports {local_i2c_scl}] 3.500
 ####                      COM PORTS                                                  ###
 ########################################################################################
 ########################################################################################
-## IO timings are controled in verilog based on the src clock period precision.
+## IO timings are managed in verilog based on the src clock period precision.
 ## For such a slow interface this is sufficient. Unfortunately because of the RTL design
 ## it is not possible to use FAST INPUT/OUTPUT register assignments in the .qsf
 
@@ -140,7 +134,7 @@ set_false_path -to [get_ports {pch_clk_req_n[*]}]
 ####                       cam_trigger[*]                                            ###
 ########################################################################################
 ########################################################################################
-# Camera trigger are false path. Resync on input in Nexis FPGA
+# Camera triggers are false path. They are resync on input in the Nexis FPGA
 set_false_path -to [get_ports {cam_trigger*}]
 
 
