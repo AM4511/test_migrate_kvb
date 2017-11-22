@@ -56,6 +56,16 @@ set_max_delay -from [get_ports {local_i2c_sda}] 3.500
 set_min_delay -from [get_ports {local_i2c_scl}] 0.000
 set_max_delay -from [get_ports {local_i2c_scl}] 3.500
 
+# The port local_i2c_sda is resynchronized in MainSM.sdc
+# before being used so we can declare it as a false path.
+set_false_path -from [get_ports {local_i2c_sda}]
+
+# The port local_i2c_scl is resynchronized in MainSM.sdc
+# before being used so we can declare it as a false path.
+# !!!!!!!NOTE TO VERIFY!!!! POTENTIAL TIMING ISSUE HERE
+# AS divCnt USES A NON RESYNCHRONYZE VERSION OF local_i2c_scl
+set_false_path -from [get_ports {local_i2c_scl}]
+
 
 ########################################################################################
 ########################################################################################
