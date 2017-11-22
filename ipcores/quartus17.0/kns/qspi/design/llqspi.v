@@ -271,8 +271,7 @@ always @(posedge i_clk) begin
 			o_valid <= 1'b0; // Output may have just been valid, but no more
 			o_busy  <= 1'b1; // Still busy till port is clear
 			state <= `QSPI_STOP_B;
-			o_mod <= `QSPI_MOD_SPI;
-		end 
+		end
 		else if (state == `QSPI_STOP_B) begin
 			o_cs_n <= 1'b1;
 			o_sck <= 1'b1;
@@ -281,7 +280,6 @@ always @(posedge i_clk) begin
 			state <= `QSPI_IDLE;
 			o_valid <= 1'b0;
 			o_busy <= 1'b1;
-			o_mod <= `QSPI_MOD_SPI;
 		end 
 		else begin // Invalid states, should never get here
 			state   <= `QSPI_STOP;

@@ -21,6 +21,8 @@
 // 1.2      11/13/2017  D. Rauth        Added QSPI_DISABLE (use single SPI) option
 //                                      and changed read clock to clk/12 to
 //                                      compensate for TXB0108 settling time issue.
+// 1.3      11/15/2017  R. Carickhoff   Wait until qspi_cs_n de-asserted before
+//                                      driving qspi_dat output (o_mod to 0).
 //
 // Additional Comments:
 //

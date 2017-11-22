@@ -31,6 +31,7 @@ Revisions
 2.2 - Updated VME, QSPI, and PCIe UART IP. Finalized timing constraints.
 2.4 - Reduced MRAM controller read clock to clk/12 as work-around for issue with
       TXB0108 auto-direction level translator.
+2.5 - Fix MRAM controller QSPI bus contention issue during reads.
 
 
 Requirements
