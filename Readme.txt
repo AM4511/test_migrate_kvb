@@ -24,14 +24,15 @@ Revisions
 2.0 - Matrox take over. Contains all files for creating the KVB FPGA firmware
       for the CPUSKL board PCB 7521_01. Note that there is a pinout definition
       change on this revision. See the file: ./backend/set_pinout.tcl.
-2.1 - Replaced 3 LPC UARTs with PCIe UARTs. Replaced I2C master. Added CRA slave
-      interface to PCIe-AvalonMM bridge. Added Git commit to scripts and PnP ROM.
-      Added one-shot timer for camera triggers. Added PIO for user LEDs. Added QAR
+2.1 - Replace 3 LPC UARTs with PCIe UARTs. Replace I2C master. Add CRA slave
+      interface to PCIe-AvalonMM bridge. Add Git commit to scripts and PnP ROM.
+      Add one-shot timer for camera triggers. Add PIO for user LEDs. Add QAR
       and ZIP archive generation to scripts.
-2.2 - Updated VME, QSPI, and PCIe UART IP. Finalized timing constraints.
-2.4 - Reduced MRAM controller read clock to clk/12 as work-around for issue with
+2.2 - Update VME, QSPI, and PCIe UART IP. Add VME timing constraints.
+2.4 - Reduce MRAM controller read clock to clk/12 as work-around for issue with
       TXB0108 auto-direction level translator.
 2.5 - Fix MRAM controller QSPI bus contention issue during reads.
+2.6 - Add final IO timing constraints.
 
 
 Requirements

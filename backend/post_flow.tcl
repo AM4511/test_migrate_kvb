@@ -81,6 +81,7 @@ set archive_dirs_no_recursive "
 "
 set archive_dirs_recursive "
     ${BACKEND_PATH}
+    ${DOC_PATH}
     ${HDL_PATH}
     ${IPCORE_LIB_PATH}
     ${FIRMWARE_PATH}

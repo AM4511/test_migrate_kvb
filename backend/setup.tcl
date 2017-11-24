@@ -25,7 +25,7 @@ puts "Setting the KVB project environment variable"
 ########################################################################################
 set FPGA_NAME        "kvb"
 set REVMAJOR         "2"                            ; # must be < 655
-set REVMINOR         "5"                            ; # must be < 100
+set REVMINOR         "6"                            ; # must be < 100
 set REVISION         "v${REVMAJOR}_${REVMINOR}"
 set QUARTUS_VERSION  "quartus17.0"
 set QSYS_SYSTEM_NAME "${FPGA_NAME}_system"
@@ -43,6 +43,7 @@ set QUARTUS_HOME      "$quartus(quartus_rootpath)"
 set ARCHIVE_PATH      "${ROOT_PATH}/archive"
 set HDL_PATH          "${ROOT_PATH}/design"
 set BACKEND_PATH      "${ROOT_PATH}/backend"
+set DOC_PATH          "${ROOT_PATH}/doc"
 set IPCORE_LIB_PATH   "${ROOT_PATH}/ipcores/${QUARTUS_VERSION}"
 set TCL_PATH          "${ROOT_PATH}/util/tcl"
 set WORK_PATH         "${ROOT_PATH}/quartus/${QUARTUS_VERSION}/${PROJECT_NAME}"
