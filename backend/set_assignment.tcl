@@ -98,3 +98,49 @@ set_global_assignment -name GENERATE_JBC_FILE ON
 set_global_assignment -name PRE_FLOW_SCRIPT_FILE quartus_sh:${PRE_FLOW_SCRIPT_FILE}
 # set_global_assignment -name POST_MODULE_SCRIPT_FILE quartus_sh:next.tcl
 set_global_assignment -name POST_FLOW_SCRIPT_FILE quartus_sh:${POST_FLOW_SCRIPT_FILE}
+
+# IO assignments
+
+
+set_instance_assignment -name FAST_INPUT_REGISTER ON -to lpc_ad[*]
+set_instance_assignment -name FAST_OUTPUT_REGISTER ON -to lpc_ad[*]
+
+
+
+set_instance_assignment -name FAST_INPUT_REGISTER ON -to local_i2c_scl
+set_instance_assignment -name FAST_INPUT_REGISTER ON -to local_i2c_sda
+set_instance_assignment -name FAST_OUTPUT_REGISTER ON -to local_i2c_scl
+set_instance_assignment -name FAST_OUTPUT_REGISTER ON -to local_i2c_sda
+
+# set_instance_assignment -name FAST_INPUT_REGISTER ON -to ser1_rx
+# set_instance_assignment -name FAST_INPUT_REGISTER ON -to ser2_rx
+# set_instance_assignment -name FAST_INPUT_REGISTER ON -to ser3_rx
+# set_instance_assignment -name FAST_INPUT_REGISTER ON -to ser4_rx
+	
+# set_instance_assignment -name FAST_OUTPUT_REGISTER ON -to ser1_tx
+# set_instance_assignment -name FAST_OUTPUT_REGISTER ON -to ser2_tx
+# set_instance_assignment -name FAST_OUTPUT_REGISTER ON -to ser3_tx
+# set_instance_assignment -name FAST_OUTPUT_REGISTER ON -to ser4_tx
+# set_instance_assignment -name FAST_OUTPUT_REGISTER ON -to ser4_rts_n
+
+
+# set_instance_assignment -name FAST_INPUT_REGISTER ON -to gpio[0]
+# set_instance_assignment -name FAST_INPUT_REGISTER ON -to gpio[1]
+# set_instance_assignment -name FAST_INPUT_REGISTER ON -to gpio[2]
+# set_instance_assignment -name FAST_INPUT_REGISTER ON -to gpio[3]
+# set_instance_assignment -name FAST_INPUT_REGISTER ON -to gpio[4]
+# set_instance_assignment -name FAST_INPUT_REGISTER ON -to gpio[5]
+# set_instance_assignment -name FAST_INPUT_REGISTER ON -to gpio[6]
+# set_instance_assignment -name FAST_INPUT_REGISTER ON -to gpio[7]
+
+set_instance_assignment -name FAST_OUTPUT_REGISTER ON -to gpio[0]
+set_instance_assignment -name FAST_OUTPUT_REGISTER ON -to gpio[1]
+set_instance_assignment -name FAST_OUTPUT_REGISTER ON -to gpio[2]
+set_instance_assignment -name FAST_OUTPUT_REGISTER ON -to gpio[3]
+set_instance_assignment -name FAST_OUTPUT_REGISTER ON -to gpio[4]
+set_instance_assignment -name FAST_OUTPUT_REGISTER ON -to gpio[5]
+set_instance_assignment -name FAST_OUTPUT_REGISTER ON -to gpio[6]
+set_instance_assignment -name FAST_OUTPUT_REGISTER ON -to gpio[7]
+
+set_instance_assignment -name FAST_OUTPUT_REGISTER ON -to mram_sck
+set_instance_assignment -name FAST_OUTPUT_REGISTER ON -to mram_cs_n
