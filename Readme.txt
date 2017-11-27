@@ -33,6 +33,7 @@ Revisions
       TXB0108 auto-direction level translator.
 2.5 - Fix MRAM controller QSPI bus contention issue during reads.
 2.6 - Add final IO timing constraints.
+2.7 - Fix I2C master controller clock domain crossing issue.
 
 
 Requirements

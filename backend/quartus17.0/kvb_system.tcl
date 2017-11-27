@@ -55,7 +55,7 @@ set_instance_parameter_value dead_rom {useNonDefaultInitFile} {1}
 set_instance_parameter_value dead_rom {useShallowMemBlocks} {0}
 set_instance_parameter_value dead_rom {writable} {0}
 
-add_instance i2c_master_0 i2c_master 2.0
+add_instance i2c_master_0 i2c_master 2.1
 set_instance_parameter_value i2c_master_0 {CLK_RATE} {125}
 
 add_instance one_shot_0 one_shot 1.0
