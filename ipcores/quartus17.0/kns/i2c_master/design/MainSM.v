@@ -22,12 +22,13 @@
 //    IDT 89HP0508P Datasheet
 //
 //  Revision History :
-//    RC 5/31/17 - Added separate SDA hold times for each mode. 
-//    KP 6/5/17  - Fix multi-byte Read bug which caused I2C bus hang. SDA
-//                 stayed low, because the last read byte was not NACK'ed.
-//    KP 6/7/17  - Add bus hang recovery feature to output 9 SCL cycles with
-//                 SDA not being driven.
-//    KP 6/9/17  - Fix indents by replacing TABs with spaces.
+//    RC 05/31/17 - Added separate SDA hold times for each mode.
+//    KP 06/05/17 - Fix multi-byte Read bug which caused I2C bus hang. SDA
+//                  stayed low, because the last read byte was not NACK'ed.
+//    KP 06/07/17 - Add bus hang recovery feature to output 9 SCL cycles with
+//                  SDA not being driven.
+//    KP 06/09/17 - Fix indents by replacing TABs with spaces.
+//    DR 11/27/17 - Fix clock domain crossing issue with SCL_in.
 // ****************************************************************************
 
 module MainSM(
@@ -229,7 +230,7 @@ always @(posedge clk or negedge rstn) begin
         if(divCnt >= divTC) begin       // roll over at terminal cnt 
             divCnt <= 0;
         end else if(divCnt == sclHi+1'b1) begin
-            divCnt <= divCnt + SCL_in;  // don't count if SCL still low
+            divCnt <= divCnt + SCL_in2; // don't count if SCL still low
                                         //  (slave maybe stretching clock)
         end else if(divCnt == sclLo) begin
             divCnt <= divCnt + 1'b1;
