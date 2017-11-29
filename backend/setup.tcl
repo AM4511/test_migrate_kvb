@@ -69,35 +69,85 @@ if {[lsearch $auto_path ${TDOM_PATH}] < 0} {
 ###################################################################################
 set current_directory [pwd]
 cd ${ROOT_PATH}
-set git_get_commit_cmd "git -C ${ROOT_PATH} rev-list --max-count=1 HEAD"
-set git_update_index_cmd "git update-index"
-set git_check_index_cmd "git diff-index --name-only HEAD"
-set git_check_untracked_cmd "git ls-files --exclude-standard --others --exclude-from ${BACKEND_PATH}/gitexclude.txt"
-puts "SYSTEM CALL: exec $git_get_commit_cmd"
-if {[catch {exec {*}${git_get_commit_cmd}} GIT_COMMIT_LONG] == 0} {
-   puts "SYSTEM CALL: exec $git_update_index_cmd"
-   exec {*}${git_update_index_cmd}
-   puts "SYSTEM CALL: exec $git_check_index_cmd"
-   catch {exec {*}${git_check_index_cmd}} GIT_INDEX_CHECK
-   if {[llength ${GIT_INDEX_CHECK}] == 0} {
-      puts "SYSTEM CALL: exec $git_check_untracked_cmd"
-      catch {exec {*}${git_check_untracked_cmd}} GIT_UNTRACKED_CHECK
-         if {[llength ${GIT_UNTRACKED_CHECK}] == 0} {
-            set GIT_COMMIT [string range $GIT_COMMIT_LONG 0 6]
-            puts "GIT_COMMIT =  ${GIT_COMMIT}"
-         } else {
-         puts "GIT_COMMIT =  0 <untracked files>"
-         puts ${GIT_UNTRACKED_CHECK}
-         set GIT_COMMIT "0"
-         }
-   } else {
-      puts "GIT_COMMIT =  0 <uncommited changes>"
-      puts ${GIT_INDEX_CHECK}
-      set GIT_COMMIT "0"
-   }
-} else {
-   puts "GIT_COMMIT =  0 <error: ${GIT_COMMIT_LONG}>"
-   set GIT_COMMIT "0"
+
+# set git_get_commit_cmd "git -C ${ROOT_PATH} rev-list --max-count=1 HEAD"
+# set git_update_index_cmd "git update-index"
+# set git_check_index_cmd "git diff-index --name-only HEAD"
+# set git_check_untracked_cmd "git ls-files --exclude-standard --others --exclude-from ${BACKEND_PATH}/gitexclude.txt"
+# puts "SYSTEM CALL: exec $git_get_commit_cmd"
+# if {[catch {exec {*}${git_get_commit_cmd}} GIT_COMMIT_LONG] == 0} {
+#    puts "SYSTEM CALL: exec $git_update_index_cmd"
+#    exec {*}${git_update_index_cmd}
+#    puts "SYSTEM CALL: exec $git_check_index_cmd"
+#    catch {exec {*}${git_check_index_cmd}} GIT_INDEX_CHECK
+#    if {[llength ${GIT_INDEX_CHECK}] == 0} {
+#       puts "SYSTEM CALL: exec $git_check_untracked_cmd"
+#       catch {exec {*}${git_check_untracked_cmd}} GIT_UNTRACKED_CHECK
+#          if {[llength ${GIT_UNTRACKED_CHECK}] == 0} {
+#             set GIT_COMMIT [string range $GIT_COMMIT_LONG 0 6]
+#             puts "GIT_COMMIT =  ${GIT_COMMIT}"
+#          } else {
+#          puts "GIT_COMMIT =  0 <untracked files>"
+#          puts ${GIT_UNTRACKED_CHECK}
+#          set GIT_COMMIT "0"
+#          }
+#    } else {
+#       puts "GIT_COMMIT =  0 <uncommited changes>"
+#       puts ${GIT_INDEX_CHECK}
+#       set GIT_COMMIT "0"
+#    }
+# } else {
+#    puts "GIT_COMMIT =  0 <error: ${GIT_COMMIT_LONG}>"
+#    set GIT_COMMIT "0"
+# }
+
+
+#####################################################################
+## Retrieve the GIT SHA1 ID
+#####################################################################
+proc retrieve_git_sha {} {
+    ################################################################
+    ## Check dirty tree (Modified files)
+    ################################################################
+	set git_cmd "git diff --shortstat"
+    post_message -type info "Running ${git_cmd}"
+	
+	if {[catch {exec {*}${git_cmd}} result]} {
+        post_message -type error "While running ${git_cmd} <error: ${result}>"
+		return 0
+    } elseif {$result != ""} {
+        post_message -type critical_warning "GIT dirty tree: $result"
+	}
+
+    ################################################################
+    ## Check untracked files
+    ################################################################
+	set git_cmd "git status --porcelain"
+    post_message -type info "Running ${git_cmd}"
+	
+	if {[catch {exec {*}${git_cmd}} result]} {
+        post_message -type error "While running ${git_cmd} <error: ${result}>"
+		return 0
+    } elseif {$result != ""} {
+        post_message -type critical_warning "GIT reported untracked files"
+	}
+
+
+	################################################################
+	## Retrieve the Git SHA
+	################################################################
+	set git_cmd "git rev-parse --short=7 HEAD"
+	if {[catch {exec {*}${git_cmd}} result]} {
+        post_message -type error "While running ${git_cmd} <error: ${result}>"
+        return 0
+	} else {
+		post_message -type info "Git SHA1: ${result}"
+		return ${result}
+	}
+
 }
+
+set GIT_COMMIT [retrieve_git_sha]
+
 cd ${current_directory}
 
