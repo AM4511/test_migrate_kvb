@@ -50,7 +50,6 @@ set WORK_PATH         "${ROOT_PATH}/quartus/${QUARTUS_VERSION}/${PROJECT_NAME}"
 set FIRMWARE_PATH     "${WORK_PATH}/firmwares"
 set QSYS_PATH         "${WORK_PATH}/${QSYS_NAME}"
 set TDOM_PATH         "${BACKEND_PATH}/tdom/win64/tdom0.8.3"
-set ZIP_PATH          "${BACKEND_PATH}/zip/win64/zip3.1c"
 
 
 ########################################################################################

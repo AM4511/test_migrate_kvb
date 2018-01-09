@@ -34,22 +34,41 @@ set QSYS_PATH [join [list ${CURRENT_ROOT_PATH} [string range ${QSYS_PATH} [strin
 set FIRMWARE_PATH [join [list ${CURRENT_ROOT_PATH} [string range ${FIRMWARE_PATH} [string length ${ROOT_PATH}] [string length ${FIRMWARE_PATH}]]] ""]
 set WORK_PATH [join [list ${CURRENT_ROOT_PATH} [string range ${WORK_PATH} [string length ${ROOT_PATH}] [string length ${WORK_PATH}]]] ""]
 
+# determine revision
+set REVISION_NAME [get_current_revision [file join ${WORK_PATH} ${PROJECT_NAME}]]
+
 
 ####################################################################################
 # QUARTUS Tools
 ####################################################################################
 set QUARTUS_CPF_EXE [file join ${QUARTUS_HOME} "bin64/quartus_cpf"]
 set QUARTUS_SH_EXE [file join ${QUARTUS_HOME} "bin64/quartus_sh"]
-set ZIP_EXE [file join ${ZIP_PATH} "zip.exe"]
+set ZIP_EXE [file join ${QUARTUS_HOME} "bin64/cygwin/bin/zip.exe"]
+set MD5SUM_EXE [file join ${QUARTUS_HOME} "bin64/cygwin/bin/md5sum.exe"]
 
 
 ###################################################################################
-# Generate JTAG indirect configuration file
+# Generate Programmer Object File (POF)
 ###################################################################################
-set REVISION_NAME [get_current_revision [file join ${WORK_PATH} ${PROJECT_NAME}]]
+set convert_sof_pof_cmd "${QUARTUS_CPF_EXE} -c -d EPCQ128 -o bitstream_compression=on ${FIRMWARE_PATH}/${REVISION_NAME}.sof ${FIRMWARE_PATH}/${REVISION_NAME}.pof"
+puts "SYSTEM CALL: exec $convert_sof_pof_cmd"
+exec {*}$convert_sof_pof_cmd
+
+
+###################################################################################
+# Generate Raw Programming Data (RPD) file
+###################################################################################
+set convert_pof_rpd_cmd "${QUARTUS_CPF_EXE} -c -d EPCQ128 -o bitstream_compression=on ${FIRMWARE_PATH}/${REVISION_NAME}.pof ${FIRMWARE_PATH}/${REVISION_NAME}.rpd"
+puts "SYSTEM CALL: exec $convert_pof_rpd_cmd"
+exec {*}$convert_pof_rpd_cmd
+
+
+###################################################################################
+# Generate JTAG indirect configuration (JIC) file
+###################################################################################
 set convert_sof_jic_cmd "${QUARTUS_CPF_EXE} -c -d EPCQ128 -s EP4CGX22 -o bitstream_compression=on ${FIRMWARE_PATH}/${REVISION_NAME}.sof ${FIRMWARE_PATH}/${REVISION_NAME}.jic"
 puts "SYSTEM CALL: exec $convert_sof_jic_cmd"
-exec >&@stdout {*}$convert_sof_jic_cmd
+exec {*}$convert_sof_jic_cmd
 
 
 ###################################################################################
@@ -105,7 +124,7 @@ close $archive_manifest_fd
 set ARCHIVE_NAME "${REVISION_NAME}_git${GIT_COMMIT}"
 set archive_cmd "${QUARTUS_SH_EXE} --archive -revision ${REVISION_NAME} -output ${WORK_PATH}/${ARCHIVE_NAME} -use_file_set custom -input \"$ARCHIVE_FILE_MANIFEST\" -overwrite ${WORK_PATH}/${PROJECT_NAME}"
 puts "SYSTEM CALL: exec $archive_cmd"
-exec >&@stdout {*}$archive_cmd
+exec {*}$archive_cmd
 file rename -force "${WORK_PATH}/${ARCHIVE_NAME}.qar" "${ARCHIVE_PATH}/${ARCHIVE_NAME}.qar"
 puts "Quartus archive created"
 
@@ -116,7 +135,17 @@ puts "Quartus archive created"
 set ZIP_NAME "${REVISION_NAME}_git${GIT_COMMIT}"
 set zip_cmd "${ZIP_EXE} -FS -j -5 ${WORK_PATH}/${ZIP_NAME} ${WORK_PATH}/*.rpt ${WORK_PATH}/*.log ${FIRMWARE_PATH}/*.* ${QSYS_PATH}/*.htm* ${QSYS_PATH}/*.rpt"
 puts "SYSTEM CALL: exec $zip_cmd"
-exec >&@stdout {*}$zip_cmd
+exec -ignorestderr {*}$zip_cmd
 file rename -force "${WORK_PATH}/${ZIP_NAME}.zip" "${ARCHIVE_PATH}/${ZIP_NAME}.zip"
 puts "Outputs zip file created"
 
+
+###################################################################################
+# Compute MD5 sum
+###################################################################################
+set MD5_NAME "${REVISION_NAME}.md5"
+set md5sum_cmd "${MD5SUM_EXE} ${ARCHIVE_NAME}.qar ${ZIP_NAME}.zip > ${MD5_NAME}"
+cd ${ARCHIVE_PATH}
+puts "SYSTEM CALL: exec $md5sum_cmd"
+exec {*}$md5sum_cmd
+puts "MD5 sum file created"
