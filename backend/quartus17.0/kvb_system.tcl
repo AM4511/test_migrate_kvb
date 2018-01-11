@@ -199,7 +199,7 @@ set_instance_parameter_value pio_1 {width} {2}
 add_instance qspi_mram_0 qspi_mram 1.3
 set_instance_parameter_value qspi_mram_0 {QSPI_DISABLE} {false}
 
-add_instance vme_intf_0 vme_intf 1.1
+add_instance vme_intf_0 vme_intf 1.2
 set_instance_parameter_value vme_intf_0 {BIG_ENDIAN} {1}
 
 # exported interfaces

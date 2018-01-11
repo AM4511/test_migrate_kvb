@@ -34,6 +34,7 @@ Revisions
 2.5 - Fix MRAM controller QSPI bus contention issue during reads.
 2.6 - Add final IO timing constraints.
 2.7 - Fix I2C master controller clock domain crossing issue.
+2.8 - Fix violation of timing rule 2.36 in VME master (VME spec revision C.1).
 
 
 Requirements

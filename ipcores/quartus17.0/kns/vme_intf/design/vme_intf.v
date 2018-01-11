@@ -16,7 +16,8 @@
 // Version  Date        Author          Change
 // ----------------------------------------------------------------------------------
 // 1.0      01/21/2016  R. Carickhoff   Created.
-// 1.1      10/25/2016  R. Carickhoff   Synchronized IRQ inputs.
+// 1.1      10/25/2017  R. Carickhoff   Synchronized IRQ inputs.
+// 1.2      12/14/2017  R. Carickhoff   Added additional clock cycle to DS0 and DS1.
 //
 // Additional Comments:
 //
@@ -72,6 +73,18 @@ input		[7:1] vme_irq_n		// interrupt request
 // constants
 parameter BIG_ENDIAN = 1; // convert Little Endian to Big Endian
 
+localparam IDLE   = 4'd0;
+localparam STATE1 = 4'd1;
+localparam STATE2 = 4'd2;
+localparam STATE3 = 4'd3;
+localparam STATE4 = 4'd4;
+localparam STATE5 = 4'd5;
+localparam STATE6 = 4'd6;
+localparam STATE7 = 4'd7;
+localparam STATE8 = 4'd8;
+localparam STATE9 = 4'd9;
+localparam STATE10 = 4'd10;
+
 // variables 
 wire		A32_memory;
 wire		A24_memory;
@@ -111,25 +124,14 @@ wire		[31:0] vme_dbin;
 wire		[7:0] brd_vector;
 wire		[7:1] brd_irq_n;
 wire		[7:1] irq_n;
-reg         [7:1] vme_irq_nq;
+reg      [7:1] vme_irq_nq;
 wire		[15:0] readdata_0;
 wire		[31:0] readdata_1;
 wire		[15:0] writedata_0;
 wire		[31:0] writedata_1;
 wire		[1:0] byteenable_0;
 wire		[3:0] byteenable_1;
-reg      [9:0] state = IDLE;
-
-localparam IDLE   = 10'b0000000001;
-localparam STATE1 = 10'b0000000010;
-localparam STATE2 = 10'b0000000100;
-localparam STATE3 = 10'b0000001000;
-localparam STATE4 = 10'b0000010000;
-localparam STATE5 = 10'b0000100000;
-localparam STATE6 = 10'b0001000000;
-localparam STATE7 = 10'b0010000000;
-localparam STATE8 = 10'b0100000000;
-localparam STATE9 = 10'b1000000000;
+reg      [3:0] state = IDLE;
 
 
 // DTACK Timer
@@ -274,12 +276,13 @@ assign vme_iackout_n = ~(iackout && ~vme_as_n);
 assign vme_sysrst_n  = ~reset;
 
 // vme spec for DS0, DS1 and AS is a min. 35ns delay after vme address becomes active
+// vme spec for DS0, DS1 is a min. 10ns delay after AS becomes active
 // using state6 for AS provides a 48nsec delay
-// using state7 for DS0 and DS1 provides a 56nsec delay
-// master must not drive DS0 or DS1 active until AS is active. delay 8ns after AS
+// using state8 for DS0 and DS1 provides a 64nsec delay
+// master must not drive DS0 or DS1 active until AS is active. delay 16ns after AS
 assign vme_as_n  = ~(vme_access && (s_read || s_write));
-assign vme_ds0_n = ~(vme_access2 && (s_read || s_write) && DS0);  // delay 8ns from AS
-assign vme_ds1_n = ~(vme_access2 && (s_read || s_write) && DS1);  // delay 8ns from AS
+assign vme_ds0_n = ~(vme_access2 && (s_read || s_write) && DS0);  // delay 16ns from AS
+assign vme_ds1_n = ~(vme_access2 && (s_read || s_write) && DS1);  // delay 16ns from AS
 
 assign byteenable[3:0] = A32_memory ? byteenable_1[3:0] : {2'b00, byteenable_0[1:0]};
 
@@ -348,22 +351,26 @@ always @ (posedge clk or posedge reset) begin
 		end
 		
 		STATE6: begin
-         vme_access2 <= 1;		    
 			state <= STATE7;
 		end
 		
 		STATE7: begin
+         vme_access2 <= 1;		    
 			state <= STATE8;
 		end
 		
-		STATE8: begin // check for dtack
+		STATE8: begin
+			state <= STATE9;
+		end
+		
+		STATE9: begin // check for dtack
 			if(dtack) begin
 				access_done <= 1;
-				state <= STATE9;
+				state <= STATE10;
 			end
 		end
 				
-		STATE9: begin // wait for dtack to go inactive
+		STATE10: begin // wait for dtack to go inactive
 			vme_access <= 0;
 			vme_access2 <= 0;
 		   access_done <= 0;
