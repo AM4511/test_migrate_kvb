@@ -9,7 +9,7 @@ set_project_property HIDE_FROM_IP_CATALOG {false}
 
 # Instances and instance parameters
 # (disabled instances are intentionally culled)
-add_instance PnPROM_0 PnPROM 1.2
+add_instance PnPROM_0 PnPROM
 set_instance_parameter_value PnPROM_0 {INIT_FILE} {./PnP_ROM.hex}
 set_instance_parameter_value PnPROM_0 {dev_name} ${BOARD_NAME}
 set_instance_parameter_value PnPROM_0 {gw_ver} ${GW_VERSION}
@@ -17,20 +17,20 @@ set_instance_parameter_value PnPROM_0 {part_num} ${PART_NUMBER}
 set_instance_parameter_value PnPROM_0 {git_commit} ${GIT_COMMIT}
 set_instance_parameter_value PnPROM_0 {build_id} ${BUILDID}
 
-add_instance a_16550_uart_0 16550_uart 1.1
+add_instance a_16550_uart_0 16550_uart
 
-add_instance a_16550_uart_1 16550_uart 1.1
+add_instance a_16550_uart_1 16550_uart
 
-add_instance a_16550_uart_2 16550_uart 1.1
+add_instance a_16550_uart_2 16550_uart
 
-add_instance a_16550_uart_3 16550_uart 1.1
+add_instance a_16550_uart_3 16550_uart
 
-add_instance clk_50 clock_source 17.0
+add_instance clk_50 clock_source
 set_instance_parameter_value clk_50 {clockFrequency} {50000000.0}
 set_instance_parameter_value clk_50 {clockFrequencyKnown} {1}
 set_instance_parameter_value clk_50 {resetSynchronousEdges} {NONE}
 
-add_instance dead_rom altera_avalon_onchip_memory2 17.0
+add_instance dead_rom altera_avalon_onchip_memory2
 set_instance_parameter_value dead_rom {allowInSystemMemoryContentEditor} {0}
 set_instance_parameter_value dead_rom {blockType} {AUTO}
 set_instance_parameter_value dead_rom {copyInitFile} {0}
@@ -55,17 +55,17 @@ set_instance_parameter_value dead_rom {useNonDefaultInitFile} {1}
 set_instance_parameter_value dead_rom {useShallowMemBlocks} {0}
 set_instance_parameter_value dead_rom {writable} {0}
 
-add_instance i2c_master_0 i2c_master 2.1
+add_instance i2c_master_0 i2c_master
 set_instance_parameter_value i2c_master_0 {CLK_RATE} {125}
 
-add_instance one_shot_0 one_shot 1.0
+add_instance one_shot_0 one_shot
 set_instance_parameter_value one_shot_0 {ENABLE_DEFAULT} {15}
 set_instance_parameter_value one_shot_0 {INVERT_DEFAULT} {0}
 set_instance_parameter_value one_shot_0 {MAX_PULSE} {8}
 set_instance_parameter_value one_shot_0 {TIME_DEFAULT} {125}
 set_instance_parameter_value one_shot_0 {WIDTH} {4}
 
-add_instance pcie_hard_ip_0 altera_pcie_hard_ip_ltssm 17.0
+add_instance pcie_hard_ip_0 altera_pcie_hard_ip_ltssm
 set_instance_parameter_value pcie_hard_ip_0 {AST_LITE} {0}
 set_instance_parameter_value pcie_hard_ip_0 {BAR Type} {32\ bit\ Non-Prefetchable Not\ used Not\ used Not\ used Not\ used Not\ used}
 set_instance_parameter_value pcie_hard_ip_0 {CB_A2P_ADDR_MAP_IS_FIXED} {1}
@@ -170,7 +170,7 @@ set_instance_parameter_value pcie_hard_ip_0 {under_test} {0}
 set_instance_parameter_value pcie_hard_ip_0 {use_crc_forwarding} {false}
 set_instance_parameter_value pcie_hard_ip_0 {vendor_id} {4466}
 
-add_instance pio_0 altera_avalon_pio 17.0
+add_instance pio_0 altera_avalon_pio
 set_instance_parameter_value pio_0 {bitClearingEdgeCapReg} {0}
 set_instance_parameter_value pio_0 {bitModifyingOutReg} {1}
 set_instance_parameter_value pio_0 {captureEdge} {0}
@@ -183,7 +183,7 @@ set_instance_parameter_value pio_0 {simDoTestBenchWiring} {0}
 set_instance_parameter_value pio_0 {simDrivenValue} {0.0}
 set_instance_parameter_value pio_0 {width} {8}
 
-add_instance pio_1 altera_avalon_pio 17.0
+add_instance pio_1 altera_avalon_pio
 set_instance_parameter_value pio_1 {bitClearingEdgeCapReg} {0}
 set_instance_parameter_value pio_1 {bitModifyingOutReg} {0}
 set_instance_parameter_value pio_1 {captureEdge} {0}

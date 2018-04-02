@@ -60,8 +60,8 @@ set sta_fail_messages {
     "*critical warning*"
     "*incorrect assignment*"
     "*was determined to be a clock*"
-    "*has some problems*"
     "*not fully constrained*"
+    "*no paths exist*"
 }
 
 
