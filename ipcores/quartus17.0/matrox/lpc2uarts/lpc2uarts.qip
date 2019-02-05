@@ -1,4 +1,4 @@
 ###############################################################################################
-# Matrox IP-Cores Quartus IP-Files
+# Matrox LPC2UARTS Quartus IP Description File (.qip)
 ###############################################################################################
-set_global_assignment -name QIP_FILE [file join $::quartus(qip_path) "lpc2uarts/lpc2uarts.qip"]
+set_global_assignment -name VHDL_FILE [file join $::quartus(qip_path) "lpc2uarts_enc.vhd"]
