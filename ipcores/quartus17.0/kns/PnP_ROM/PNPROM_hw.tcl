@@ -70,14 +70,14 @@ set_parameter_property gw_ver UNITS None
 set_parameter_property gw_ver ALLOWED_RANGES 0:65499
 set_parameter_property gw_ver DESCRIPTION ""
 set_parameter_property gw_ver AFFECTS_GENERATION false
-add_parameter git_commit INTEGER 0 ""
+add_parameter git_commit STD_LOGIC_VECTOR 0 ""
 set_parameter_property git_commit DEFAULT_VALUE 0
 set_parameter_property git_commit DISPLAY_NAME "Git commit"
 set_parameter_property git_commit WIDTH ""
 set_parameter_property git_commit TYPE INTEGER
 set_parameter_property git_commit UNITS None
 set_parameter_property git_commit DISPLAY_HINT "hexadecimal"
-set_parameter_property git_commit ALLOWED_RANGES 0:268435455
+set_parameter_property git_commit ALLOWED_RANGES -2147483648:2147483647
 set_parameter_property git_commit DESCRIPTION ""
 set_parameter_property git_commit AFFECTS_GENERATION false
 add_parameter build_id INTEGER 0 ""

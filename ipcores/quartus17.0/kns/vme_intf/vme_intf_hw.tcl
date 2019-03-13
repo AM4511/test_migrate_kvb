@@ -20,12 +20,11 @@ package require -exact qsys 14.0
 # 
 set_module_property DESCRIPTION "Interface to standard VME backplane"
 set_module_property NAME vme_intf
-set_module_property VERSION 1.2
+set_module_property VERSION 1.4
 set_module_property INTERNAL false
 set_module_property OPAQUE_ADDRESS_MAP true
-set_module_property GROUP My_Components
 set_module_property AUTHOR "R. Carickhoff"
-set_module_property DISPLAY_NAME vme_bridge
+set_module_property DISPLAY_NAME "VME Bridge"
 set_module_property INSTANTIATE_IN_SYSTEM_MODULE true
 set_module_property EDITABLE true
 set_module_property REPORT_TO_TALKBACK false
@@ -40,21 +39,37 @@ add_fileset QUARTUS_SYNTH QUARTUS_SYNTH "" ""
 set_fileset_property QUARTUS_SYNTH TOP_LEVEL vme_intf
 set_fileset_property QUARTUS_SYNTH ENABLE_RELATIVE_INCLUDE_PATHS false
 set_fileset_property QUARTUS_SYNTH ENABLE_FILE_OVERWRITE_MODE false
-add_fileset_file vme_intf.v VERILOG PATH ./design/vme_intf.v TOP_LEVEL_FILE
-add_fileset_file dtack_timer.v VERILOG PATH ./design/dtack_timer.v
-add_fileset_file interrupt_control.v VERILOG PATH ./design/interrupt_control.v
-add_fileset_file interrupt_handler.v VERILOG PATH ./design/interrupt_handler.v
+add_fileset_file vme_intf.v VERILOG PATH design/vme_intf.v TOP_LEVEL_FILE
+add_fileset_file dtack_timer.v VERILOG PATH design/dtack_timer.v
+add_fileset_file interrupt_control.v VERILOG PATH design/interrupt_control.v
+add_fileset_file interrupt_handler.v VERILOG PATH design/interrupt_handler.v
 
 
 # 
 # parameters
 # 
-add_parameter BIG_ENDIAN INTEGER 1
-set_parameter_property BIG_ENDIAN DEFAULT_VALUE 1
-set_parameter_property BIG_ENDIAN DISPLAY_NAME BIG_ENDIAN
-set_parameter_property BIG_ENDIAN TYPE INTEGER
+add_parameter A32_WIDTH INTEGER 30 "Set this to the width of the Avalon-MM address window (4-byte words) which is mapped into the VME A32 space. For example, 28 bits gives a 1GB A32 address space."
+set_parameter_property A32_WIDTH DEFAULT_VALUE 30
+set_parameter_property A32_WIDTH DISPLAY_NAME "Avalon-MM address decode width for VME A32 space"
+set_parameter_property A32_WIDTH ALLOWED_RANGES 1:30
+set_parameter_property A32_WIDTH DESCRIPTION "Set this to the width of the Avalon-MM address window (4-byte words) which is mapped into the VME A32 space. For example, 28 bits gives a 1GB A32 address space."
+set_parameter_property A32_WIDTH HDL_PARAMETER true
+
+add_parameter A32_OFFSET STD_LOGIC_VECTOR 0 "Set this to the 4-byte word offset used when mapping the Avalon-MM address space to the VME A32 space."
+set_parameter_property A32_OFFSET DEFAULT_VALUE 0
+set_parameter_property A32_OFFSET DISPLAY_NAME "VME A32 address offset for Avalon-MM window"
+set_parameter_property A32_OFFSET WIDTH 30
+set_parameter_property A32_OFFSET TYPE STD_LOGIC_VECTOR
+set_parameter_property A32_OFFSET UNITS None
+set_parameter_property A32_OFFSET ALLOWED_RANGES 0:1073741823
+set_parameter_property A32_OFFSET DESCRIPTION "Set this to the 4-byte word offset used when mapping the Avalon-MM address space to the VME A32 space."
+set_parameter_property A32_OFFSET HDL_PARAMETER true
+
+add_parameter BIG_ENDIAN BOOLEAN true
+set_parameter_property BIG_ENDIAN DEFAULT_VALUE true
+set_parameter_property BIG_ENDIAN DISPLAY_NAME "Enable automatic endian conversion"
+set_parameter_property BIG_ENDIAN TYPE BOOLEAN
 set_parameter_property BIG_ENDIAN UNITS None
-set_parameter_property BIG_ENDIAN ALLOWED_RANGES -2147483648:2147483647
 set_parameter_property BIG_ENDIAN HDL_PARAMETER true
 
 
@@ -163,7 +178,7 @@ add_interface_port avalon_slave_1 s_waitrequest_1 waitrequest Output 1
 add_interface_port avalon_slave_1 s_readdata_1 readdata Output 32
 add_interface_port avalon_slave_1 s_read_1 read Input 1
 add_interface_port avalon_slave_1 s_byteenable_1 byteenable Input 4
-add_interface_port avalon_slave_1 s_address_1 address Input 30
+add_interface_port avalon_slave_1 s_address_1 address Input A32_WIDTH
 set_interface_assignment avalon_slave_1 embeddedsw.configuration.isFlash 0
 set_interface_assignment avalon_slave_1 embeddedsw.configuration.isMemoryDevice 0
 set_interface_assignment avalon_slave_1 embeddedsw.configuration.isNonVolatileStorage 0
@@ -215,3 +230,21 @@ add_interface_port vme_intf vme_am vme_am Output 6
 add_interface_port vme_intf vme_db vme_db Bidir 32
 add_interface_port vme_intf vme_a vme_a Output 31
 
+
+#
+# callbacks
+#
+set_module_property VALIDATION_CALLBACK validate_me
+
+
+#
+# procedures
+#
+proc validate_me {} {
+    set a32_width [get_parameter_value A32_WIDTH]
+    set a32_offset [get_parameter_value A32_OFFSET]
+
+    if {$a32_offset > ((1 << 30) - (1 << $a32_width))} {
+        send_message ERROR "VME A32 address offset too large."
+    }
+}
