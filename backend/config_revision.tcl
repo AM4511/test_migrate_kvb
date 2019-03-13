@@ -1,45 +1,45 @@
 ################################################################################
-# File         : set_common_assignments.tcl
-# Description  : TCL script used to add common files to KVB project.
+# File         : config_revision.tcl
+# Description  : TCL script used to add settings/files specific to each
+#                revision to KVB project.
 ################################################################################
 set myself [info script]
 puts "Running ${myself}"
-
-################################################################################
-# Add script files
-################################################################################
-set_global_assignment -name PRE_FLOW_SCRIPT_FILE quartus_sh:${BACKEND_PATH}/pre_flow.tcl
-set_global_assignment -name POST_FLOW_SCRIPT_FILE quartus_sh:${BACKEND_PATH}/post_flow.tcl
+cd ${rev_work_path}
 
 
 ################################################################################
-# Add QIP files
+# Set revision specific assignments
 ################################################################################
-set_global_assignment -name QIP_FILE ${IPCORE_LIB_PATH}/ipcores.qip
+set_global_assignment -name PROJECT_OUTPUT_DIRECTORY ${rev_firmware_path}
+set_global_assignment -name SEARCH_PATH ${rev_firmware_path}/ -tag from_archive
 
 
 ################################################################################
-# Add SDC files
+# Add revision specific HDL files
 ################################################################################
-set_global_assignment -name SDC_FILE ${BACKEND_PATH}/kvb.sdc
-set_global_assignment -name SDC_FILE ${BACKEND_PATH}/lpc.sdc
-set_global_assignment -name SDC_FILE ${BACKEND_PATH}/qspimram.sdc
-set_global_assignment -name SDC_FILE ${BACKEND_PATH}/vme.sdc
-set_global_assignment -name SDC_FILE ${BACKEND_PATH}/jtag.sdc
+set_global_assignment -name VERILOG_FILE ${HDL_PATH}/matrox/${rev_name}_kvb_top.v
 
 
 ################################################################################
-# Copy default hex files
+# Add revision specific IP cores
 ################################################################################
-set HEXFILE [file join ${HDL_PATH} "kns/dead_rom.hex"]
-    dict for {rev_name rev_attr} ${REV_DATA} {
-        dict with rev_attr {
-           puts "Copying ${HEXFILE} to $rev_work_path"
-           file copy -force ${HEXFILE} $rev_work_path
-        }
-    }
+set_global_assignment -name QIP_FILE ${rev_qsys_path}/synthesis/${QSYS_SYSTEM_NAME}.qip
 
 
 ################################################################################
-# Add common HDL files
+# Add SignalTAP files
 ################################################################################
+# set_global_assignment -name USE_SIGNALTAP_FILE ${rev_name}.stp
+
+
+################################################################################
+# Save the .qsf file
+################################################################################
+export_assignments
+
+
+################################################################################
+# Create and generate revision specific QSYS systems
+################################################################################
+source "${BACKEND_PATH}/quartus${QUARTUS_VERSION}/call_qsys.tcl"

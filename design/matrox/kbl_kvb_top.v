@@ -6,9 +6,10 @@
 // Engineer:       Richard Carickhoff, David Rauth, Alain Marchand
 //
 // Create Date:    1/12/2016
-// Design Name:    CPUSKL Bridge
-// Module Name:    cpuskl_kvb_top
-// Project Name:   cpuskl_kvb
+// Design Name:    K&S Bridge for CPUKBL
+// Revision Name:  kbl
+// Module Name:    kvb_top
+// Project Name:   kvb
 // Target Devices: EP4CGX22CF19C8
 // Tool versions:  Quartus Version 17.0
 // Description:    VME bridge, UARTs, I2C, clock management
@@ -34,10 +35,11 @@
 //          and PnP ROM. Added one-shot timer for camera triggers. Added PIO for
 //          user LEDs. Added QAR and ZIP archive generation to scripts.
 //    2.2 - Updated VME, QSPI, and PCIe UART IP. Finalized timing constraints.
+//    3.0 - Added revisions for CPUSKL wedge and CPUKBL variants.
 ///////////////////////////////////////////////////////////////////////////////
 
 
-module cpuskl_kvb_top (
+module kvb_top (
     // oscillator
     input         clkin_125m_p,
 
@@ -334,83 +336,25 @@ module cpuskl_kvb_top (
         // System reset
         /////////////////////////////////////////////////////////////
         .reset_reset_n                                     (sys_rst_n),
+    );
 
 
-        /////////////////////////////////////////////////////////////
-        // VME Interface
-        /////////////////////////////////////////////////////////////
-        .vme_intf_0_vme_sysfail_n                          (),
-        .vme_intf_0_vme_irq_n                              (vme_irq_n),
-        .vme_intf_0_vme_iackout_n                          (vme_iackout_n),
-        .vme_intf_0_vme_iack_n                             (vme_iack_n),
-        .vme_intf_0_vme_dtack_n                            (vme_dtack_n),
-        .vme_intf_0_vmd_ds1_n                              (vme_ds1_n),
-        .vme_intf_0_vme_ds0_n                              (vme_ds0_n),
-        .vme_intf_0_vme_write_n                            (vme_write_n),
-        .vme_intf_0_vme_sysrst_n                           (),
-        .vme_intf_0_vme_lword_n                            (vme_lword_n),
-        .vme_intf_0_vme_as_n                               (vme_as_n),
-        .vme_intf_0_vme_am                                 (vme_am),
-        .vme_intf_0_vme_db                                 (vme_db),
-        .vme_intf_0_vme_a                                  (vme_a),
-
-
-        /////////////////////////////////////////////////////////////
-        // UART Interfaces
-        /////////////////////////////////////////////////////////////
-        .a_16550_uart_0_uart_sin                           (),
-        .a_16550_uart_0_uart_sout                          (),
-        .a_16550_uart_0_uart_rts                           (),
-        .a_16550_uart_0_uart_cts                           (),
-        .a_16550_uart_0_uart_dtr                           (),
-        .a_16550_uart_0_uart_dsr                           (),
-        .a_16550_uart_0_uart_ri                            (),
-        .a_16550_uart_0_uart_dcd                           (),
-
-        .a_16550_uart_1_uart_sin                           (ser2_rx),
-        .a_16550_uart_1_uart_sout                          (ser2_tx),
-        .a_16550_uart_1_uart_rts                           (),
-        .a_16550_uart_1_uart_cts                           (),
-        .a_16550_uart_1_uart_dtr                           (),
-        .a_16550_uart_1_uart_dsr                           (),
-        .a_16550_uart_1_uart_ri                            (),
-        .a_16550_uart_1_uart_dcd                           (),
-
-        .a_16550_uart_2_uart_sin                           (ser3_rx),
-        .a_16550_uart_2_uart_sout                          (ser3_tx),
-        .a_16550_uart_2_uart_rts                           (),
-        .a_16550_uart_2_uart_cts                           (),
-        .a_16550_uart_2_uart_dtr                           (),
-        .a_16550_uart_2_uart_dsr                           (),
-        .a_16550_uart_2_uart_ri                            (),
-        .a_16550_uart_2_uart_dcd                           (),
-
-        .a_16550_uart_3_uart_sin                           (ser4_rx),
-        .a_16550_uart_3_uart_sout                          (ser4_tx),
-        .a_16550_uart_3_uart_rts                           (ser4_rts),
-        .a_16550_uart_3_uart_cts                           (),
-        .a_16550_uart_3_uart_dtr                           (),
-        .a_16550_uart_3_uart_dsr                           (),
-        .a_16550_uart_3_uart_ri                            (),
-        .a_16550_uart_3_uart_dcd                           ()
-        );
-
-
-    lpc2uarts u1 (
+    lpc2uarts #(
+        .NUMB_UART (2)
+    ) u1 (
         .lpc_clk     (lpc_clk),
         .lpc_reset_n (sys_rst_n),
         .lpc_frame_n (lpc_frame_n),
         .lpc_ad      (lpc_ad),
         .serirq      (serirq),
         .ser_rx      (ser_rx),
-        .ser_tx      (ser_tx),
-        .ser4_rts_n  ()
+        .ser_tx      (ser_tx)
         );
 
     assign ser1_tx = ser_tx[0];
-    assign ser_rx[0] =  ser1_rx;
-
-    assign ser4_rts_n = ~ser4_rts;
+    assign ser2_tx = ser_tx[1];
+    assign ser_rx[0] = ser1_rx;
+    assign ser_rx[1] = ser2_rx;
 
     
     ////////////////////////////////////////////////////////////////////
