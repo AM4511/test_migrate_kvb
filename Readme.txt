@@ -1,5 +1,5 @@
-Matrox CPUSKL K&S VME Bridge FPGA Design
-========================================
+Matrox CPUSKL/KBL K&S VME Bridge FPGA Design
+============================================
 
 +------------+-----------------------------------------------------------------+
 | Folder     | Description                                                     |
@@ -15,8 +15,10 @@ Matrox CPUSKL K&S VME Bridge FPGA Design
 | ipcores    | Library of all IP required by the KVB project (QSYS IP and      |
 |            | MegaFunctions IP).                                              |
 +------------+-----------------------------------------------------------------+
-| quartus    | The work folder for quartus. All Quartus output will be         |
-|            | generated under this folder.                                    |
+| quartus    | The work folder for Quartus. All Quartus output will be         |
+|            | generated under this folder. This project contains three        |
+|            | Quartus revisions: skl_ball, skl_wedge, & kbl. Each revision    |
+|            | has its own output subfolder.                                   |
 +------------+-----------------------------------------------------------------+
 
 Revisions
@@ -35,6 +37,7 @@ Revisions
 2.6 - Add final IO timing constraints.
 2.7 - Fix I2C master controller clock domain crossing issue.
 2.8 - Fix violation of timing rule 2.36 in VME master (VME spec revision C.1).
+3.0 - Add support for CPUSKL/KC/KD (wedge bonder) and CPUKBL/KA.
 
 
 Requirements
@@ -62,7 +65,8 @@ Creating and Compiling Project from Quartus
 
     source "$::env(KVB)/backend/create_quartus_project.tcl"
 
-3.  Run the start compilation (Ctrl+L).
+3.  Select the desired Quartus project revision.
+4.  Run the start compilation (Ctrl+L).
 
 
 Creating, Compiling, and Checking Project from Command-Line
