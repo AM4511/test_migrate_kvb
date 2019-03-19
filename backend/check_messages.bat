@@ -17,6 +17,18 @@
 @rem  DATE      NAME              CHANGE DESCRIPTION
 @rem  --------- ----------------- ----------------------------------------------
 @rem  12-Mar-19 D.Rauth           Created
+@rem  19-Mar-19 D.Rauth           Wait for quartus_sh to exit before checking
 @rem ---------------------------------------------------------------------------
 
+
+:loop
+tasklist | find /i "quartus_sh" >nul 2>&1
+if ERRORLEVEL 1 (
+  goto continue
+) else (
+  timeout /T 1 /nobreak >nul
+  goto loop
+)
+
+:continue
 quartus_sh -t %KVB%/backend/check_messages.tcl %1

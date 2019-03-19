@@ -28,5 +28,6 @@ goto done
 start "Build skl_ball" cmd /c "quartus_sh -t %KVB%/backend/build_quartus_project.tcl skl_ball & pause"
 start "Build skl_wedge" cmd /c "quartus_sh -t %KVB%/backend/build_quartus_project.tcl skl_wedge & pause"
 start "Build kbl" cmd /c "quartus_sh -t %KVB%/backend/build_quartus_project.tcl kbl & pause"
+timeout /T 3 >nul
 
 :done

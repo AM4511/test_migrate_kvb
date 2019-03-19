@@ -22,7 +22,6 @@ set_global_assignment -name QIP_FILE ${IPCORE_LIB_PATH}/ipcores.qip
 # Add SDC files
 ################################################################################
 set_global_assignment -name SDC_FILE ${BACKEND_PATH}/kvb.sdc
-set_global_assignment -name SDC_FILE ${BACKEND_PATH}/lpc.sdc
 set_global_assignment -name SDC_FILE ${BACKEND_PATH}/qspimram.sdc
 set_global_assignment -name SDC_FILE ${BACKEND_PATH}/vme.sdc
 set_global_assignment -name SDC_FILE ${BACKEND_PATH}/jtag.sdc

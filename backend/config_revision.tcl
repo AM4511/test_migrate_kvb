@@ -16,6 +16,12 @@ set_global_assignment -name SEARCH_PATH ${rev_firmware_path}/ -tag from_archive
 
 
 ################################################################################
+# Add revision constraints files
+################################################################################
+set_global_assignment -name SDC_FILE ${BACKEND_PATH}/${rev_name}_lpc.sdc
+
+
+################################################################################
 # Add revision specific HDL files
 ################################################################################
 set_global_assignment -name VERILOG_FILE ${HDL_PATH}/matrox/${rev_name}_kvb_top.v

@@ -1,7 +1,7 @@
-# ##################################################################################
-# File         : lpc.sdc
-# Description  : Timing constraintes for the  LPC2UART IP from the KVB FPGA
-# ##################################################################################
+################################################################################
+# File         : kbl_lpc.sdc
+# Description  : Timing constraints for the LPC2UART IP from the KVB FPGA skl_ball revision
+################################################################################
 create_clock -name {lpc_clk} -period 41.667 -waveform {0.000 20.833} [get_ports {lpc_clk}]
 derive_pll_clocks
 derive_clock_uncertainty
@@ -14,9 +14,9 @@ derive_clock_uncertainty
 ########################################################################################
 # The 4 UART reference clocks
 create_generated_clock -name {uart_ref_clk_0} -source [get_ports {lpc_clk}] -edges {1 13 27}  [get_registers {u1|\G_UART:0:bridge|uart_clk}] 
-create_generated_clock -name {uart_ref_clk_1} -source [get_ports {lpc_clk}] -edges {1 13 27}  [get_registers {u1|\G_UART:1:bridge|uart_clk}] 
-create_generated_clock -name {uart_ref_clk_2} -source [get_ports {lpc_clk}] -edges {1 13 27}  [get_registers {u1|\G_UART:2:bridge|uart_clk}] 
-create_generated_clock -name {uart_ref_clk_3} -source [get_ports {lpc_clk}] -edges {1 13 27}  [get_registers {u1|\G_UART:3:bridge|uart_clk}]
+#create_generated_clock -name {uart_ref_clk_1} -source [get_ports {lpc_clk}] -edges {1 13 27}  [get_registers {u1|\G_UART:1:bridge|uart_clk}]
+#create_generated_clock -name {uart_ref_clk_2} -source [get_ports {lpc_clk}] -edges {1 13 27}  [get_registers {u1|\G_UART:2:bridge|uart_clk}]
+#create_generated_clock -name {uart_ref_clk_3} -source [get_ports {lpc_clk}] -edges {1 13 27}  [get_registers {u1|\G_UART:3:bridge|uart_clk}]
 
 
 ########################################################################################

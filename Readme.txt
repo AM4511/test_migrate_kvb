@@ -66,7 +66,7 @@ Creating and Compiling Project from Quartus
     source "$::env(KVB)/backend/create_quartus_project.tcl"
 
 3.  Select the desired Quartus project revision.
-4.  Run the start compilation (Ctrl+L).
+4.  Run start compilation (Ctrl+L) or compile all in Revisions.
 
 
 Creating, Compiling, and Checking Project from Command-Line
@@ -74,7 +74,17 @@ Creating, Compiling, and Checking Project from Command-Line
 1.  Open Command Prompt.
 2.  Execute the following command:
 
+    All revisions sequential:
+
     %KVB%\backend\create_quartus_project && %KVB%\backend\build_quartus_project && %KVB%\backend\check_messages
+
+    All revisions parallel build:
+
+    %KVB%\backend\create_quartus_project && %KVB%\backend\build_quartus_project parallel && %KVB%\backend\check_messages
+
+    Single revision:
+
+    %KVB%\backend\create_quartus_project && %KVB%\backend\build_quartus_project <revision name> && %KVB%\backend\check_messages <revision name>
 
 
 Notes

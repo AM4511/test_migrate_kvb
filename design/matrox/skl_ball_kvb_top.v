@@ -127,9 +127,7 @@ module kvb_top (
     wire   [63:0] test_out_icm;
     wire   [39:0] test_in;
     wire   [4:0]  dl_ltssm_int;
-    wire   [3:0]  ser_rx;
-    wire   [3:0]  ser_tx;
-    
+
     assign vme_write = ~vme_write_n;
     assign vme_buffer_oe = 1'b1;
     assign prog_led_n[2:1] = ~led_out;
@@ -406,16 +404,11 @@ module kvb_top (
         .lpc_frame_n (lpc_frame_n),
         .lpc_ad      (lpc_ad),
         .serirq      (serirq),
-        .ser_rx      (ser_rx),
-        .ser_tx      (ser_tx)
+        .ser_rx      (ser1_rx),
+        .ser_tx      (ser1_tx)
 	);
 
-    assign ser1_tx = ser_tx[0];
-    assign ser_rx[0] =  ser1_rx;
 
-    assign ser4_rts_n = ~ser4_rts;
-
-    
     ////////////////////////////////////////////////////////////////////
     // cpcis_pcie_clken_n[6:0]
     //

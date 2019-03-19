@@ -127,8 +127,8 @@ module kvb_top (
     wire   [63:0] test_out_icm;
     wire   [39:0] test_in;
     wire   [4:0]  dl_ltssm_int;
-    wire   [3:0]  ser_rx;
-    wire   [3:0]  ser_tx;
+    wire   [1:0]  ser_rx;
+    wire   [1:0]  ser_tx;
     
     assign vme_write = ~vme_write_n;
     assign vme_buffer_oe = 1'b1;
