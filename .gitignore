@@ -8,5 +8,4 @@
 # Quartus files to ignore 
 ############################################################
 quartus/**/*
-archive/*.qar
-archive/*.zip
+archive/*

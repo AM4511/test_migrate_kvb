@@ -6,9 +6,10 @@
 // Engineer:       Richard Carickhoff, David Rauth, Alain Marchand
 //
 // Create Date:    1/12/2016
-// Design Name:    CPUSKL Bridge
-// Module Name:    cpuskl_kvb_top
-// Project Name:   cpuskl_kvb
+// Design Name:    K&S Bridge for CPUSKL (ball bonder)
+// Revision Name:  skl_ball
+// Module Name:    kvb_top
+// Project Name:   kvb
 // Target Devices: EP4CGX22CF19C8
 // Tool versions:  Quartus Version 17.0
 // Description:    VME bridge, UARTs, I2C, clock management
@@ -34,10 +35,11 @@
 //          and PnP ROM. Added one-shot timer for camera triggers. Added PIO for
 //          user LEDs. Added QAR and ZIP archive generation to scripts.
 //    2.2 - Updated VME, QSPI, and PCIe UART IP. Finalized timing constraints.
+//    3.0 - Added revisions for CPUSKL wedge and CPUKBL variants.
 ///////////////////////////////////////////////////////////////////////////////
 
 
-module cpuskl_kvb_top (
+module kvb_top (
     // oscillator
     input         clkin_125m_p,
 
@@ -125,9 +127,7 @@ module cpuskl_kvb_top (
     wire   [63:0] test_out_icm;
     wire   [39:0] test_in;
     wire   [4:0]  dl_ltssm_int;
-    wire   [3:0]  ser_rx;
-    wire   [3:0]  ser_tx;
-    
+
     assign vme_write = ~vme_write_n;
     assign vme_buffer_oe = 1'b1;
     assign prog_led_n[2:1] = ~led_out;
@@ -393,26 +393,22 @@ module cpuskl_kvb_top (
         .a_16550_uart_3_uart_dsr                           (),
         .a_16550_uart_3_uart_ri                            (),
         .a_16550_uart_3_uart_dcd                           ()
-        );
+    );
 
 
-    lpc2uarts u1 (
+    lpc2uarts #(
+        .NUMB_UART (1)
+    ) u1 (
         .lpc_clk     (lpc_clk),
         .lpc_reset_n (sys_rst_n),
         .lpc_frame_n (lpc_frame_n),
         .lpc_ad      (lpc_ad),
         .serirq      (serirq),
-        .ser_rx      (ser_rx),
-        .ser_tx      (ser_tx),
-        .ser4_rts_n  ()
-        );
+        .ser_rx      (ser1_rx),
+        .ser_tx      (ser1_tx)
+	);
 
-    assign ser1_tx = ser_tx[0];
-    assign ser_rx[0] =  ser1_rx;
 
-    assign ser4_rts_n = ~ser4_rts;
-
-    
     ////////////////////////////////////////////////////////////////////
     // cpcis_pcie_clken_n[6:0]
     //

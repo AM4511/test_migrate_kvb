@@ -1,18 +1,19 @@
-set me [info script]
-puts "Running ${me}"
+################################################################################
+# File         : set_common_assignments.tcl
+# Description  : TCL script used to configure KVB project common settings.
+################################################################################
+set myself [info script]
+puts "Running ${myself}"
 
-####################################################################################
-#
-####################################################################################
-set_global_assignment -name DEVICE EP4CGX22CF19C8
-set_global_assignment -name FAMILY "Cyclone IV GX"
-set_global_assignment -name TOP_LEVEL_ENTITY cpuskl_kvb_top
-set_global_assignment -name PROJECT_OUTPUT_DIRECTORY $FIRMWARE_PATH
+
+set_global_assignment -name DEVICE ${FPGA_PART_NUMBER}
+set_global_assignment -name FAMILY "${FPGA_FAMILY}"
+set_global_assignment -name TOP_LEVEL_ENTITY kvb_top
+set_global_assignment -name ORIGINAL_QUARTUS_VERSION "${QUARTUS_VERSION_FULL}"
+set_global_assignment -name PROJECT_CREATION_TIME_DATE "${BUILD_TIME}"
 set_global_assignment -name ERROR_CHECK_FREQUENCY_DIVISOR 256
 set_global_assignment -name MIN_CORE_JUNCTION_TEMP 0
 set_global_assignment -name MAX_CORE_JUNCTION_TEMP 85
-set_global_assignment -name EDA_SIMULATION_TOOL "<None>"
-set_global_assignment -name EDA_OUTPUT_DATA_FORMAT NONE -section_id eda_simulation
 set_global_assignment -name ROUTER_CLOCKING_TOPOLOGY_ANALYSIS ON
 set_global_assignment -name PRE_MAPPING_RESYNTHESIS ON
 set_global_assignment -name ADVANCED_PHYSICAL_OPTIMIZATION ON
@@ -39,7 +40,6 @@ set_global_assignment -name PHYSICAL_SYNTHESIS_REGISTER_DUPLICATION ON
 set_global_assignment -name SEED 5
 set_global_assignment -name ENABLE_SIGNALTAP OFF
 set_global_assignment -name TIMEQUEST_MULTICORNER_ANALYSIS ON
-set_global_assignment -name SMART_RECOMPILE OFF
 set_global_assignment -name USE_CONFIGURATION_DEVICE OFF
 set_global_assignment -name ON_CHIP_BITSTREAM_DECOMPRESSION OFF
 set_global_assignment -name OUTPUT_IO_TIMING_NEAR_END_VMEAS "HALF VCCIO" -rise
@@ -47,9 +47,7 @@ set_global_assignment -name OUTPUT_IO_TIMING_NEAR_END_VMEAS "HALF VCCIO" -fall
 set_global_assignment -name OUTPUT_IO_TIMING_FAR_END_VMEAS "HALF SIGNAL SWING" -rise
 set_global_assignment -name OUTPUT_IO_TIMING_FAR_END_VMEAS "HALF SIGNAL SWING" -fall
 set_global_assignment -name USE_DLL_FREQUENCY_FOR_DQS_DELAY_CHAIN ON
-set_global_assignment -name SEARCH_PATH $FIRMWARE_PATH/ -tag from_archive
 set_global_assignment -name ENABLE_CONFIGURATION_PINS OFF
-set_global_assignment -name ENABLE_NCE_PIN OFF
 set_global_assignment -name ENABLE_BOOT_SEL_PIN OFF
 set_global_assignment -name DEVICE_FILTER_PACKAGE FBGA
 set_global_assignment -name DEVICE_FILTER_PIN_COUNT 324
@@ -68,10 +66,8 @@ set_global_assignment -name NUM_PARALLEL_PROCESSORS 4
 set_global_assignment -name PARTITION_NETLIST_TYPE SOURCE -section_id Top
 set_global_assignment -name PARTITION_FITTER_PRESERVATION_LEVEL PLACEMENT_AND_ROUTING -section_id Top
 set_global_assignment -name PARTITION_COLOR 16764057 -section_id Top
-set_global_assignment -name ENABLE_INIT_DONE_OUTPUT OFF
 set_global_assignment -name ENABLE_OCT_DONE OFF
-set_global_assignment -name STRATIXV_CONFIGURATION_SCHEME "PASSIVE SERIAL"	
-
+set_global_assignment -name STRATIXV_CONFIGURATION_SCHEME "PASSIVE SERIAL"
 set_global_assignment -name CYCLONEII_RESERVE_NCEO_AFTER_CONFIGURATION "USE AS REGULAR IO"
 set_global_assignment -name RESERVE_DATA0_AFTER_CONFIGURATION "USE AS REGULAR IO"
 set_global_assignment -name RESERVE_DATA1_AFTER_CONFIGURATION "USE AS REGULAR IO"
@@ -94,10 +90,6 @@ set_global_assignment -name GENERATE_SVF_FILE ON
 set_global_assignment -name GENERATE_JAM_FILE ON
 set_global_assignment -name GENERATE_JBC_FILE ON
 
-# Script to run during the flow
-set_global_assignment -name PRE_FLOW_SCRIPT_FILE quartus_sh:${PRE_FLOW_SCRIPT_FILE}
-# set_global_assignment -name POST_MODULE_SCRIPT_FILE quartus_sh:next.tcl
-set_global_assignment -name POST_FLOW_SCRIPT_FILE quartus_sh:${POST_FLOW_SCRIPT_FILE}
 
 # IO assignments
 

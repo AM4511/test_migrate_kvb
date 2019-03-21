@@ -17,12 +17,19 @@
 // ----------------------------------------------------------------------------------
 // 1.0      01/21/2016  R. Carickhoff   Created.
 // 1.1      10/25/2016  R. Carickhoff   Synchronized IRQ inputs.
+// 1.2      12/14/2017  R. Carickhoff   Delayed additional clock cycle to DS0 and DS1.
+// 1.3	    03/13/2018	D. Rauth	Added WIDTH for A32.
+// 1.4      03/28/2018  K. Paist	Make vme outputs to pins --> registers
 //
 // Additional Comments:
 //
 //////////////////////////////////////////////////////////////////////////////////
 
-module	vme_intf (
+module	vme_intf #(
+parameter A32_WIDTH = 30,		// A32 width (4-byte word address)
+parameter A32_OFFSET = 30'h0,	// A32 offset (4-byte word address)
+parameter BIG_ENDIAN = 1'b1		// convert Little Endian to Big Endian
+)(
 //	global clk/reset
 input		clk, // 125mhz clock (8nsec)
 input 	reset,
@@ -40,7 +47,7 @@ output   s_irq_0,
 // avalon 32-bit slave interface 	
 input		s_write_1,
 input		s_read_1,  
-input		[29:0] s_address_1,
+input		[(A32_WIDTH-1):0] s_address_1,
 input		[31:0] s_writedata_1,
 input		[3:0] s_byteenable_1,
 output	[31:0] s_readdata_1,
@@ -52,9 +59,12 @@ output	[31:1] vme_a,			// address bus
 output	[5:0]  vme_am,			// address modifier
 output	vme_lword_n,			// long word
 output	vme_sysrst_n,			// system reset
-output	vme_as_n,				// address strobe
-output	vme_ds0_n,				// data strobe 0
-output	vme_ds1_n,				// data strobe 1
+//output	vme_as_n,				// address strobe
+//output	vme_ds0_n,				// data strobe 0
+//output	vme_ds1_n,				// data strobe 1
+output	reg vme_as_n,				// address strobe
+output	reg vme_ds0_n,				// data strobe 0
+output	reg vme_ds1_n,				// data strobe 1
 output	vme_write_n,			// write
 output	vme_iack_n,				// interrupt acknowledge
 output	vme_iackout_n,			// interrupt acknowledge out
@@ -69,8 +79,6 @@ input		[7:1] vme_irq_n		// interrupt request
 //output	[3:0] vme_bgout_n		// bus grant out
 );
 
-// constants
-parameter BIG_ENDIAN = 1; // convert Little Endian to Big Endian
 
 // variables 
 wire		A32_memory;
@@ -214,7 +222,7 @@ assign AIRQ_memory = (s_read_0 || s_write_0) && (s_address_0[24:23] == 2'b10); /
 
 // vme address selection							
 assign vme_a[31:1] = AIRQ_memory ? {28'h0, vec_addr[2:0]} :
-	                   A32_memory ? {s_address_1[29:0], A01} :
+	                   A32_memory ? {({{30-A32_WIDTH{1'b0}}, s_address_1[(A32_WIDTH-1):0]}), A01} + {A32_OFFSET, 1'b0} :
 							 A24_memory ? {8'h0, s_address_0[22:0]} : 
 							 A16_memory ? {16'h0, s_address_0[14:0]} : 31'h0 ;
 							 
@@ -277,9 +285,9 @@ assign vme_sysrst_n  = ~reset;
 // using state6 for AS provides a 48nsec delay
 // using state7 for DS0 and DS1 provides a 56nsec delay
 // master must not drive DS0 or DS1 active until AS is active. delay 8ns after AS
-assign vme_as_n  = ~(vme_access && (s_read || s_write));
-assign vme_ds0_n = ~(vme_access2 && (s_read || s_write) && DS0);  // delay 8ns from AS
-assign vme_ds1_n = ~(vme_access2 && (s_read || s_write) && DS1);  // delay 8ns from AS
+//assign vme_as_n  = ~(vme_access && (s_read || s_write));
+//assign vme_ds0_n = ~(vme_access2 && (s_read || s_write) && DS0);  // delay 8ns from AS
+//assign vme_ds1_n = ~(vme_access2 && (s_read || s_write) && DS1);  // delay 8ns from AS
 
 assign byteenable[3:0] = A32_memory ? byteenable_1[3:0] : {2'b00, byteenable_0[1:0]};
 
@@ -308,20 +316,27 @@ assign DS1   = cntl_out[4];
 // wait 3 clocks before starting vme access.  Allow address and data to settle.
 always @ (posedge clk or posedge reset) begin
 	if (reset) begin
-      vme_access <= 0;
-      vme_access2 <= 0;
-		access_done <= 0;
+        vme_as_n <= 1'b1;
+        vme_ds0_n <= 1'b1;
+        vme_ds1_n <= 1'b1;
+        vme_write <= 1'b0;
+        vme_access <= 1'b0;
+        vme_access2 <= 1'b0;
+		access_done <= 1'b0;
 		state <= IDLE;
 	end
 	else begin
 		case(state)
       		
 		IDLE: begin
-         vme_access <= 0;
-         vme_access2 <= 0;
-		   access_done <= 0;
-			if (read || write) begin
-			   vme_write <= s_write; 
+            vme_as_n <= 1'b1;
+            vme_ds0_n <= 1'b1;
+            vme_ds1_n <= 1'b1;
+            vme_access <= 1'b0;
+            vme_access2 <= 1'b0;
+            access_done <= 1'b0;
+            if (read || write) begin
+                vme_write <= s_write; 
 				state <= STATE1;
 			end
 		end
@@ -343,12 +358,15 @@ always @ (posedge clk or posedge reset) begin
 		end
 		
 		STATE5: begin
-         vme_access <= 1;		    
+            vme_as_n <= !(s_read || s_write);
+            vme_access <= 1'b1;		    
 			state <= STATE6;
 		end
 		
 		STATE6: begin
-         vme_access2 <= 1;		    
+            vme_ds0_n <= !((s_read || s_write) && DS0);  // delay 8ns from AS
+            vme_ds1_n <= !((s_read || s_write) && DS1);  // delay 8ns from AS
+            vme_access2 <= 1'b1;		    
 			state <= STATE7;
 		end
 		
@@ -358,15 +376,18 @@ always @ (posedge clk or posedge reset) begin
 		
 		STATE8: begin // check for dtack
 			if(dtack) begin
-				access_done <= 1;
+				access_done <= 1'b1;
 				state <= STATE9;
 			end
 		end
 				
 		STATE9: begin // wait for dtack to go inactive
-			vme_access <= 0;
-			vme_access2 <= 0;
-		   access_done <= 0;
+            vme_as_n <= 1'b1;
+            vme_ds0_n <= 1'b1;
+            vme_ds1_n <= 1'b1;
+			vme_access <= 1'b0;
+			vme_access2 <= 1'b0;
+            access_done <= 1'b0;
 			if (~dtack) begin 
 				state <= IDLE;
 			end
