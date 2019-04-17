@@ -14,7 +14,8 @@ global ROOT_PATH
     puts "ROOT_PATH ::env(KVB) -> $ROOT_PATH"
  } else {
     # ROOT path not found
-    error "ROOT_PATH ::env(HOSTBRIDGE) not set"
+    post_message -type error "ROOT_PATH ::env(KVB) not set"
+    error "ROOT_PATH ::env(KVB) not set"
 }
 puts "Setting the KVB project environment variable"
 
@@ -83,15 +84,17 @@ if {[regexp {\s} ${WORK_PATH}]} {
 #       <revision name>
 #           rev_board_name      board name string
 #           rev_part_number     K&S part number string
-#           rev_work_path       work path for <revision name> [no spaces]
-#           rev_firmware_path   firmware path for <revision name>
-#           rev_qsys_path       QSYS system path for <revision name>
+#           rev_work_path_rel   relative work path for <revision name> [no spaces]
+#           rev_work_path       absolute work path for <revision name> [no spaces]
+#           rev_firmware_path   absolute firmware path for <revision name>
+#           rev_qsys_path       absolute QSYS system path for <revision name>
 #
 ################################################################################
 
 # CPUSKL for ball bonder [VME A16/A24 D8(O)/D16, 2 PCIe UARTs]
 dict set REV_DATA skl_ball      rev_board_name      "CPUSKL"
 dict set REV_DATA skl_ball      rev_part_number     "08991-4010-000"
+dict set REV_DATA skl_ball      rev_work_path_rel   "skl_ball"
 dict set REV_DATA skl_ball      rev_work_path       "${WORK_PATH}/skl_ball"
 dict set REV_DATA skl_ball      rev_firmware_path   "${WORK_PATH}/skl_ball/firmware"
 dict set REV_DATA skl_ball      rev_qsys_path       "${WORK_PATH}/skl_ball/${QSYS_SYSTEM_NAME}"
@@ -99,6 +102,7 @@ dict set REV_DATA skl_ball      rev_qsys_path       "${WORK_PATH}/skl_ball/${QSY
 # CPUSKL for wedge bonder [VME A16/A24/A32 D8(O)/D16/D32, no PCIe UARTs]
 dict set REV_DATA skl_wedge     rev_board_name      "CPUSKL"
 dict set REV_DATA skl_wedge     rev_part_number     "08991-4010-000"
+dict set REV_DATA skl_ball      rev_work_path_rel   "skl_wedge"
 dict set REV_DATA skl_wedge     rev_work_path       "${WORK_PATH}/skl_wedge"
 dict set REV_DATA skl_wedge     rev_firmware_path   "${WORK_PATH}/skl_wedge/firmware"
 dict set REV_DATA skl_wedge     rev_qsys_path       "${WORK_PATH}/skl_wedge/${QSYS_SYSTEM_NAME}"
@@ -106,6 +110,7 @@ dict set REV_DATA skl_wedge     rev_qsys_path       "${WORK_PATH}/skl_wedge/${QS
 # CPUKBL [no VME, no PCIe UARTs]
 dict set REV_DATA kbl           rev_board_name      "CPUKBL"
 dict set REV_DATA kbl           rev_part_number     "08900-4010-000"
+dict set REV_DATA skl_ball      rev_work_path_rel   "kbl"
 dict set REV_DATA kbl           rev_work_path       "${WORK_PATH}/kbl"
 dict set REV_DATA kbl           rev_firmware_path   "${WORK_PATH}/kbl/firmware"
 dict set REV_DATA kbl           rev_qsys_path       "${WORK_PATH}/kbl/${QSYS_SYSTEM_NAME}"

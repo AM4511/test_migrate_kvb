@@ -24,7 +24,7 @@ set cmd_list [join "
     set GW_VERSION ${GW_VERSION};
     set GIT_COMMIT 0x${GIT_COMMIT};
     set BUILDID ${BUILDID};
-    set WORK_PATH ${rev_work_path}
+    set WORK_PATH ${rev_work_path_rel}
 "]
 
 
