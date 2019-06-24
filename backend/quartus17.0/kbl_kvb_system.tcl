@@ -187,6 +187,19 @@ set_instance_parameter_value pio_1 {simDoTestBenchWiring} {0}
 set_instance_parameter_value pio_1 {simDrivenValue} {0.0}
 set_instance_parameter_value pio_1 {width} {2}
 
+add_instance pio_2 altera_avalon_pio
+set_instance_parameter_value pio_2 {bitClearingEdgeCapReg} {1}
+set_instance_parameter_value pio_2 {bitModifyingOutReg} {0}
+set_instance_parameter_value pio_2 {captureEdge} {1}
+set_instance_parameter_value pio_2 {direction} {Input}
+set_instance_parameter_value pio_2 {edgeType} {RISING}
+set_instance_parameter_value pio_2 {generateIRQ} {1}
+set_instance_parameter_value pio_2 {irqType} {EDGE}
+set_instance_parameter_value pio_2 {resetValue} {0.0}
+set_instance_parameter_value pio_2 {simDoTestBenchWiring} {0}
+set_instance_parameter_value pio_2 {simDrivenValue} {0.0}
+set_instance_parameter_value pio_2 {width} {2}
+
 add_instance qspi_mram_0 qspi_mram
 set_instance_parameter_value qspi_mram_0 {QSPI_DISABLE} {false}
 
@@ -229,6 +242,8 @@ add_interface pio_0 conduit end
 set_interface_property pio_0 EXPORT_OF pio_0.external_connection
 add_interface pio_1 conduit end
 set_interface_property pio_1 EXPORT_OF pio_1.external_connection
+add_interface pio_2 conduit end
+set_interface_property pio_2 EXPORT_OF pio_2.external_connection
 add_interface qspi_mram_0 conduit end
 set_interface_property qspi_mram_0 EXPORT_OF qspi_mram_0.conduit_end
 add_interface reset reset sink
@@ -280,6 +295,11 @@ set_connection_parameter_value pcie_hard_ip_0.bar0/pio_1.s1 arbitrationPriority 
 set_connection_parameter_value pcie_hard_ip_0.bar0/pio_1.s1 baseAddress {0x00020020}
 set_connection_parameter_value pcie_hard_ip_0.bar0/pio_1.s1 defaultConnection {0}
 
+add_connection pcie_hard_ip_0.bar0 pio_2.s1
+set_connection_parameter_value pcie_hard_ip_0.bar0/pio_2.s1 arbitrationPriority {1}
+set_connection_parameter_value pcie_hard_ip_0.bar0/pio_2.s1 baseAddress {0x00020030}
+set_connection_parameter_value pcie_hard_ip_0.bar0/pio_2.s1 defaultConnection {0}
+
 add_connection pcie_hard_ip_0.bar0 qspi_mram_0.avalon_slave_0
 set_connection_parameter_value pcie_hard_ip_0.bar0/qspi_mram_0.avalon_slave_0 arbitrationPriority {1}
 set_connection_parameter_value pcie_hard_ip_0.bar0/qspi_mram_0.avalon_slave_0 baseAddress {0x00040000}
@@ -297,6 +317,8 @@ add_connection pcie_hard_ip_0.pcie_core_clk pio_0.clk
 
 add_connection pcie_hard_ip_0.pcie_core_clk pio_1.clk
 
+add_connection pcie_hard_ip_0.pcie_core_clk pio_2.clk
+
 add_connection pcie_hard_ip_0.pcie_core_reset PnPROM_0.reset
 
 add_connection pcie_hard_ip_0.pcie_core_reset i2c_master_0.reset
@@ -307,8 +329,13 @@ add_connection pcie_hard_ip_0.pcie_core_reset pio_0.reset
 
 add_connection pcie_hard_ip_0.pcie_core_reset pio_1.reset
 
+add_connection pcie_hard_ip_0.pcie_core_reset pio_2.reset
+
 add_connection pcie_hard_ip_0.rxm_irq i2c_master_0.interrupt_sender
 set_connection_parameter_value pcie_hard_ip_0.rxm_irq/i2c_master_0.interrupt_sender irqNumber {1}
+
+add_connection pcie_hard_ip_0.rxm_irq pio_2.irq
+set_connection_parameter_value pcie_hard_ip_0.rxm_irq/pio_2.irq irqNumber {8}
 
 # interconnect requirements
 set_interconnect_requirement {$system} {qsys_mm.clockCrossingAdapter} {HANDSHAKE}

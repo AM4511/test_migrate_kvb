@@ -36,6 +36,7 @@
 //          user LEDs. Added QAR and ZIP archive generation to scripts.
 //    2.2 - Updated VME, QSPI, and PCIe UART IP. Finalized timing constraints.
 //    3.0 - Added revisions for CPUSKL wedge and CPUKBL variants.
+//    3.1 - Add PIO IP for voltage_alert and power_failure_n signals.
 ///////////////////////////////////////////////////////////////////////////////
 
 
@@ -130,6 +131,9 @@ module kvb_top (
     wire   [1:0]  ser_rx;
     wire   [1:0]  ser_tx;
     
+    wire voltage_alert_d;
+    wire power_failure_d;
+    
     assign vme_write = ~vme_write_n;
     assign vme_buffer_oe = 1'b1;
     assign prog_led_n[2:1] = ~led_out;
@@ -215,8 +219,13 @@ module kvb_top (
             end
         end
     end
-
-
+    
+ 
+    // sync and debounce platform inputs
+    debounce25 u2 (.clk(clk125), .in(voltage_alert), .out(voltage_alert_d));
+    debounce25 u3 (.clk(clk125), .in(~power_failure_n), .out(power_failure_d));
+    
+    
     // LTSSM state: The LTSSM state machine encoding defines the following states:
     //    00000: Detect.Quiet
     //    00001: Detect.Active
@@ -321,6 +330,7 @@ module kvb_top (
         /////////////////////////////////////////////////////////////
         .pio_0_export                                      (gpio),
         .pio_1_export                                      (led_out),
+        .pio_2_export                                      ({power_failure_d, voltage_alert_d}),
         .one_shot_0_export                                 (cam_trigger),
 
 
@@ -388,5 +398,25 @@ module kvb_top (
     assign pch_clk_req_n[4] = (cpcis_prsnt[4]) ? 1'b0 : 1'bz;
     assign pch_clk_req_n[5] = (cpcis_prsnt[5]) ? 1'b0 : 1'bz;
     assign pch_clk_req_n[6] = (cpcis_prsnt[6]) ? 1'b0 : 1'bz;
+
+endmodule
+
+
+// 25 bit (200ns @ 125 MHz) signal debounce
+module debounce25 (
+    input clk,             // 125MHz clock
+    input in,              // input
+    output reg out=0       // debounced output
+    );
+    
+    reg [24:0] dbuf = {25{1'b0}};
+	
+	always @(posedge clk) begin
+		dbuf <= {dbuf[23:0], in};
+		if (dbuf == {25{1'b1}})
+			out <= 1;
+		else if (dbuf == {25{1'b0}})
+			out <= 0;	
+	end
 
 endmodule
