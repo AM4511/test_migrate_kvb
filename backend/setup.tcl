@@ -28,7 +28,7 @@ set FPGA_PART_NUMBER    "EP4CGX22CF19C8"
 set FLASH_PART_NUMBER   "EPCQ128"
 set FPGA_NAME           "kvb"
 set REVMAJOR            "3"                            ; # must be < 655
-set REVMINOR            "1"                            ; # must be < 100
+set REVMINOR            "2"                            ; # must be < 100
 set REVISION            "v${REVMAJOR}_${REVMINOR}"
 set PROJECT_NAME        "${FPGA_NAME}_${REVISION}"
 set QSYS_NAME           "${FPGA_NAME}"
@@ -48,7 +48,7 @@ set QUARTUS_VERSION "$quartus_ver_major.$quartus_ver_minor"
 
 
 ################################################################################
-# Directory structure [no spaces]
+# Directory structure [no spaces in strings]
 ################################################################################
 set QUARTUS_HOME      "$quartus(quartus_rootpath)"
 set ARCHIVE_PATH      "${ROOT_PATH}/archive"
@@ -74,7 +74,7 @@ if {[regexp {\s} ${WORK_PATH}]} {
 
 
 ################################################################################
-# Revision variables
+# Revision variables [no spaces in strings]
 ################################################################################
 # This project contains Quartus project revisions for each KVB variant.
 #
@@ -89,26 +89,26 @@ if {[regexp {\s} ${WORK_PATH}]} {
 #
 ################################################################################
 
-# CPUSKL for ball bonder [VME A16/A24 D8(O)/D16, 2 PCIe UARTs]
+# CPUSKL/KA/KB/KE for ball bonder [VME A16/A24 D8(O)/D16, 2 PCIe UARTs]
 dict set REV_DATA skl_ball      rev_board_name      "CPUSKL"
 dict set REV_DATA skl_ball      rev_part_number     "08991-4010-000"
 dict set REV_DATA skl_ball      rev_work_path       "${WORK_PATH}/skl_ball"
 dict set REV_DATA skl_ball      rev_firmware_path   "${WORK_PATH}/skl_ball/firmware"
 dict set REV_DATA skl_ball      rev_qsys_path       "${WORK_PATH}/skl_ball/${QSYS_SYSTEM_NAME}"
 
-# CPUSKL for wedge bonder [VME A16/A24/A32 D8(O)/D16/D32, no PCIe UARTs]
-dict set REV_DATA skl_wedge     rev_board_name      "CPUSKL"
-dict set REV_DATA skl_wedge     rev_part_number     "08991-4010-000"
+# CPUSKL/KC/KD or CPUKBL/KB for wedge bonder [VME A16/A24/A32 D8(O)/D16/D32, no PCIe UARTs]
+dict set REV_DATA skl_wedge     rev_board_name      "CPUSKL/CPUKBL"
+dict set REV_DATA skl_wedge     rev_part_number     "08991-4010-000/08900-4010-000"
 dict set REV_DATA skl_wedge     rev_work_path       "${WORK_PATH}/skl_wedge"
 dict set REV_DATA skl_wedge     rev_firmware_path   "${WORK_PATH}/skl_wedge/firmware"
 dict set REV_DATA skl_wedge     rev_qsys_path       "${WORK_PATH}/skl_wedge/${QSYS_SYSTEM_NAME}"
 
-# CPUKBL [no VME, no PCIe UARTs]
-dict set REV_DATA kbl           rev_board_name      "CPUKBL"
-dict set REV_DATA kbl           rev_part_number     "08900-4010-000"
-dict set REV_DATA kbl           rev_work_path       "${WORK_PATH}/kbl"
-dict set REV_DATA kbl           rev_firmware_path   "${WORK_PATH}/kbl/firmware"
-dict set REV_DATA kbl           rev_qsys_path       "${WORK_PATH}/kbl/${QSYS_SYSTEM_NAME}"
+# CPUKBL/KA for ball bonder [no VME, no PCIe UARTs]
+dict set REV_DATA kbl_ball      rev_board_name      "CPUKBL"
+dict set REV_DATA kbl_ball      rev_part_number     "08900-4010-000"
+dict set REV_DATA kbl_ball      rev_work_path       "${WORK_PATH}/kbl_ball"
+dict set REV_DATA kbl_ball      rev_firmware_path   "${WORK_PATH}/kbl_ball/firmware"
+dict set REV_DATA kbl_ball      rev_qsys_path       "${WORK_PATH}/kbl_ball/${QSYS_SYSTEM_NAME}"
 
 
 ################################################################################

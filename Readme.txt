@@ -38,6 +38,8 @@ Revisions
 2.7 - Fix I2C master controller clock domain crossing issue.
 2.8 - Fix violation of timing rule 2.36 in VME master (VME spec revision C.1).
 3.0 - Add support for CPUSKL/KC/KD (wedge bonder) and CPUKBL/KA.
+3.1 - Add PIO IP for voltage_alert and power_failure_n signals.
+3.2 - Connect COM1 to COM2 internally for wedge bonder.
 
 
 Requirements
@@ -66,7 +68,7 @@ Creating and Compiling Project from Quartus
     source "$::env(KVB)/backend/create_quartus_project.tcl"
 
 3.  Select the desired Quartus project revision.
-4.  Run start compilation (Ctrl+L) or compile all in Revisions.
+4.  Run start compilation (Ctrl+L) or compile all in Revisions (in Project Navigator).
 
 
 Creating, Compiling, and Checking Project from Command-Line

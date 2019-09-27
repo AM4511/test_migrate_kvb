@@ -6,8 +6,8 @@
 // Engineer:       Richard Carickhoff, David Rauth, Alain Marchand
 //
 // Create Date:    1/12/2016
-// Design Name:    K&S Bridge for CPUKBL
-// Revision Name:  kbl
+// Design Name:    K&S Bridge for CPUKBL (Ball Bonder)
+// Revision Name:  kbl_ball
 // Module Name:    kvb_top
 // Project Name:   kvb
 // Target Devices: EP4CGX22CF19C8
