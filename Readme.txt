@@ -40,6 +40,8 @@ Revisions
 3.0 - Add support for CPUSKL/KC/KD (wedge bonder) and CPUKBL/KA.
 3.1 - Add PIO IP for voltage_alert and power_failure_n signals.
 3.2 - Connect COM1 to COM2 internally for wedge bonder.
+3.3 - Switch COM2 from LPC to PCIe UART and instantiate COM3 as PCIe UART for
+      ball bonder.
 
 
 Requirements

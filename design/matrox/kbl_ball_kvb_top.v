@@ -37,6 +37,7 @@
 //    2.2 - Updated VME, QSPI, and PCIe UART IP. Finalized timing constraints.
 //    3.0 - Added revisions for CPUSKL wedge and CPUKBL variants.
 //    3.1 - Add PIO IP for voltage_alert and power_failure_n signals.
+//    3.3 - Switch COM2 from LPC to PCIe UART and instantiate COM3 as PCIe UART.
 ///////////////////////////////////////////////////////////////////////////////
 
 
@@ -128,9 +129,6 @@ module kvb_top (
     wire   [63:0] test_out_icm;
     wire   [39:0] test_in;
     wire   [4:0]  dl_ltssm_int;
-    wire   [1:0]  ser_rx;
-    wire   [1:0]  ser_tx;
-    
     wire voltage_alert_d;
     wire power_failure_d;
     
@@ -346,25 +344,49 @@ module kvb_top (
         // System reset
         /////////////////////////////////////////////////////////////
         .reset_reset_n                                     (sys_rst_n),
+        /////////////////////////////////////////////////////////////
+        // UART Interfaces
+        /////////////////////////////////////////////////////////////
+        .a_16550_uart_0_uart_sin                           (),
+        .a_16550_uart_0_uart_sout                          (),
+        .a_16550_uart_0_uart_rts                           (),
+        .a_16550_uart_0_uart_cts                           (),
+        .a_16550_uart_0_uart_dtr                           (),
+        .a_16550_uart_0_uart_dsr                           (),
+        .a_16550_uart_0_uart_ri                            (),
+        .a_16550_uart_0_uart_dcd                           (),
+
+        .a_16550_uart_1_uart_sin                           (ser2_rx),
+        .a_16550_uart_1_uart_sout                          (ser2_tx),
+        .a_16550_uart_1_uart_rts                           (),
+        .a_16550_uart_1_uart_cts                           (),
+        .a_16550_uart_1_uart_dtr                           (),
+        .a_16550_uart_1_uart_dsr                           (),
+        .a_16550_uart_1_uart_ri                            (),
+        .a_16550_uart_1_uart_dcd                           (),
+
+        .a_16550_uart_2_uart_sin                           (ser3_rx),
+        .a_16550_uart_2_uart_sout                          (ser3_tx),
+        .a_16550_uart_2_uart_rts                           (),
+        .a_16550_uart_2_uart_cts                           (),
+        .a_16550_uart_2_uart_dtr                           (),
+        .a_16550_uart_2_uart_dsr                           (),
+        .a_16550_uart_2_uart_ri                            (),
+        .a_16550_uart_2_uart_dcd                           (),
     );
 
 
     lpc2uarts #(
-        .NUMB_UART (2)
+        .NUMB_UART (1)
     ) u1 (
         .lpc_clk     (lpc_clk),
         .lpc_reset_n (sys_rst_n),
         .lpc_frame_n (lpc_frame_n),
         .lpc_ad      (lpc_ad),
         .serirq      (serirq),
-        .ser_rx      (ser_rx),
-        .ser_tx      (ser_tx)
+        .ser_rx      (ser1_rx),
+        .ser_tx      (ser1_tx)
         );
-
-    assign ser1_tx = ser_tx[0];
-    assign ser2_tx = ser_tx[1];
-    assign ser_rx[0] = ser1_rx;
-    assign ser_rx[1] = ser2_rx;
 
     
     ////////////////////////////////////////////////////////////////////

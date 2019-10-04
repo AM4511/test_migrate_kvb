@@ -16,6 +16,12 @@ set_instance_parameter_value PnPROM_0 {part_num} ${PART_NUMBER}
 set_instance_parameter_value PnPROM_0 {git_commit} ${GIT_COMMIT}
 set_instance_parameter_value PnPROM_0 {build_id} ${BUILDID}
 
+add_instance a_16550_uart_0 16550_uart
+
+add_instance a_16550_uart_1 16550_uart
+
+add_instance a_16550_uart_2 16550_uart
+
 add_instance clk_50 clock_source
 set_instance_parameter_value clk_50 {clockFrequency} {50000000.0}
 set_instance_parameter_value clk_50 {clockFrequencyKnown} {1}
@@ -204,6 +210,12 @@ add_instance qspi_mram_0 qspi_mram
 set_instance_parameter_value qspi_mram_0 {QSPI_DISABLE} {false}
 
 # exported interfaces
+add_interface a_16550_uart_0 conduit end
+set_interface_property a_16550_uart_0 EXPORT_OF a_16550_uart_0.conduit_end
+add_interface a_16550_uart_1 conduit end
+set_interface_property a_16550_uart_1 EXPORT_OF a_16550_uart_1.conduit_end
+add_interface a_16550_uart_2 conduit end
+set_interface_property a_16550_uart_2 EXPORT_OF a_16550_uart_2.conduit_end
 add_interface clk_50 clock sink
 set_interface_property clk_50 EXPORT_OF clk_50.clk_in
 add_interface i2c_master_0 conduit end
@@ -265,6 +277,21 @@ set_connection_parameter_value pcie_hard_ip_0.bar0/PnPROM_0.avalon_slave_0 arbit
 set_connection_parameter_value pcie_hard_ip_0.bar0/PnPROM_0.avalon_slave_0 baseAddress {0x0000}
 set_connection_parameter_value pcie_hard_ip_0.bar0/PnPROM_0.avalon_slave_0 defaultConnection {0}
 
+add_connection pcie_hard_ip_0.bar0 a_16550_uart_0.avalon_slave_0
+set_connection_parameter_value pcie_hard_ip_0.bar0/a_16550_uart_0.avalon_slave_0 arbitrationPriority {1}
+set_connection_parameter_value pcie_hard_ip_0.bar0/a_16550_uart_0.avalon_slave_0 baseAddress {0x00020040}
+set_connection_parameter_value pcie_hard_ip_0.bar0/a_16550_uart_0.avalon_slave_0 defaultConnection {0}
+
+add_connection pcie_hard_ip_0.bar0 a_16550_uart_1.avalon_slave_0
+set_connection_parameter_value pcie_hard_ip_0.bar0/a_16550_uart_1.avalon_slave_0 arbitrationPriority {1}
+set_connection_parameter_value pcie_hard_ip_0.bar0/a_16550_uart_1.avalon_slave_0 baseAddress {0x00020060}
+set_connection_parameter_value pcie_hard_ip_0.bar0/a_16550_uart_1.avalon_slave_0 defaultConnection {0}
+
+add_connection pcie_hard_ip_0.bar0 a_16550_uart_2.avalon_slave_0
+set_connection_parameter_value pcie_hard_ip_0.bar0/a_16550_uart_2.avalon_slave_0 arbitrationPriority {1}
+set_connection_parameter_value pcie_hard_ip_0.bar0/a_16550_uart_2.avalon_slave_0 baseAddress {0x00020080}
+set_connection_parameter_value pcie_hard_ip_0.bar0/a_16550_uart_2.avalon_slave_0 defaultConnection {0}
+
 add_connection pcie_hard_ip_0.bar0 dead_rom.s1
 set_connection_parameter_value pcie_hard_ip_0.bar0/dead_rom.s1 arbitrationPriority {1}
 set_connection_parameter_value pcie_hard_ip_0.bar0/dead_rom.s1 baseAddress {0x0000}
@@ -307,6 +334,12 @@ set_connection_parameter_value pcie_hard_ip_0.bar0/qspi_mram_0.avalon_slave_0 de
 
 add_connection pcie_hard_ip_0.pcie_core_clk PnPROM_0.clock
 
+add_connection pcie_hard_ip_0.pcie_core_clk a_16550_uart_0.clock
+
+add_connection pcie_hard_ip_0.pcie_core_clk a_16550_uart_1.clock
+
+add_connection pcie_hard_ip_0.pcie_core_clk a_16550_uart_2.clock
+
 add_connection pcie_hard_ip_0.pcie_core_clk dead_rom.clk1
 
 add_connection pcie_hard_ip_0.pcie_core_clk i2c_master_0.clock
@@ -321,6 +354,12 @@ add_connection pcie_hard_ip_0.pcie_core_clk pio_2.clk
 
 add_connection pcie_hard_ip_0.pcie_core_reset PnPROM_0.reset
 
+add_connection pcie_hard_ip_0.pcie_core_reset a_16550_uart_0.reset
+
+add_connection pcie_hard_ip_0.pcie_core_reset a_16550_uart_1.reset
+
+add_connection pcie_hard_ip_0.pcie_core_reset a_16550_uart_2.reset
+
 add_connection pcie_hard_ip_0.pcie_core_reset i2c_master_0.reset
 
 add_connection pcie_hard_ip_0.pcie_core_reset one_shot_0.reset
@@ -330,6 +369,15 @@ add_connection pcie_hard_ip_0.pcie_core_reset pio_0.reset
 add_connection pcie_hard_ip_0.pcie_core_reset pio_1.reset
 
 add_connection pcie_hard_ip_0.pcie_core_reset pio_2.reset
+
+add_connection pcie_hard_ip_0.rxm_irq a_16550_uart_0.interrupt_sender_1
+set_connection_parameter_value pcie_hard_ip_0.rxm_irq/a_16550_uart_0.interrupt_sender_1 irqNumber {2}
+
+add_connection pcie_hard_ip_0.rxm_irq a_16550_uart_1.interrupt_sender_1
+set_connection_parameter_value pcie_hard_ip_0.rxm_irq/a_16550_uart_1.interrupt_sender_1 irqNumber {3}
+
+add_connection pcie_hard_ip_0.rxm_irq a_16550_uart_2.interrupt_sender_1
+set_connection_parameter_value pcie_hard_ip_0.rxm_irq/a_16550_uart_2.interrupt_sender_1 irqNumber {4}
 
 add_connection pcie_hard_ip_0.rxm_irq i2c_master_0.interrupt_sender
 set_connection_parameter_value pcie_hard_ip_0.rxm_irq/i2c_master_0.interrupt_sender irqNumber {1}
