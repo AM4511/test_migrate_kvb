@@ -38,6 +38,7 @@
 //    3.0 - Added revisions for CPUSKL wedge and CPUKBL variants.
 //    3.1 - Add PIO IP for voltage_alert and power_failure_n signals.
 //    3.3 - Switch COM2 from LPC to PCIe UART and instantiate COM3 as PCIe UART.
+//    3.4 - Swap ser2 and ser3 for software backwards compatibility.
 ///////////////////////////////////////////////////////////////////////////////
 
 
@@ -356,8 +357,8 @@ module kvb_top (
         .a_16550_uart_0_uart_ri                            (),
         .a_16550_uart_0_uart_dcd                           (),
 
-        .a_16550_uart_1_uart_sin                           (ser2_rx),
-        .a_16550_uart_1_uart_sout                          (ser2_tx),
+        .a_16550_uart_1_uart_sin                           (ser3_rx),
+        .a_16550_uart_1_uart_sout                          (ser3_tx),
         .a_16550_uart_1_uart_rts                           (),
         .a_16550_uart_1_uart_cts                           (),
         .a_16550_uart_1_uart_dtr                           (),
@@ -365,8 +366,8 @@ module kvb_top (
         .a_16550_uart_1_uart_ri                            (),
         .a_16550_uart_1_uart_dcd                           (),
 
-        .a_16550_uart_2_uart_sin                           (ser3_rx),
-        .a_16550_uart_2_uart_sout                          (ser3_tx),
+        .a_16550_uart_2_uart_sin                           (ser2_rx),
+        .a_16550_uart_2_uart_sout                          (ser2_tx),
         .a_16550_uart_2_uart_rts                           (),
         .a_16550_uart_2_uart_cts                           (),
         .a_16550_uart_2_uart_dtr                           (),

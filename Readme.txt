@@ -42,6 +42,7 @@ Revisions
 3.2 - Connect COM1 to COM2 internally for wedge bonder.
 3.3 - Switch COM2 from LPC to PCIe UART and instantiate COM3 as PCIe UART for
       ball bonder.
+3.4 - Swap ser2 and ser3 for ball bonder software backwards compatibility.
 
 
 Requirements
