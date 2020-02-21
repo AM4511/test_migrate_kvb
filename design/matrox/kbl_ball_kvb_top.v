@@ -39,6 +39,7 @@
 //    3.1 - Add PIO IP for voltage_alert and power_failure_n signals.
 //    3.3 - Switch COM2 from LPC to PCIe UART and instantiate COM3 as PCIe UART.
 //    3.4 - Swap ser2 and ser3 for software backwards compatibility.
+//    3.5 - Connect cam_trigger to gpio[7:4] for camera trigger test points.
 ///////////////////////////////////////////////////////////////////////////////
 
 
@@ -136,6 +137,7 @@ module kvb_top (
     assign vme_write = ~vme_write_n;
     assign vme_buffer_oe = 1'b1;
     assign prog_led_n[2:1] = ~led_out;
+    assign gpio[7:4] = cam_trigger;
     
 
     // Assignment of the test_in[39:0] signal -Hard IP
@@ -327,7 +329,7 @@ module kvb_top (
         /////////////////////////////////////////////////////////////
         // I/Os
         /////////////////////////////////////////////////////////////
-        .pio_0_export                                      (gpio),
+        .pio_0_export                                      (gpio[3:0]),
         .pio_1_export                                      (led_out),
         .pio_2_export                                      ({power_failure_d, voltage_alert_d}),
         .one_shot_0_export                                 (cam_trigger),

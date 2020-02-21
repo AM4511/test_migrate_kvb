@@ -43,6 +43,7 @@ Revisions
 3.3 - Switch COM2 from LPC to PCIe UART and instantiate COM3 as PCIe UART for
       ball bonder.
 3.4 - Swap ser2 and ser3 for ball bonder software backwards compatibility.
+3.5 - Connect cam_trigger to gpio[7:4] for camera trigger test points.
 
 
 Requirements

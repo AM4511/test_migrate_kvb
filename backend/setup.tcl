@@ -29,7 +29,7 @@ set FPGA_PART_NUMBER    "EP4CGX22CF19C8"
 set FLASH_PART_NUMBER   "EPCQ128"
 set FPGA_NAME           "kvb"
 set REVMAJOR            "3"                            ; # must be < 655
-set REVMINOR            "4"                            ; # must be < 100
+set REVMINOR            "5"                            ; # must be < 100
 set REVISION            "v${REVMAJOR}_${REVMINOR}"
 set PROJECT_NAME        "${FPGA_NAME}_${REVISION}"
 set QSYS_NAME           "${FPGA_NAME}"
