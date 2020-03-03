@@ -40,6 +40,7 @@
 //    3.3 - Switch COM2 from LPC to PCIe UART and instantiate COM3 as PCIe UART.
 //    3.4 - Swap ser2 and ser3 for software backwards compatibility.
 //    3.5 - Connect cam_trigger to gpio[7:4] for camera trigger test points.
+//    3.6 - Connect cpcis_prsnt to pio_2 for monitoring PCIe reference clock status.
 ///////////////////////////////////////////////////////////////////////////////
 
 
@@ -331,7 +332,7 @@ module kvb_top (
         /////////////////////////////////////////////////////////////
         .pio_0_export                                      (gpio[3:0]),
         .pio_1_export                                      (led_out),
-        .pio_2_export                                      ({power_failure_d, voltage_alert_d}),
+        .pio_2_export                                      ({cpcis_prsnt, 7'b0, power_failure_d, voltage_alert_d}),
         .one_shot_0_export                                 (cam_trigger),
 
 

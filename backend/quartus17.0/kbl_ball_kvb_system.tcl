@@ -204,7 +204,7 @@ set_instance_parameter_value pio_2 {irqType} {EDGE}
 set_instance_parameter_value pio_2 {resetValue} {0.0}
 set_instance_parameter_value pio_2 {simDoTestBenchWiring} {0}
 set_instance_parameter_value pio_2 {simDrivenValue} {0.0}
-set_instance_parameter_value pio_2 {width} {2}
+set_instance_parameter_value pio_2 {width} {16}
 
 add_instance qspi_mram_0 qspi_mram
 set_instance_parameter_value qspi_mram_0 {QSPI_DISABLE} {false}
