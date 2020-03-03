@@ -40,7 +40,8 @@
 //    3.3 - Switch COM2 from LPC to PCIe UART and instantiate COM3 as PCIe UART.
 //    3.4 - Swap ser2 and ser3 for software backwards compatibility.
 //    3.5 - Connect cam_trigger to gpio[7:4] for camera trigger test points.
-//    3.6 - Connect cpcis_prsnt to pio_2 for monitoring PCIe reference clock status.
+//    3.6 - Connect cpcis_prsnt to pio_2 for monitoring PCIe reference clock status
+//          and add cpcis_prsnt override outputs to pio_1.
 ///////////////////////////////////////////////////////////////////////////////
 
 
@@ -112,6 +113,7 @@ module kvb_top (
     wire          sync_clk;
     wire   [6:0]  sync_clks;
     reg    [6:0]  cpcis_prsnt;
+    reg    [6:0]  cpcis_prsnt_override;
 
     wire          pll_lock;
     wire   [31:0] pio_out;
@@ -331,8 +333,8 @@ module kvb_top (
         // I/Os
         /////////////////////////////////////////////////////////////
         .pio_0_export                                      (gpio[3:0]),
-        .pio_1_export                                      (led_out),
-        .pio_2_export                                      ({cpcis_prsnt, 7'b0, power_failure_d, voltage_alert_d}),
+        .pio_1_export                                      ({cpcis_prsnt_override, 7'bxxxxxxx, led_out}),
+        .pio_2_export                                      ({cpcis_prsnt, 7'b0000000, power_failure_d, voltage_alert_d}),
         .one_shot_0_export                                 (cam_trigger),
 
 
@@ -417,13 +419,13 @@ module kvb_top (
     //                     board detected
     //
     ////////////////////////////////////////////////////////////////////
-    assign pch_clk_req_n[0] = (cpcis_prsnt[0]) ? 1'b0 : 1'bz;
-    assign pch_clk_req_n[1] = (cpcis_prsnt[1]) ? 1'b0 : 1'bz;
-    assign pch_clk_req_n[2] = (cpcis_prsnt[2]) ? 1'b0 : 1'bz;
-    assign pch_clk_req_n[3] = (cpcis_prsnt[3]) ? 1'b0 : 1'bz;
-    assign pch_clk_req_n[4] = (cpcis_prsnt[4]) ? 1'b0 : 1'bz;
-    assign pch_clk_req_n[5] = (cpcis_prsnt[5]) ? 1'b0 : 1'bz;
-    assign pch_clk_req_n[6] = (cpcis_prsnt[6]) ? 1'b0 : 1'bz;
+    assign pch_clk_req_n[0] = (cpcis_prsnt[0] | cpcis_prsnt_override[0]) ? 1'b0 : 1'bz;
+    assign pch_clk_req_n[1] = (cpcis_prsnt[1] | cpcis_prsnt_override[1]) ? 1'b0 : 1'bz;
+    assign pch_clk_req_n[2] = (cpcis_prsnt[2] | cpcis_prsnt_override[2]) ? 1'b0 : 1'bz;
+    assign pch_clk_req_n[3] = (cpcis_prsnt[3] | cpcis_prsnt_override[3]) ? 1'b0 : 1'bz;
+    assign pch_clk_req_n[4] = (cpcis_prsnt[4] | cpcis_prsnt_override[4]) ? 1'b0 : 1'bz;
+    assign pch_clk_req_n[5] = (cpcis_prsnt[5] | cpcis_prsnt_override[5]) ? 1'b0 : 1'bz;
+    assign pch_clk_req_n[6] = (cpcis_prsnt[6] | cpcis_prsnt_override[6]) ? 1'b0 : 1'bz;
 
 endmodule
 

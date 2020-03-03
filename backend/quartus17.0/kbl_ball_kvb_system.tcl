@@ -191,7 +191,7 @@ set_instance_parameter_value pio_1 {irqType} {LEVEL}
 set_instance_parameter_value pio_1 {resetValue} {0.0}
 set_instance_parameter_value pio_1 {simDoTestBenchWiring} {0}
 set_instance_parameter_value pio_1 {simDrivenValue} {0.0}
-set_instance_parameter_value pio_1 {width} {2}
+set_instance_parameter_value pio_1 {width} {16}
 
 add_instance pio_2 altera_avalon_pio
 set_instance_parameter_value pio_2 {bitClearingEdgeCapReg} {1}

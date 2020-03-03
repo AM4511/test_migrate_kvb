@@ -44,7 +44,8 @@ Revisions
       ball bonder.
 3.4 - Swap ser2 and ser3 for ball bonder software backwards compatibility.
 3.5 - Connect cam_trigger to gpio[7:4] for camera trigger test points.
-3.6 - Connect cpcis_prsnt to pio_2 for monitoring PCIe reference clock status.
+3.6 - Connect cpcis_prsnt to pio_2 for monitoring PCIe reference clock status
+      and add cpcis_prsnt override outputs to pio_1.
 
 
 Requirements
