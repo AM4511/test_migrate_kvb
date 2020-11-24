@@ -91,7 +91,7 @@ if {[regexp {\s} ${WORK_PATH}]} {
 #
 ################################################################################
 
-# CPUSKL/KA/KB/KE for ball bonder [VME A16/A24 D8(O)/D16, 2 PCIe UARTs]
+# CPUSKL/KA/KB/KE/KG for ball bonder [VME A16/A24 D8(O)/D16, 2 PCIe UARTs]
 dict set REV_DATA skl_ball      rev_board_name      "CPUSKL"
 dict set REV_DATA skl_ball      rev_part_number     "08991-4010-000"
 dict set REV_DATA skl_ball      rev_work_path_rel   "skl_ball"
