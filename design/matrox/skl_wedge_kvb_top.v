@@ -36,6 +36,7 @@
 //          user LEDs. Added QAR and ZIP archive generation to scripts.
 //    2.2 - Updated VME, QSPI, and PCIe UART IP. Finalized timing constraints.
 //    3.0 - Added revisions for CPUSKL wedge and CPUKBL variants.
+//    3.2 - Connect COM1 to COM2 internally for wedge bonder.
 ///////////////////////////////////////////////////////////////////////////////
 
 
@@ -127,8 +128,8 @@ module kvb_top (
     wire   [63:0] test_out_icm;
     wire   [39:0] test_in;
     wire   [4:0]  dl_ltssm_int;
-    wire   [1:0]  ser_rx;
-    wire   [1:0]  ser_tx;
+    wire   [3:0]  ser_rx;
+    wire   [3:0]  ser_tx;
     
     assign vme_write = ~vme_write_n;
     assign vme_buffer_oe = 1'b1;
@@ -359,7 +360,7 @@ module kvb_top (
 
 
     lpc2uarts #(
-        .NUMB_UART (2)
+        .NUMB_UART (4)
     ) u1 (
         .lpc_clk     (lpc_clk),
         .lpc_reset_n (sys_rst_n),
@@ -370,10 +371,15 @@ module kvb_top (
         .ser_tx      (ser_tx)
         );
 
-    assign ser1_tx = ser_tx[0];
-    assign ser2_tx = ser_tx[1];
-    assign ser_rx[0] = ser1_rx;
-    assign ser_rx[1] = ser2_rx;
+    // Connect ser1 to ser2 interally for wedge bonder
+    assign ser_rx[0] = ser_tx[1];
+    assign ser_rx[1] = ser_tx[0];
+
+    // Connect ser3 to front panel COM1 and ser4 to front panel COM2
+    assign ser1_tx = ser_tx[2];
+    assign ser2_tx = ser_tx[3];
+    assign ser_rx[2] = ser1_rx;
+    assign ser_rx[3] = ser2_rx;
 
     
     ////////////////////////////////////////////////////////////////////
