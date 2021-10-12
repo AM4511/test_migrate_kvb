@@ -102,9 +102,16 @@ dict with REV_DATA ${rev_name} {
 
         # Assume QSF file names follow format "${PROJECT_NAME}_${rev_name}_build${BUILDID}.qsf"
         set rev_to_remove_file [file join ${WORK_PATH} "[regsub ${rev_name} ${rev_build_name} ${other_rev_name}].qsf"]
+        set post_flow_lock_file [file join ${WORK_PATH} "post_flow.lock"]
+
+        # Check for other temp files (parallel operations) and wait if found
+        while {[file exists ${post_flow_lock_file}]} {
+            post_message "Waiting for ${post_flow_lock_file}"
+            after 1000
+        }
 
         # Make a copy of other_rev_name QSF file since delete_revision deletes QSF file
-        file copy -force ${rev_to_remove_file} "${rev_to_remove_file}.temp"
+        file copy -force ${rev_to_remove_file} ${post_flow_lock_file}
 
         # Delete other_rev_name revision
         project_open -revision ${rev_build_name} ${single_rev_project_file}
@@ -112,7 +119,7 @@ dict with REV_DATA ${rev_name} {
         project_close
 
         # Restore other_rev_name revision QSF file
-        file rename -force "${rev_to_remove_file}.temp" ${rev_to_remove_file}
+        file rename -force ${post_flow_lock_file} ${rev_to_remove_file}
     }
 
 
