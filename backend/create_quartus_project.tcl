@@ -77,7 +77,6 @@ set_parameter -name BUILDID ${BUILDID}
 
 # add common between all revisions
 source "${BACKEND_PATH}/set_assignment.tcl"
-source "${BACKEND_PATH}/set_pinout.tcl"
 source "${BACKEND_PATH}/add_files.tcl"
 
 # create additional revisions based on first revision

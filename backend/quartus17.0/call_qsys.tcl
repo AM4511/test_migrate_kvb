@@ -17,7 +17,7 @@ set GENERATE_SCRIPT_EXE  [file join ${QUARTUS_HOME} "sopc_builder/bin/qsys-gener
 # Qsys script commands
 ################################################################################
 set cmd_list [join "
-    set DEVICE ${FPGA_PART_NUMBER};
+    set DEVICE ${rev_fpga_dev_name};
     set QSYS_NAME ${QSYS_SYSTEM_NAME};
     set BOARD_NAME ${rev_board_name};
     set PART_NUMBER ${rev_part_number};
@@ -32,7 +32,7 @@ set cmd_list [join "
 # Create the QSYS system from a system call
 ################################################################################
 set QSYS_SYSTEM_PATH  "${rev_work_path}/${QSYS_SYSTEM_NAME}"
-set TCL_QSYS_SYSTEM_SCRIPT_NAME  "${rev_name}_${QSYS_SYSTEM_NAME}.tcl"
+set TCL_QSYS_SYSTEM_SCRIPT_NAME  "${rev_family}_${QSYS_SYSTEM_NAME}.tcl"
 
 set TCL_QSYS_SCRIPT_PATH [file join ${BACKEND_PATH} quartus${QUARTUS_VERSION} ${TCL_QSYS_SYSTEM_SCRIPT_NAME}]
 set cmd_arg "--cmd=\"$cmd_list\""
@@ -60,7 +60,7 @@ puts "${rev_name} Qsys system created"
 # Generate the QSYS system
 ################################################################################
 set QSYS_FILE "${rev_work_path}/${QSYS_SYSTEM_NAME}.qsys"
-set generate_qsys_system_command "$GENERATE_SCRIPT_EXE $QSYS_FILE --synthesis=VERILOG --output-directory=${rev_qsys_path} --search-path=$IPCORE_LIB_PATH/**/*,\$ --family=\"${FPGA_FAMILY}\" --part=${FPGA_PART_NUMBER} --clear-output-directory"
+set generate_qsys_system_command "$GENERATE_SCRIPT_EXE $QSYS_FILE --synthesis=VERILOG --output-directory=${rev_qsys_path} --search-path=$IPCORE_LIB_PATH/**/*,\$ --family=\"${FPGA_FAMILY}\" --part=${rev_fpga_dev_name} --clear-output-directory"
 
 # Start the generate process
 puts "SYSTEM CALL: exec $generate_qsys_system_command"

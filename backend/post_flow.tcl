@@ -80,7 +80,7 @@ dict with REV_DATA ${rev_name} {
     ############################################################################
     # Generate JTAG indirect configuration (JIC) file
     ############################################################################
-    set convert_sof_jic_cmd "${QUARTUS_CPF_EXE} -c -d ${FLASH_PART_NUMBER} -s ${FPGA_PART} -o bitstream_compression=on ${rev_firmware_path}/${rev_build_name}.sof ${rev_firmware_path}/${rev_build_name}.jic"
+    set convert_sof_jic_cmd "${QUARTUS_CPF_EXE} -c -d ${FLASH_PART_NUMBER} -s ${rev_fpga_dev} -o bitstream_compression=on ${rev_firmware_path}/${rev_build_name}.sof ${rev_firmware_path}/${rev_build_name}.jic"
     post_message "SYSTEM CALL: exec $convert_sof_jic_cmd"
     exec {*}$convert_sof_jic_cmd
 

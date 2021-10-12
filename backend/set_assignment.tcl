@@ -6,7 +6,6 @@ set myself [info script]
 puts "Running ${myself}"
 
 
-set_global_assignment -name DEVICE ${FPGA_PART_NUMBER}
 set_global_assignment -name FAMILY "${FPGA_FAMILY}"
 set_global_assignment -name TOP_LEVEL_ENTITY kvb_top
 set_global_assignment -name ORIGINAL_QUARTUS_VERSION "${QUARTUS_VERSION_FULL}"
@@ -23,7 +22,7 @@ set_global_assignment -name ACTIVE_SERIAL_CLOCK FREQ_40MHZ
 set_global_assignment -name PHYSICAL_SYNTHESIS_ASYNCHRONOUS_SIGNAL_PIPELINING ON
 set_global_assignment -name POWER_PRESET_COOLING_SOLUTION "NO HEAT SINK WITH STILL AIR"
 set_global_assignment -name POWER_BOARD_THERMAL_MODEL "NONE (CONSERVATIVE)"
-set_global_assignment -name RESERVE_ALL_UNUSED_PINS_WEAK_PULLUP "AS INPUT TRI-STATED"
+set_global_assignment -name RESERVE_ALL_UNUSED_PINS_WEAK_PULLUP "AS INPUT TRI-STATED WITH WEAK PULL-UP"
 set_global_assignment -name OPTIMIZATION_TECHNIQUE SPEED
 set_global_assignment -name SYNTH_TIMING_DRIVEN_SYNTHESIS ON
 set_global_assignment -name OPTIMIZE_POWER_DURING_SYNTHESIS OFF
@@ -50,10 +49,6 @@ set_global_assignment -name OUTPUT_IO_TIMING_FAR_END_VMEAS "HALF SIGNAL SWING" -
 set_global_assignment -name USE_DLL_FREQUENCY_FOR_DQS_DELAY_CHAIN ON
 set_global_assignment -name ENABLE_CONFIGURATION_PINS OFF
 set_global_assignment -name ENABLE_BOOT_SEL_PIN OFF
-set_global_assignment -name DEVICE_FILTER_PACKAGE FBGA
-set_global_assignment -name DEVICE_FILTER_PIN_COUNT 324
-set_global_assignment -name DEVICE_FILTER_SPEED_GRADE 8
-set_global_assignment -name DEVICE_MIGRATION_LIST "EP4CGX22CF19C8,EP4CGX30CF19C8"
 set_global_assignment -name FLOW_ENABLE_IO_ASSIGNMENT_ANALYSIS ON
 set_global_assignment -name PROJECT_SHOW_ENTITY_NAME OFF
 set_global_assignment -name PHYSICAL_SYNTHESIS_COMBO_LOGIC_FOR_AREA ON

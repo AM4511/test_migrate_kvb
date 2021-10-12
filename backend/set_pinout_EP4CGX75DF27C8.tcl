@@ -1,3 +1,7 @@
+################################################################################
+# File         : set_pinout_EP4CGX75DF27C8.tcl
+# Description  : Pin assignments for EP4CGX75DF27C8 FPGA
+################################################################################
 set me [info script]
 puts "Running ${me}"
 
@@ -130,94 +134,95 @@ set_global_assignment -name ASSIGNMENT_GROUP_MEMBER local_i2c_scl -section_id LO
 ####################################################################################
 # Pin Location Assignment: VME Interface
 ####################################################################################
-set_location_assignment PIN_R17 -to vme_a[1]
-set_location_assignment PIN_P18 -to vme_a[2]
-set_location_assignment PIN_N18 -to vme_a[3]
-set_location_assignment PIN_M18 -to vme_a[4]
-set_location_assignment PIN_L15 -to vme_a[5]
-set_location_assignment PIN_K15 -to vme_a[6]
-set_location_assignment PIN_J17 -to vme_a[7]
-set_location_assignment PIN_T18 -to vme_a[8]
-set_location_assignment PIN_R18 -to vme_a[9]
-set_location_assignment PIN_N17 -to vme_a[10]
-set_location_assignment PIN_M17 -to vme_a[11]
-set_location_assignment PIN_L18 -to vme_a[12]
-set_location_assignment PIN_K16 -to vme_a[13]
-set_location_assignment PIN_G18 -to vme_a[14]
-set_location_assignment PIN_H16 -to vme_a[15]
-set_location_assignment PIN_G17 -to vme_a[16]
-set_location_assignment PIN_F18 -to vme_a[17]
-set_location_assignment PIN_F17 -to vme_a[18]
-set_location_assignment PIN_D17 -to vme_a[19]
-set_location_assignment PIN_D18 -to vme_a[20]
-set_location_assignment PIN_D16 -to vme_a[21]
-set_location_assignment PIN_C16 -to vme_a[22]
-set_location_assignment PIN_B18 -to vme_a[23]
-set_location_assignment PIN_U18 -to vme_a[24]
-set_location_assignment PIN_T17 -to vme_a[25]
-set_location_assignment PIN_V17 -to vme_a[26]
-set_location_assignment PIN_U16 -to vme_a[27]
-set_location_assignment PIN_V18 -to vme_a[28]
-set_location_assignment PIN_U15 -to vme_a[29]
-set_location_assignment PIN_V15 -to vme_a[30]
-set_location_assignment PIN_V16 -to vme_a[31]
-set_location_assignment PIN_C18 -to vme_am[0]
-set_location_assignment PIN_C17 -to vme_am[1]
-set_location_assignment PIN_D15 -to vme_am[2]
-set_location_assignment PIN_E18 -to vme_am[3]
-set_location_assignment PIN_G16 -to vme_am[4]
-set_location_assignment PIN_A18 -to vme_am[5]
+set_location_assignment PIN_W22  -to vme_a[1]                  ; # FPGA_VME_A1
+set_location_assignment PIN_V22  -to vme_a[2]                  ; # FPGA_VME_A2
+set_location_assignment PIN_T23  -to vme_a[3]                  ; # FPGA_VME_A3
+set_location_assignment PIN_T22  -to vme_a[4]                  ; # FPGA_VME_A4
+set_location_assignment PIN_R19  -to vme_a[5]                  ; # FPGA_VME_A5
+set_location_assignment PIN_P19  -to vme_a[6]                  ; # FPGA_VME_A6
+set_location_assignment PIN_M23  -to vme_a[7]                  ; # FPGA_VME_A7
+set_location_assignment PIN_Y23  -to vme_a[8]                  ; # FPGA_VME_A8
+set_location_assignment PIN_W24  -to vme_a[9]                  ; # FPGA_VME_A9
+set_location_assignment PIN_U23  -to vme_a[10]                 ; # FPGA_VME_A10
+set_location_assignment PIN_T21  -to vme_a[11]                 ; # FPGA_VME_A11
+set_location_assignment PIN_R22  -to vme_a[12]                 ; # FPGA_VME_A12
+set_location_assignment PIN_P20  -to vme_a[13]                 ; # FPGA_VME_A13
+set_location_assignment PIN_L23  -to vme_a[14]                 ; # FPGA_VME_A14
+set_location_assignment PIN_N19  -to vme_a[15]                 ; # FPGA_VME_A15
+set_location_assignment PIN_L21  -to vme_a[16]                 ; # FPGA_VME_A16
+set_location_assignment PIN_K22  -to vme_a[17]                 ; # FPGA_VME_A17
+set_location_assignment PIN_K21  -to vme_a[18]                 ; # FPGA_VME_A18
+set_location_assignment PIN_H24  -to vme_a[19]                 ; # FPGA_VME_A19
+set_location_assignment PIN_G24  -to vme_a[20]                 ; # FPGA_VME_A20
+set_location_assignment PIN_G23  -to vme_a[21]                 ; # FPGA_VME_A21
+set_location_assignment PIN_E21  -to vme_a[22]                 ; # FPGA_VME_A22
+set_location_assignment PIN_E23  -to vme_a[23]                 ; # FPGA_VME_A23
+set_location_assignment PIN_AA22 -to vme_a[24]                 ; # FPGA_VME_A24
+set_location_assignment PIN_Y21  -to vme_a[25]                 ; # FPGA_VME_A25
+set_location_assignment PIN_AB21 -to vme_a[26]                 ; # FPGA_VME_A26
+set_location_assignment PIN_AA21 -to vme_a[27]                 ; # FPGA_VME_A27
+set_location_assignment PIN_AB23 -to vme_a[28]                 ; # FPGA_VME_A28
+set_location_assignment PIN_AC20 -to vme_a[29]                 ; # FPGA_VME_A29
+set_location_assignment PIN_AC19 -to vme_a[30]                 ; # FPGA_VME_A30
+set_location_assignment PIN_AC21 -to vme_a[31]                 ; # FPGA_VME_A31
+set_location_assignment PIN_G22  -to vme_am[0]                 ; # FPGA_VME_AM0
+set_location_assignment PIN_F23  -to vme_am[1]                 ; # FPGA_VME_AM1
+set_location_assignment PIN_H22  -to vme_am[2]                 ; # FPGA_VME_AM2
+set_location_assignment PIN_J24  -to vme_am[3]                 ; # FPGA_VME_AM3
+set_location_assignment PIN_L22  -to vme_am[4]                 ; # FPGA_VME_AM4
+set_location_assignment PIN_E22  -to vme_am[5]                 ; # FPGA_VME_AM5
 
-set_location_assignment PIN_B16 -to vme_lword_n
-set_location_assignment PIN_E16 -to vme_as_n
-set_location_assignment PIN_A17 -to vme_ds0_n
-set_location_assignment PIN_A15 -to vme_ds1_n
-set_location_assignment PIN_B15 -to vme_write_n
-set_location_assignment PIN_F16 -to vme_iack_n
-set_location_assignment PIN_J16 -to vme_iackout_n
-set_location_assignment PIN_C15 -to vme_dtack_n
-set_location_assignment PIN_C10 -to vme_write
+set_location_assignment PIN_F21  -to vme_lword_n               ; # FPGA_VME_LWORD_N
+set_location_assignment PIN_J23  -to vme_as_n                  ; # FPGA_VME_AS_N
+set_location_assignment PIN_D22  -to vme_ds0_n                 ; # FPGA_VME_DS0_N
+set_location_assignment PIN_D19  -to vme_ds1_n                 ; # FPGA_VME_DS1_N
+set_location_assignment PIN_D20  -to vme_write_n               ; # FPGA_VME_WRITE_N
+set_location_assignment PIN_K20  -to vme_iack_n                ; # FPGA_VME_IACK_N
+set_location_assignment PIN_N20  -to vme_iackout_n             ; # FPGA_VME_IACKOUT_N
+set_location_assignment PIN_D21  -to vme_dtack_n               ; # FPGA_VME_DTACK_N
+set_location_assignment PIN_B15  -to vme_write                 ; # FPGA_VME_WRITE
 
-set_location_assignment PIN_E10 -to vme_db[0]
-set_location_assignment PIN_D10 -to vme_db[1]
-set_location_assignment PIN_C11 -to vme_db[2]
-set_location_assignment PIN_C12 -to vme_db[3]
-set_location_assignment PIN_A11 -to vme_db[4]
-set_location_assignment PIN_C9 -to vme_db[5]
-set_location_assignment PIN_B9 -to vme_db[6]
-set_location_assignment PIN_D12 -to vme_db[7]
-set_location_assignment PIN_A10 -to vme_db[8]
-set_location_assignment PIN_B10 -to vme_db[9]
-set_location_assignment PIN_D11 -to vme_db[10]
-set_location_assignment PIN_D13 -to vme_db[11]
-set_location_assignment PIN_A13 -to vme_db[12]
-set_location_assignment PIN_B13 -to vme_db[13]
-set_location_assignment PIN_C13 -to vme_db[14]
-set_location_assignment PIN_A14 -to vme_db[15]
-set_location_assignment PIN_N16 -to vme_db[16]
-set_location_assignment PIN_P16 -to vme_db[17]
-set_location_assignment PIN_T16 -to vme_db[18]
-set_location_assignment PIN_R16 -to vme_db[19]
-set_location_assignment PIN_R15 -to vme_db[20]
-set_location_assignment PIN_T15 -to vme_db[21]
-set_location_assignment PIN_P15 -to vme_db[22]
-set_location_assignment PIN_N15 -to vme_db[23]
-set_location_assignment PIN_T14 -to vme_db[24]
-set_location_assignment PIN_R14 -to vme_db[25]
-set_location_assignment PIN_T13 -to vme_db[26]
-set_location_assignment PIN_R13 -to vme_db[27]
-set_location_assignment PIN_P13 -to vme_db[28]
-set_location_assignment PIN_T12 -to vme_db[29]
-set_location_assignment PIN_R12 -to vme_db[30]
-set_location_assignment PIN_P12 -to vme_db[31]
+set_location_assignment PIN_D15  -to vme_db[0]                 ; # FPGA_VME_D0
+set_location_assignment PIN_C15  -to vme_db[1]                 ; # FPGA_VME_D1
+set_location_assignment PIN_A16  -to vme_db[2]                 ; # FPGA_VME_D2
+set_location_assignment PIN_D16  -to vme_db[3]                 ; # FPGA_VME_D3
+set_location_assignment PIN_E15  -to vme_db[4]                 ; # FPGA_VME_D4
+set_location_assignment PIN_A13  -to vme_db[5]                 ; # FPGA_VME_D5
+set_location_assignment PIN_B13  -to vme_db[6]                 ; # FPGA_VME_D6
+set_location_assignment PIN_E16  -to vme_db[7]                 ; # FPGA_VME_D7
+set_location_assignment PIN_D14  -to vme_db[8]                 ; # FPGA_VME_D8
+set_location_assignment PIN_A15  -to vme_db[9]                 ; # FPGA_VME_D9
+set_location_assignment PIN_C16  -to vme_db[10]                ; # FPGA_VME_D10
+set_location_assignment PIN_E17  -to vme_db[11]                ; # FPGA_VME_D11
+set_location_assignment PIN_B17  -to vme_db[12]                ; # FPGA_VME_D12
+set_location_assignment PIN_C17  -to vme_db[13]                ; # FPGA_VME_D13
+set_location_assignment PIN_D17  -to vme_db[14]                ; # FPGA_VME_D14
+set_location_assignment PIN_D18  -to vme_db[15]                ; # FPGA_VME_D15
+set_location_assignment PIN_U22  -to vme_db[16]                ; # FPGA_VME_D16
+set_location_assignment PIN_V23  -to vme_db[17]                ; # FPGA_VME_D17
+set_location_assignment PIN_Y22  -to vme_db[18]                ; # FPGA_VME_D18
+set_location_assignment PIN_W23  -to vme_db[19]                ; # FPGA_VME_D19
+set_location_assignment PIN_Y24  -to vme_db[20]                ; # FPGA_VME_D20
+set_location_assignment PIN_AA23 -to vme_db[21]                ; # FPGA_VME_D21
+set_location_assignment PIN_V21  -to vme_db[22]                ; # FPGA_VME_D22
+set_location_assignment PIN_T19  -to vme_db[23]                ; # FPGA_VME_D23
+set_location_assignment PIN_AC18 -to vme_db[24]                ; # FPGA_VME_D24
+set_location_assignment PIN_AD19 -to vme_db[25]                ; # FPGA_VME_D25
+set_location_assignment PIN_AE18 -to vme_db[26]                ; # FPGA_VME_D26
+set_location_assignment PIN_AD18 -to vme_db[27]                ; # FPGA_VME_D27
+set_location_assignment PIN_V24  -to vme_db[28]                ; # FPGA_VME_D28
+set_location_assignment PIN_AC16 -to vme_db[29]                ; # FPGA_VME_D29
+set_location_assignment PIN_AE17 -to vme_db[30]                ; # FPGA_VME_D30
+set_location_assignment PIN_U24  -to vme_db[31]                ; # FPGA_VME_D31
 
-set_location_assignment PIN_G15 -to vme_irq_n[6]
-set_location_assignment PIN_H18 -to vme_irq_n[5]
-set_location_assignment PIN_K18 -to vme_irq_n[3]
-set_location_assignment PIN_L16 -to vme_irq_n[2]
-set_location_assignment PIN_J18 -to vme_irq_n[4]
-set_location_assignment PIN_K17 -to vme_irq_n[7]
-set_location_assignment PIN_M16 -to vme_irq_n[1]
+set_location_assignment PIN_R23  -to vme_irq_n[1]              ; # FPGA_VME_IRQ1_N
+set_location_assignment PIN_R20  -to vme_irq_n[2]              ; # FPGA_VME_IRQ2_N
+set_location_assignment PIN_P23  -to vme_irq_n[3]              ; # FPGA_VME_IRQ3_N
+set_location_assignment PIN_N22  -to vme_irq_n[4]              ; # FPGA_VME_IRQ4_N
+set_location_assignment PIN_M22  -to vme_irq_n[5]              ; # FPGA_VME_IRQ5_N
+set_location_assignment PIN_L19  -to vme_irq_n[6]              ; # FPGA_VME_IRQ6_N
+set_location_assignment PIN_N23  -to vme_irq_n[7]              ; # FPGA_VME_IRQ7_N
+
 
 
 ####################################################################################
@@ -252,116 +257,117 @@ set_location_assignment PIN_M16 -to vme_irq_n[1]
 #############################################################################
 # PCIe Clock enable
 #############################################################################
-set_location_assignment PIN_V8  -to cpcis_pcie_clken_n[0]
-set_location_assignment PIN_T11 -to cpcis_pcie_clken_n[1]
-set_location_assignment PIN_R11 -to cpcis_pcie_clken_n[2]
-set_location_assignment PIN_M7  -to cpcis_pcie_clken_n[3]
-set_location_assignment PIN_N7  -to cpcis_pcie_clken_n[4]
-set_location_assignment PIN_R7  -to cpcis_pcie_clken_n[5]
-set_location_assignment PIN_R8  -to cpcis_pcie_clken_n[6]
+set_location_assignment PIN_AB12 -to cpcis_pcie_clken_n[0]     ; # CPCI_2_PE_CKE_N
+set_location_assignment PIN_AE15 -to cpcis_pcie_clken_n[1]     ; # CPCI_3_PE_CKE_N
+set_location_assignment PIN_AE14 -to cpcis_pcie_clken_n[2]     ; # CPCI_4_PE_CKE_N
+set_location_assignment PIN_AD10 -to cpcis_pcie_clken_n[3]     ; # CPCI_5_PE_CKE_N
+set_location_assignment PIN_AE10 -to cpcis_pcie_clken_n[4]     ; # CPCI_6_PE_CKE_N
+set_location_assignment PIN_AE11 -to cpcis_pcie_clken_n[5]     ; # CPCI_7_PE_CKE_N
+set_location_assignment PIN_AF11 -to cpcis_pcie_clken_n[6]     ; # CPCI_8_PE_CKE_N
 
 # Pcie clock enable
-set_location_assignment PIN_V5  -to pch_clk_req_n[0]
-set_location_assignment PIN_T7  -to pch_clk_req_n[1]
-set_location_assignment PIN_T6  -to pch_clk_req_n[2]
-set_location_assignment PIN_N5  -to pch_clk_req_n[3]
-set_location_assignment PIN_N6  -to pch_clk_req_n[4]
-set_location_assignment PIN_P6  -to pch_clk_req_n[5]
-set_location_assignment PIN_R6  -to pch_clk_req_n[6]
+set_location_assignment PIN_AD8  -to pch_clk_req_n[0]          ; # PE_CLKREQ2_N
+set_location_assignment PIN_AD11 -to pch_clk_req_n[1]          ; # PE_CLKREQ3_N
+set_location_assignment PIN_AD9  -to pch_clk_req_n[2]          ; # PE_CLKREQ4_N
+set_location_assignment PIN_AC6  -to pch_clk_req_n[3]          ; # PE_CLKREQ5_N
+set_location_assignment PIN_AC7  -to pch_clk_req_n[4]          ; # PE_CLKREQ6_N
+set_location_assignment PIN_AB9  -to pch_clk_req_n[5]          ; # PE_CLKREQ7_N
+set_location_assignment PIN_AC9  -to pch_clk_req_n[6]          ; # PE_CLKREQ8_N
 
 
 #############################################################################
 # GPIO
 #############################################################################
-set_location_assignment PIN_E15 -to gpio[0]
-set_location_assignment PIN_F15 -to gpio[1]
-set_location_assignment PIN_C14 -to gpio[2]
-set_location_assignment PIN_D14 -to gpio[3]
-set_location_assignment PIN_A8  -to gpio[4]
-set_location_assignment PIN_A16 -to gpio[5]
-set_location_assignment PIN_C6  -to gpio[6]
-set_location_assignment PIN_E6  -to gpio[7]
+set_location_assignment PIN_K23  -to gpio[0]                   ; # GPIO0
+set_location_assignment PIN_M19  -to gpio[1]                   ; # GPIO1
+set_location_assignment PIN_C18  -to gpio[2]                   ; # GPIO2
+set_location_assignment PIN_C19  -to gpio[3]                   ; # GPIO3
+set_location_assignment PIN_C12  -to gpio[4]                   ; # GPIO4
+set_location_assignment PIN_E20  -to gpio[5]                   ; # GPIO5
+set_location_assignment PIN_D9   -to gpio[6]                   ; # GPIO6
+set_location_assignment PIN_E2   -to gpio[7]                   ; # GPIO7
 
 ####################################################################################
 # Pin Location Assignment: User programmable LED interface
 ####################################################################################
-set_location_assignment PIN_C8 -to prog_led_n[0]
-set_location_assignment PIN_D8 -to prog_led_n[1]
-set_location_assignment PIN_E12 -to prog_led_n[2]
+set_location_assignment PIN_B11  -to prog_led_n[0]             ; # USER_LED0
+set_location_assignment PIN_C11  -to prog_led_n[1]             ; # USER_LED1
+set_location_assignment PIN_H23  -to prog_led_n[2]             ; # USER_LED2
 
 ####################################################################################
 # Pin Location Assignment: Camera triggers
 ####################################################################################
-set_location_assignment PIN_V13 -to cam_trigger[0]
-set_location_assignment PIN_V14 -to cam_trigger[1]
-set_location_assignment PIN_U13 -to cam_trigger[2]
-set_location_assignment PIN_U12 -to cam_trigger[3]
+set_location_assignment PIN_AD17 -to cam_trigger[0]            ; # VME_H1_TRIG
+set_location_assignment PIN_AB18 -to cam_trigger[1]            ; # VME_H2_TRIG
+set_location_assignment PIN_AC17 -to cam_trigger[2]            ; # VME_H3_TRIG
+set_location_assignment PIN_AD16 -to cam_trigger[3]            ; # VME_H4_TRIG
 
 ####################################################################################
 # Pin Location Assignment: UART[3:0] interfaces
 ####################################################################################
-set_location_assignment PIN_U9 -to ser1_tx
-set_location_assignment PIN_V9 -to ser1_rx
-set_location_assignment PIN_R9 -to ser2_tx
-set_location_assignment PIN_T9 -to ser2_rx
-set_location_assignment PIN_P10 -to ser3_tx
-set_location_assignment PIN_R10 -to ser3_rx
-set_location_assignment PIN_U10 -to ser4_tx
-set_location_assignment PIN_V10 -to ser4_rx
-set_location_assignment PIN_T10 -to ser4_rts_n
+set_location_assignment PIN_AD13 -to ser1_tx                   ; # FPGA_TXD1
+set_location_assignment PIN_AC13 -to ser1_rx                   ; # FPGA_RXD1
+set_location_assignment PIN_AD12 -to ser2_tx                   ; # FPGA_TXD2
+set_location_assignment PIN_AF12 -to ser2_rx                   ; # FPGA_RXD2
+set_location_assignment PIN_U19  -to ser3_tx                   ; # FPGA_TXD3
+set_location_assignment PIN_AE13 -to ser3_rx                   ; # FPGA_RXD3
+set_location_assignment PIN_AB14 -to ser4_tx                   ; # FPGA_TXD4
+set_location_assignment PIN_AC14 -to ser4_rx                   ; # FPGA_RXD4
+set_location_assignment PIN_AD14 -to ser4_rts_n                ; # FPGA_RTS4_N
 
 ####################################################################################
 # Pin Location Assignment: MRAM QSPI interface
 ####################################################################################
-set_location_assignment PIN_A5 -to mram_sck
-set_location_assignment PIN_B5 -to mram_cs_n
-set_location_assignment PIN_A7 -to mram_io[0]
-set_location_assignment PIN_B7 -to mram_io[1]
-set_location_assignment PIN_B6 -to mram_io[2]
-set_location_assignment PIN_A6 -to mram_io[3]
+set_location_assignment PIN_E9   -to mram_sck                  ; # FPGA_MRAM_SCK
+set_location_assignment PIN_D7   -to mram_cs_n                 ; # FPGA_MRAM_CS_N
+set_location_assignment PIN_D11  -to mram_io[0]                ; # FPGA_MRAM_I0
+set_location_assignment PIN_B10  -to mram_io[1]                ; # FPGA_MRAM_I1
+set_location_assignment PIN_C9   -to mram_io[2]                ; # FPGA_MRAM_I2
+set_location_assignment PIN_D10  -to mram_io[3]                ; # FPGA_MRAM_I3
 
 ####################################################################################
 # Pin Location Assignment: PCIe Gen1 x1 interface
 ####################################################################################
-set_location_assignment PIN_A9 -to sys_rst_n
-set_location_assignment PIN_M9 -to refclk
-set_location_assignment PIN_T2 -to rx_in0
-set_location_assignment PIN_P2 -to tx_out0
-set_location_assignment PIN_P1 -to "tx_out0(n)"
-set_location_assignment PIN_T1 -to "rx_in0(n)"
+set_location_assignment PIN_C13  -to sys_rst_n                 ; # PLTRST_PCIE_SLOTS_N
+set_location_assignment PIN_T9   -to refclk                    ; # VME_PE_CK_DP
+set_location_assignment PIN_U9   -to "refclk(n)"               ; # VME_PE_CK_DN
+set_location_assignment PIN_AA2  -to rx_in0                    ; # VME_PERP0
+set_location_assignment PIN_AA1  -to "rx_in0(n)"               ; # VME_PERN0
+set_location_assignment PIN_Y4   -to tx_out0                   ; # VME_PETP0
+set_location_assignment PIN_Y3   -to "tx_out0(n)"              ; # VME_PETN0
 
 ## Define buffer type
-set_instance_assignment -name IO_STANDARD HCSL -to refclk
-set_instance_assignment -name IO_STANDARD "1.5-V PCML" -to rx_in0
-set_instance_assignment -name IO_STANDARD "1.5-V PCML" -to tx_out0
+set_instance_assignment -name IO_STANDARD HCSL  -to refclk
+set_instance_assignment -name IO_STANDARD "1.5-V PCML"  -to rx_in0
+set_instance_assignment -name IO_STANDARD "1.5-V PCML"  -to tx_out0
 
 ####################################################################################
 # Pin Location Assignment: I2C Local interface
 ####################################################################################
-set_location_assignment PIN_D7 -to local_i2c_sda
-set_location_assignment PIN_C7 -to local_i2c_scl
+set_location_assignment PIN_E7   -to local_i2c_sda             ; # FPGA_I2C_DATA
+set_location_assignment PIN_C10  -to local_i2c_scl             ; # FPGA_I2C_CLK
 
 ####################################################################################
 # Pin Location Assignment: Low Pin Count (LPC) interface
 ####################################################################################
-set_location_assignment PIN_V11 -to lpc_clk
-set_location_assignment PIN_V12 -to lpc_frame_n
-set_location_assignment PIN_U6 -to lpc_ad[0]
-set_location_assignment PIN_V6 -to lpc_ad[1]
-set_location_assignment PIN_V7 -to lpc_ad[2]
-set_location_assignment PIN_U7 -to lpc_ad[3]
-set_location_assignment PIN_T8 -to serirq
+set_location_assignment PIN_AF14 -to lpc_clk                   ; # LPCCLK0_24M
+set_location_assignment PIN_AF16 -to lpc_frame_n               ; # LPC_FRAME_N
+set_location_assignment PIN_AE9  -to lpc_ad[0]                 ; # L_AD0
+set_location_assignment PIN_AC10 -to lpc_ad[1]                 ; # L_AD1
+set_location_assignment PIN_AC11 -to lpc_ad[2]                 ; # L_AD2
+set_location_assignment PIN_AB11 -to lpc_ad[3]                 ; # L_AD3
+set_location_assignment PIN_AC12 -to serirq                    ; # INT_SERIRQ
 
-set_instance_assignment -name WEAK_PULL_UP_RESISTOR ON -to lpc_ad[3]
-set_instance_assignment -name WEAK_PULL_UP_RESISTOR ON -to lpc_ad[2]
-set_instance_assignment -name WEAK_PULL_UP_RESISTOR ON -to lpc_ad[1]
-set_instance_assignment -name WEAK_PULL_UP_RESISTOR ON -to lpc_ad[0]
-set_instance_assignment -name WEAK_PULL_UP_RESISTOR ON -to lpc_ad
+set_instance_assignment -name WEAK_PULL_UP_RESISTOR ON  -to lpc_ad[3]
+set_instance_assignment -name WEAK_PULL_UP_RESISTOR ON  -to lpc_ad[2]
+set_instance_assignment -name WEAK_PULL_UP_RESISTOR ON  -to lpc_ad[1]
+set_instance_assignment -name WEAK_PULL_UP_RESISTOR ON  -to lpc_ad[0]
+set_instance_assignment -name WEAK_PULL_UP_RESISTOR ON  -to lpc_ad
 
 ####################################################################################
 # Pin Location Assignment: Misc Pins interface
 ####################################################################################
-set_location_assignment PIN_G10 -to clkin_125m_p
-set_location_assignment PIN_D9  -to voltage_alert
-set_location_assignment PIN_D6 -to vme_buffer_oe
-set_location_assignment PIN_G9  -to power_failure_n
+set_location_assignment PIN_L14  -to clkin_125m_p
+set_location_assignment PIN_C14  -to voltage_alert
+set_location_assignment PIN_C8   -to vme_buffer_oe
+set_location_assignment PIN_A12  -to power_failure_n
