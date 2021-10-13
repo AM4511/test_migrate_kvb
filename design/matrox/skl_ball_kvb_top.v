@@ -36,6 +36,7 @@
 //          user LEDs. Added QAR and ZIP archive generation to scripts.
 //    2.2 - Updated VME, QSPI, and PCIe UART IP. Finalized timing constraints.
 //    3.0 - Added revisions for CPUSKL wedge and CPUKBL variants.
+//    4.0 - Add support for alternate EP4CGX75 FPGA.
 ///////////////////////////////////////////////////////////////////////////////
 
 

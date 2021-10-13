@@ -100,29 +100,29 @@ set_output_delay -clock lpc_clk  -min $output_delay_min [get_ports {serirq}]
 
 ## RX side
 set_min_delay -from [get_ports {ser1_rx}] 0.000
-set_max_delay -from [get_ports {ser1_rx}] 6.000
+set_max_delay -from [get_ports {ser1_rx}] 20.000
 
 set_min_delay -from [get_ports {ser2_rx}] 0.000
-set_max_delay -from [get_ports {ser2_rx}] 6.000
+set_max_delay -from [get_ports {ser2_rx}] 20.000
 
 set_min_delay -from [get_ports {ser3_rx}] 0.000
-set_max_delay -from [get_ports {ser3_rx}] 6.000
+set_max_delay -from [get_ports {ser3_rx}] 20.000
 
 set_min_delay -from [get_ports {ser4_rx}] 0.000
-set_max_delay -from [get_ports {ser4_rx}] 6.000
+set_max_delay -from [get_ports {ser4_rx}] 20.000
 
 ## TX side
 set_min_delay -to [get_ports {ser1_tx}] 0.000
-set_max_delay -to [get_ports {ser1_tx}] 12.000
+set_max_delay -to [get_ports {ser1_tx}] 20.000
 
 set_min_delay -to [get_ports {ser2_tx}] 0.000
-set_max_delay -to [get_ports {ser2_tx}] 12.000
+set_max_delay -to [get_ports {ser2_tx}] 20.000
 
 set_min_delay -to [get_ports {ser3_tx}] 0.000
-set_max_delay -to [get_ports {ser3_tx}] 12.000
+set_max_delay -to [get_ports {ser3_tx}] 20.000
 
 set_min_delay -to [get_ports {ser4_tx}] 0.000
-set_max_delay -to [get_ports {ser4_tx}] 12.000
+set_max_delay -to [get_ports {ser4_tx}] 20.000
 
 set_min_delay -to [get_ports {ser4_rts_n}] 0.000
-set_max_delay -to [get_ports {ser4_rts_n}] 12.000
+set_max_delay -to [get_ports {ser4_rts_n}] 20.000

@@ -11,20 +11,27 @@ cd ${rev_work_path}
 ################################################################################
 # Set revision specific assignments
 ################################################################################
+set_global_assignment -name DEVICE ${rev_fpga_dev_name}
 set_global_assignment -name PROJECT_OUTPUT_DIRECTORY ${rev_firmware_path}
 set_global_assignment -name SEARCH_PATH ${rev_firmware_path}/ -tag from_archive
 
 
 ################################################################################
+# Set FPGA specific pinout
+################################################################################
+source "${BACKEND_PATH}/set_pinout_${rev_fpga_dev_name}.tcl"
+
+
+################################################################################
 # Add revision constraints files
 ################################################################################
-set_global_assignment -name SDC_FILE ${BACKEND_PATH}/${rev_name}_lpc.sdc
+set_global_assignment -name SDC_FILE ${BACKEND_PATH}/${rev_family}_lpc.sdc
 
 
 ################################################################################
 # Add revision specific HDL files
 ################################################################################
-set_global_assignment -name VERILOG_FILE ${HDL_PATH}/matrox/${rev_name}_kvb_top.v
+set_global_assignment -name VERILOG_FILE ${HDL_PATH}/matrox/${rev_family}_kvb_top.v
 
 
 ################################################################################

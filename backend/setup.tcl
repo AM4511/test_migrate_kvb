@@ -1,7 +1,6 @@
 ################################################################################
 # File         : setup.tcl
 # Description  : Global environment variables for the KVB fpga project. 
-#
 ################################################################################
 set myself [info script]
 puts "Running ${myself}"
@@ -24,12 +23,10 @@ puts "Setting the KVB project environment variable"
 # Environment variable
 ################################################################################
 set FPGA_FAMILY         "Cyclone IV GX"
-set FPGA_PART           "EP4CGX22"
-set FPGA_PART_NUMBER    "EP4CGX22CF19C8"
 set FLASH_PART_NUMBER   "EPCQ128"
 set FPGA_NAME           "kvb"
-set REVMAJOR            "3"                            ; # must be < 655
-set REVMINOR            "6"                            ; # must be < 100
+set REVMAJOR            "4"                            ; # must be < 655
+set REVMINOR            "0"                            ; # must be < 100
 set REVISION            "v${REVMAJOR}_${REVMINOR}"
 set PROJECT_NAME        "${FPGA_NAME}_${REVISION}"
 set QSYS_NAME           "${FPGA_NAME}"
@@ -91,29 +88,72 @@ if {[regexp {\s} ${WORK_PATH}]} {
 #
 ################################################################################
 
-# CPUSKL/KA/KB/KE/KG for ball bonder [VME A16/A24 D8(O)/D16, 2 PCIe UARTs]
-dict set REV_DATA skl_ball      rev_board_name      "CPUSKL"
-dict set REV_DATA skl_ball      rev_part_number     "08991-4010-000"
-dict set REV_DATA skl_ball      rev_work_path_rel   "skl_ball"
-dict set REV_DATA skl_ball      rev_work_path       "${WORK_PATH}/skl_ball"
-dict set REV_DATA skl_ball      rev_firmware_path   "${WORK_PATH}/skl_ball/firmware"
-dict set REV_DATA skl_ball      rev_qsys_path       "${WORK_PATH}/skl_ball/${QSYS_SYSTEM_NAME}"
+# CPUSKL/KA/KB/KE/KF/KG/KH/KI for ball bonder [VME A16/A24 D8(O)/D16, 2 PCIe UARTs] for EP4CGX22
 
-# CPUSKL/KC/KD or CPUKBL/KB for wedge bonder [VME A16/A24/A32 D8(O)/D16/D32, no PCIe UARTs]
-dict set REV_DATA skl_wedge     rev_board_name      "CPUSKL/CPUKBL"
-dict set REV_DATA skl_wedge     rev_part_number     "08991-4010-000/08900-4010-000"
-dict set REV_DATA skl_wedge     rev_work_path_rel   "skl_wedge"
-dict set REV_DATA skl_wedge     rev_work_path       "${WORK_PATH}/skl_wedge"
-dict set REV_DATA skl_wedge     rev_firmware_path   "${WORK_PATH}/skl_wedge/firmware"
-dict set REV_DATA skl_wedge     rev_qsys_path       "${WORK_PATH}/skl_wedge/${QSYS_SYSTEM_NAME}"
+dict set REV_DATA skl_ball_22    rev_fpga_dev         "EP4CGX22"
+dict set REV_DATA skl_ball_22    rev_fpga_dev_name    "EP4CGX22CF19C8"
+dict set REV_DATA skl_ball_22    rev_board_name       "CPUSKL"
+dict set REV_DATA skl_ball_22    rev_part_number      "08991-4010-000/08991-4010-020"
+dict set REV_DATA skl_ball_22    rev_family           "skl_ball"
+dict set REV_DATA skl_ball_22    rev_work_path_rel    "skl_ball_22"
+dict set REV_DATA skl_ball_22    rev_work_path        "${WORK_PATH}/skl_ball_22"
+dict set REV_DATA skl_ball_22    rev_firmware_path    "${WORK_PATH}/skl_ball_22/firmware"
+dict set REV_DATA skl_ball_22    rev_qsys_path        "${WORK_PATH}/skl_ball_22/${QSYS_SYSTEM_NAME}"
 
-# CPUKBL/KA for ball bonder [no VME, no PCIe UARTs]
-dict set REV_DATA kbl_ball      rev_board_name      "CPUKBL"
-dict set REV_DATA kbl_ball      rev_part_number     "08900-4010-000"
-dict set REV_DATA kbl_ball      rev_work_path_rel   "kbl_ball"
-dict set REV_DATA kbl_ball      rev_work_path       "${WORK_PATH}/kbl_ball"
-dict set REV_DATA kbl_ball      rev_firmware_path   "${WORK_PATH}/kbl_ball/firmware"
-dict set REV_DATA kbl_ball      rev_qsys_path       "${WORK_PATH}/kbl_ball/${QSYS_SYSTEM_NAME}"
+# CPUSKL/KC/KD or CPUKBL/KB for wedge bonder [VME A16/A24/A32 D8(O)/D16/D32, no PCIe UARTs] for EP4CGX22
+dict set REV_DATA skl_wedge_22   rev_fpga_dev         "EP4CGX22"
+dict set REV_DATA skl_wedge_22   rev_fpga_dev_name    "EP4CGX22CF19C8"
+dict set REV_DATA skl_wedge_22   rev_board_name       "CPUSKL/CPUKBL"
+dict set REV_DATA skl_wedge_22   rev_part_number      "07977-4000-000/08991-4010-000/08991-4010-020"
+dict set REV_DATA skl_wedge_22    rev_family           "skl_wedge"
+dict set REV_DATA skl_wedge_22   rev_work_path_rel    "skl_wedge_22"
+dict set REV_DATA skl_wedge_22   rev_work_path        "${WORK_PATH}/skl_wedge_22"
+dict set REV_DATA skl_wedge_22   rev_firmware_path    "${WORK_PATH}/skl_wedge_22/firmware"
+dict set REV_DATA skl_wedge_22   rev_qsys_path        "${WORK_PATH}/skl_wedge_22/${QSYS_SYSTEM_NAME}"
+
+# CPUKBL/KA for ball bonder [no VME, no PCIe UARTs] for EP4CGX22
+dict set REV_DATA kbl_ball_22    rev_fpga_dev         "EP4CGX22"
+dict set REV_DATA kbl_ball_22    rev_fpga_dev_name    "EP4CGX22CF19C8"
+dict set REV_DATA kbl_ball_22    rev_board_name       "CPUKBL"
+dict set REV_DATA kbl_ball_22    rev_part_number      "08900-4010-000/08900-4010-020"
+dict set REV_DATA skl_ball_22    rev_family           "kbl_ball"
+dict set REV_DATA kbl_ball_22    rev_work_path_rel    "kbl_ball_22"
+dict set REV_DATA kbl_ball_22    rev_work_path        "${WORK_PATH}/kbl_ball_22"
+dict set REV_DATA kbl_ball_22    rev_firmware_path    "${WORK_PATH}/kbl_ball_22/firmware"
+dict set REV_DATA kbl_ball_22    rev_qsys_path        "${WORK_PATH}/kbl_ball_22/${QSYS_SYSTEM_NAME}"
+
+# CPUSKL/KA/KB/KE/KF/KG/KH/KI for ball bonder [VME A16/A24 D8(O)/D16, 2 PCIe UARTs] for EP4CGX75
+dict set REV_DATA skl_ball_75    rev_fpga_dev         "EP4CGX75"
+dict set REV_DATA skl_ball_75    rev_fpga_dev_name    "EP4CGX75DF27C8"
+dict set REV_DATA skl_ball_75    rev_board_name       "CPUSKL"
+dict set REV_DATA skl_ball_75    rev_part_number      "08991-4010-000/08991-4010-020"
+dict set REV_DATA skl_ball_75    rev_family           "skl_ball"
+dict set REV_DATA skl_ball_75    rev_work_path_rel    "skl_ball_75"
+dict set REV_DATA skl_ball_75    rev_work_path        "${WORK_PATH}/skl_ball_75"
+dict set REV_DATA skl_ball_75    rev_firmware_path    "${WORK_PATH}/skl_ball_75/firmware"
+dict set REV_DATA skl_ball_75    rev_qsys_path        "${WORK_PATH}/skl_ball_75/${QSYS_SYSTEM_NAME}"
+
+# CPUSKL/KC/KD or CPUKBL/KB for wedge bonder [VME A16/A24/A32 D8(O)/D16/D32, no PCIe UARTs] for EP4CGX75
+dict set REV_DATA skl_wedge_75   rev_fpga_dev         "EP4CGX75"
+dict set REV_DATA skl_wedge_75   rev_fpga_dev_name    "EP4CGX75DF27C8"
+dict set REV_DATA skl_wedge_75   rev_board_name       "CPUSKL/CPUKBL"
+dict set REV_DATA skl_wedge_75   rev_part_number      "08991-4010-000/08991-4010-020/08900-4010-000"
+dict set REV_DATA skl_wedge_75   rev_family           "skl_wedge"
+dict set REV_DATA skl_wedge_75   rev_work_path_rel    "skl_wedge_75"
+dict set REV_DATA skl_wedge_75   rev_work_path        "${WORK_PATH}/skl_wedge_75"
+dict set REV_DATA skl_wedge_75   rev_firmware_path    "${WORK_PATH}/skl_wedge_75/firmware"
+dict set REV_DATA skl_wedge_75   rev_qsys_path        "${WORK_PATH}/skl_wedge_75/${QSYS_SYSTEM_NAME}"
+
+# CPUKBL/KA for ball bonder [no VME, no PCIe UARTs] for EP4CGX75
+dict set REV_DATA kbl_ball_75    rev_fpga_dev         "EP4CGX75"
+dict set REV_DATA kbl_ball_75    rev_fpga_dev_name    "EP4CGX75DF27C8"
+dict set REV_DATA kbl_ball_75    rev_board_name       "CPUKBL"
+dict set REV_DATA kbl_ball_75    rev_part_number      "07977-4000-000/08900-4010-000/08900-4010-020"
+dict set REV_DATA kbl_ball_75    rev_family           "kbl_ball"
+dict set REV_DATA kbl_ball_75    rev_work_path_rel    "kbl_ball_75"
+dict set REV_DATA kbl_ball_75    rev_work_path        "${WORK_PATH}/kbl_ball_75"
+dict set REV_DATA kbl_ball_75    rev_firmware_path    "${WORK_PATH}/kbl_ball_75/firmware"
+dict set REV_DATA kbl_ball_75    rev_qsys_path        "${WORK_PATH}/kbl_ball_75/${QSYS_SYSTEM_NAME}"
 
 
 ################################################################################

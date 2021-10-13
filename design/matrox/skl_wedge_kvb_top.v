@@ -37,6 +37,7 @@
 //    2.2 - Updated VME, QSPI, and PCIe UART IP. Finalized timing constraints.
 //    3.0 - Added revisions for CPUSKL wedge and CPUKBL variants.
 //    3.2 - Connect COM1 to COM2 internally for wedge bonder.
+//    4.0 - Add support for alternate EP4CGX75 FPGA.
 ///////////////////////////////////////////////////////////////////////////////
 
 

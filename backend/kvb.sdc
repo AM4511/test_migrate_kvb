@@ -47,14 +47,14 @@ set_false_path -from [get_registers {altgx_reconfig_inst|*|busy}]
 ##
 ## in the .qsf file
 set_min_delay -to [get_ports {local_i2c_sda}] 0.000
-set_max_delay -to [get_ports {local_i2c_sda}] 7.500
+set_max_delay -to [get_ports {local_i2c_sda}] 20.000
 set_min_delay -to [get_ports {local_i2c_scl}] 0.000
-set_max_delay -to [get_ports {local_i2c_scl}] 7.500
+set_max_delay -to [get_ports {local_i2c_scl}] 20.000
 
 set_min_delay -from [get_ports {local_i2c_sda}] 0.000
-set_max_delay -from [get_ports {local_i2c_sda}] 3.500
+set_max_delay -from [get_ports {local_i2c_sda}] 20.000
 set_min_delay -from [get_ports {local_i2c_scl}] 0.000
-set_max_delay -from [get_ports {local_i2c_scl}] 3.500
+set_max_delay -from [get_ports {local_i2c_scl}] 20.000
 
 # The port local_i2c_sda is resynchronized in MainSM.sdc
 # before being used so we can declare it as a false path.
