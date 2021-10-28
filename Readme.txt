@@ -47,6 +47,7 @@ Revisions
 3.6 - Connect cpcis_prsnt to pio_2 for monitoring PCIe reference clock status
       and add cpcis_prsnt override outputs to pio_1.
 4.0 - Add support for alternate EP4CGX75 FPGA.
+4.1 - Change PCIe subsystem_device_id for EP4CGX75.
 
 
 Requirements

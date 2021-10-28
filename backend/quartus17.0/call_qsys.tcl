@@ -32,7 +32,7 @@ set cmd_list [join "
 # Create the QSYS system from a system call
 ################################################################################
 set QSYS_SYSTEM_PATH  "${rev_work_path}/${QSYS_SYSTEM_NAME}"
-set TCL_QSYS_SYSTEM_SCRIPT_NAME  "${rev_family}_${QSYS_SYSTEM_NAME}.tcl"
+set TCL_QSYS_SYSTEM_SCRIPT_NAME  "${rev_work_path_rel}_${QSYS_SYSTEM_NAME}.tcl"
 
 set TCL_QSYS_SCRIPT_PATH [file join ${BACKEND_PATH} quartus${QUARTUS_VERSION} ${TCL_QSYS_SYSTEM_SCRIPT_NAME}]
 set cmd_arg "--cmd=\"$cmd_list\""

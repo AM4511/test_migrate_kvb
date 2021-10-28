@@ -26,7 +26,7 @@ set FPGA_FAMILY         "Cyclone IV GX"
 set FLASH_PART_NUMBER   "EPCQ128"
 set FPGA_NAME           "kvb"
 set REVMAJOR            "4"                            ; # must be < 655
-set REVMINOR            "0"                            ; # must be < 100
+set REVMINOR            "1"                            ; # must be < 100
 set REVISION            "v${REVMAJOR}_${REVMINOR}"
 set PROJECT_NAME        "${FPGA_NAME}_${REVISION}"
 set QSYS_NAME           "${FPGA_NAME}"
