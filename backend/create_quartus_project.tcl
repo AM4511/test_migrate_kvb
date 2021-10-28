@@ -90,6 +90,7 @@ foreach rev_name [lrange [dict keys ${REV_DATA}] 1 end] {
 # add revision specifc settings/files
 dict for {rev_name rev_attr} ${REV_DATA} {
     dict with rev_attr {
+        puts "Configure revision ${PROJECT_NAME}_${rev_name}_build${BUILDID}"
         set_current_revision "${PROJECT_NAME}_${rev_name}_build${BUILDID}"
         source "${BACKEND_PATH}/config_revision.tcl"
     }

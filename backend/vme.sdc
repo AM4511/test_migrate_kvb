@@ -11,15 +11,8 @@
 #                      Address Group setup to AS* falling = 35ns min
 #      The state machine delays AS* from the Address Group by 6 clocks (48ns).
 #      As long as the min delay of AS* - max delay of A[31:0] + 48ns is > 35ns,
-#      timing is good. So, set the max - min delays to 12.9ns (16.0ns - 3.1ns)
-set_max_delay -to [get_ports vme_a*] 16.0
-set_min_delay -to [get_ports vme_a*] 3.1
-set_max_delay -to [get_ports vme_write*] 16.0
-set_min_delay -to [get_ports vme_write*] 3.1
-set_max_delay -to [get_ports vme_lword_n] 16.0
-set_min_delay -to [get_ports vme_lword_n] 3.1
-set_max_delay -to [get_ports vme_iack*] 16.0
-set_min_delay -to [get_ports vme_iack*] 3.1
+#      timing is good. So, set the skew to 13ns (48ns - 35ns)
+set_max_skew -to [get_ports {vme_a* vme_lword_n vme_iack* vme_write*}] 13.0
 #   reduce max delay to 14.0 to cover Parameter 29
 set_max_delay -to [get_ports vme_ds*] 14.0
 set_min_delay -to [get_ports vme_ds*] 3.1
