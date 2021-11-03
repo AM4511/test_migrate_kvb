@@ -30,7 +30,7 @@ set REVISION         "v${REVMAJOR}_${REVMINOR}"
 set QUARTUS_VERSION  "quartus17.0"
 set QSYS_SYSTEM_NAME "${FPGA_NAME}_system"
 set PROJECT_NAME     "${FPGA_NAME}_${REVISION}"
-set BOARD_NAME       "CPUSKL"                       ; # no spaces
+set BOARD_NAME       "CPUSKL_75"                    ; # no spaces
 set PART_NUMBER      "08891-4010-000-00"            ; # no spaces
 set GW_VERSION       [expr {${REVMAJOR} * 100 + ${REVMINOR}}]
 set QSYS_NAME        "kvb_system"

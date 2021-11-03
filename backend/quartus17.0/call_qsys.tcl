@@ -53,7 +53,7 @@ puts "Qsys system created"
 # Generate the QSYS system
 ####################################################################################
 set QSYS_FILE "$WORK_PATH/${QSYS_SYSTEM_NAME}.qsys"
-set generate_qsys_system_command "$GENERATE_SCRIPT_EXE $QSYS_FILE --synthesis=VERILOG --output-directory=$QSYS_SYSTEM_PATH --search-path=$IPCORE_LIB_PATH/**/*,\$ --family=\"Cyclone IV GX\" --part=EP4CGX22CF19C8 --clear-output-directory"
+set generate_qsys_system_command "$GENERATE_SCRIPT_EXE $QSYS_FILE --synthesis=VERILOG --output-directory=$QSYS_SYSTEM_PATH --search-path=$IPCORE_LIB_PATH/**/*,\$ --family=\"Cyclone IV GX\" --part=EP4CGX75DF27C8 --clear-output-directory"
 
 # Start the generate process
 puts "SYSTEM CALL: exec $generate_qsys_system_command"

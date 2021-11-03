@@ -4,7 +4,7 @@ package require -exact qsys 16.0
 create_system ${QSYS_NAME}
 
 set_project_property DEVICE_FAMILY {Cyclone IV GX}
-set_project_property DEVICE {EP4CGX22CF19C8}
+set_project_property DEVICE {EP4CGX75DF27C8}
 set_project_property HIDE_FROM_IP_CATALOG {false}
 
 # Instances and instance parameters
@@ -163,7 +163,7 @@ set_instance_parameter_value pcie_hard_ip_0 {sameclock_nfts_count} {255}
 set_instance_parameter_value pcie_hard_ip_0 {slot_number} {0}
 set_instance_parameter_value pcie_hard_ip_0 {slot_power_limit} {0}
 set_instance_parameter_value pcie_hard_ip_0 {slot_power_scale} {0}
-set_instance_parameter_value pcie_hard_ip_0 {subsystem_device_id} {5188}
+set_instance_parameter_value pcie_hard_ip_0 {subsystem_device_id} {5189}
 set_instance_parameter_value pcie_hard_ip_0 {subsystem_vendor_id} {4466}
 set_instance_parameter_value pcie_hard_ip_0 {surprise_down_error_support} {false}
 set_instance_parameter_value pcie_hard_ip_0 {under_test} {0}

@@ -4,7 +4,7 @@ puts "Running ${me}"
 ####################################################################################
 #
 ####################################################################################
-set_global_assignment -name DEVICE EP4CGX22CF19C8
+set_global_assignment -name DEVICE EP4CGX75DF27C8
 set_global_assignment -name FAMILY "Cyclone IV GX"
 set_global_assignment -name TOP_LEVEL_ENTITY cpuskl_kvb_top
 set_global_assignment -name PROJECT_OUTPUT_DIRECTORY $FIRMWARE_PATH
@@ -54,7 +54,7 @@ set_global_assignment -name ENABLE_BOOT_SEL_PIN OFF
 set_global_assignment -name DEVICE_FILTER_PACKAGE FBGA
 set_global_assignment -name DEVICE_FILTER_PIN_COUNT 324
 set_global_assignment -name DEVICE_FILTER_SPEED_GRADE 8
-set_global_assignment -name DEVICE_MIGRATION_LIST "EP4CGX22CF19C8,EP4CGX30CF19C8"
+#set_global_assignment -name DEVICE_MIGRATION_LIST "EP4CGX22CF19C8,EP4CGX30CF19C8"
 set_global_assignment -name FLOW_ENABLE_IO_ASSIGNMENT_ANALYSIS ON
 set_global_assignment -name PROJECT_SHOW_ENTITY_NAME OFF
 set_global_assignment -name PHYSICAL_SYNTHESIS_COMBO_LOGIC_FOR_AREA ON

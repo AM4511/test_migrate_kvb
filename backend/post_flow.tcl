@@ -47,7 +47,7 @@ set ZIP_EXE [file join ${ZIP_PATH} "zip.exe"]
 # Generate JTAG indirect configuration file
 ###################################################################################
 set REVISION_NAME [get_current_revision [file join ${WORK_PATH} ${PROJECT_NAME}]]
-set convert_sof_jic_cmd "${QUARTUS_CPF_EXE} -c -d EPCQ128 -s EP4CGX22 -o bitstream_compression=on ${FIRMWARE_PATH}/${REVISION_NAME}.sof ${FIRMWARE_PATH}/${REVISION_NAME}.jic"
+set convert_sof_jic_cmd "${QUARTUS_CPF_EXE} -c -d EPCQ128 -s EP4CGX75 -o bitstream_compression=on ${FIRMWARE_PATH}/${REVISION_NAME}.sof ${FIRMWARE_PATH}/${REVISION_NAME}.jic"
 puts "SYSTEM CALL: exec $convert_sof_jic_cmd"
 exec >&@stdout {*}$convert_sof_jic_cmd
 
